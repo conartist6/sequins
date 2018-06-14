@@ -1,0 +1,11 @@
+.DS_Store
+node_modules
+
+/lib
+/tmp
+
+*.sublime-workspace
+lerna-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

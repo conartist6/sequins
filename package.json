@@ -1,0 +1,32 @@
+{
+  "name": "sequins",
+  "version": "0.0.1",
+  "description": "An object oriented wrapper for iterators, a la Immutable.Seq",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "broccoli build lib --overwrite"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/conartist6/sequins.git"
+  },
+  "keywords": [
+    "iterator",
+    "generator",
+    "mutable",
+    "sequence",
+    "seq",
+    "iter-tools",
+    "es6",
+    "es2015"
+  ],
+  "author": "conrad@burningpotato.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/conartist6/sequins/issues"
+  },
+  "homepage": "https://github.com/conartist6/sequins#readme",
+  "devDependencies": {
+    "broccoli": "^2.0.0-beta.2"
+  }
+}
