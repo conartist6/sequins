@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"js_prettier": {
+			"additional_cli_args": {},
+			"allow_inline_formatting": false,
+			"auto_format_on_save": true,
+			"auto_format_on_save_excludes": ["lib/**", "**/package.json", "**/package-lock.json"],
+			"custom_file_extensions": ["json", "sublime-project"],
+			"debug": false,
+			"max_file_size_limit": -1,
+			"node_path": "",
+			"prettier_cli_path": "",
+			"prettier_options": {
+				"arrowParens": "avoid",
+				"bracketSpacing": true,
+				"jsxBracketSameLine": false,
+				"parser": "babylon",
+				"printWidth": 100,
+				"proseWrap": "preserve",
+				"requirePragma": false,
+				"semi": true,
+				"singleQuote": true,
+				"trailingComma": "all"
+			}
+		}
+	}
+}
