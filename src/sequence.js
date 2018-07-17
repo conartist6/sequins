@@ -7,6 +7,7 @@ export default class Sequence {
   }
 
   *[Symbol.iterator]() {
-    yield* this.__transforms.length ? compose(this.__transforms)(this.__iterable) : this.__iterable;
+    const transforms = [...this.__transforms].reverse();
+    yield* this.__transforms.length ? compose(transforms)(this.__iterable) : this.__iterable;
   }
 }
