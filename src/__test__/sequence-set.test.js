@@ -20,6 +20,10 @@ describe('Seq.Set', function() {
       expect(Array.from(new SetSeq(iterator))).toEqual(array);
     });
 
+    it('can concat', function() {
+      expect(Array.from(new SetSeq([1, 2]).concat([3, 4]))).toEqual([1, 2, 3, 4]);
+    });
+
     it('can map', function() {
       const mapFn = val => val + 1;
       const mapMockFn = jest.fn(mapFn);

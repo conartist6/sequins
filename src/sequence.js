@@ -1,4 +1,4 @@
-import { compose } from 'iter-tools';
+import { compose, concat, map } from 'iter-tools';
 
 export default class Sequence {
   constructor(iterable) {
@@ -10,6 +10,12 @@ export default class Sequence {
     const transforms = [...this.__transforms].reverse();
 
     yield* this.__transforms.length ? compose(...transforms)(this.__iterable) : this.__iterable;
+  }
+
+  concat(...args) {
+    const SequenceConstructor = this.constructor;
+    this.__transforms.push(iterable => concat(iterable, ...args));
+    return this;
   }
 
   toSetSeq() {

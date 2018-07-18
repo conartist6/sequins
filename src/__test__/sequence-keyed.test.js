@@ -19,6 +19,12 @@ describe('Seq.Keyed', function() {
       expect(Array.from(new KeyedSeq(iterator))).toEqual(entriesArray);
     });
 
+    it('can concat', function() {
+      const a = [[1, 2], [2, 3]];
+      const b = [[3, 4], [4, 5]];
+      expect(Array.from(new KeyedSeq(a).concat(b))).toEqual([...a, ...b]);
+    });
+
     it('can map', function() {
       const mapFn = val => val + 1;
       const mapMockFn = jest.fn(mapFn);
