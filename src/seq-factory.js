@@ -3,7 +3,7 @@ import Sequence from './sequence';
 import IndexedSeq from './sequence-indexed';
 import KeyedSeq from './sequence-keyed';
 import SetSeq from './sequence-set';
-import { mapish } from './utils/shape';
+import { isKeyed, isSet } from './utils/shape';
 
 const emptyArray = [];
 
@@ -13,8 +13,10 @@ export function SeqOrNull(initial) {
   } else if (initial instanceof Sequence) {
     const SequenceConstructor = initial.constructor;
     return new SequenceConstructor(initial);
-  } else if (mapish(initial)) {
+  } else if (isKeyed(initial)) {
     return new KeyedSeq(initial);
+  } else if (isSet(initial)) {
+    return new SetSeq(initial);
   } else if (typeof initial[Symbol.iterator] === 'function') {
     return new IndexedSeq(initial);
   }
