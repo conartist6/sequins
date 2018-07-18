@@ -1,9 +1,14 @@
-import { map, filter, iter } from 'iter-tools';
+import { map, tap, filter, iter } from 'iter-tools';
 import Sequence from './sequence';
 
 export default class KeyedSeq extends Sequence {
   map(mapFn) {
     this.__transforms.push(map(([key, value]) => [key, mapFn(value, key)]));
+    return this;
+  }
+
+  tap(tapFn) {
+    this.__transforms.push(tap(([key, value]) => tapFn(value, key)));
     return this;
   }
 

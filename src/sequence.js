@@ -1,4 +1,4 @@
-import { compose, iter } from 'iter-tools';
+import { compose } from 'iter-tools';
 
 export default class Sequence {
   constructor(iterable) {
@@ -8,6 +8,7 @@ export default class Sequence {
 
   *[Symbol.iterator]() {
     const transforms = [...this.__transforms].reverse();
-    yield* this.__transforms.length ? compose(transforms)(this.__iterable) : this.__iterable;
+
+    yield* this.__transforms.length ? compose(...transforms)(this.__iterable) : this.__iterable;
   }
 }

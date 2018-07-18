@@ -6,8 +6,11 @@ describe('Seq.Set', function() {
     let array;
     let iterator;
 
-    beforeEach(function() {
+    beforeAll(function() {
       array = [1, 2, 3];
+    });
+
+    beforeEach(function() {
       iterator = iter(array);
     });
 
@@ -17,12 +20,22 @@ describe('Seq.Set', function() {
 
     it('can map', function() {
       const mapFn = val => val + 1;
-      expect(Array.from(new SetSeq(iterator).map(mapFn))).toEqual(array.map(mapFn));
+      const mapMockFn = jest.fn(mapFn);
+      expect(Array.from(new SetSeq(iterator).map(mapMockFn))).toEqual(array.map(mapFn));
+      expect(mapMockFn.mock.calls).toEqual([[1], [2], [3]]);
+    });
+
+    it('can tap', function() {
+      const tapFn = jest.fn();
+      Array.from(new SetSeq(iterator).tap(tapFn));
+      expect(tapFn.mock.calls).toEqual([[1], [2], [3]]);
     });
 
     it('can filter', function() {
       const filterFn = val => val > 1;
-      expect(Array.from(new SetSeq(iterator).filter(filterFn))).toEqual(array.filter(filterFn));
+      const filterMockFn = jest.fn(filterFn);
+      expect(Array.from(new SetSeq(iterator).filter(filterMockFn))).toEqual(array.filter(filterFn));
+      expect(filterMockFn.mock.calls).toEqual([[1], [2], [3]]);
     });
 
     it('has keys iterator', function() {

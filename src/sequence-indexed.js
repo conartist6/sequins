@@ -1,9 +1,14 @@
-import { map, filter, iter } from 'iter-tools';
+import { map, tap, filter, iter } from 'iter-tools';
 import Sequence from './sequence';
 
 export default class IndexedSeq extends Sequence {
   map(mapFn) {
     this.__transforms.push(map(mapFn));
+    return this;
+  }
+
+  tap(tapFn) {
+    this.__transforms.push(tap(tapFn));
     return this;
   }
 

@@ -19,12 +19,22 @@ describe('Seq.Keyed', function() {
 
     it('can map', function() {
       const mapFn = val => val + 1;
-      expect(Array.from(new KeyedSeq(iterator).map(mapFn))).toEqual([[1, 2], [2, 3], [3, 4]]);
+      const mapMockFn = jest.fn(mapFn);
+      expect(Array.from(new KeyedSeq(iterator).map(mapMockFn))).toEqual([[1, 2], [2, 3], [3, 4]]);
+      expect(mapMockFn.mock.calls).toEqual(entriesArray);
+    });
+
+    it('can tap', function() {
+      const tapFn = jest.fn();
+      Array.from(new KeyedSeq(iterator).tap(tapFn));
+      expect(tapFn.mock.calls).toEqual(entriesArray);
     });
 
     it('can filter', function() {
       const filterFn = val => val > 1;
-      expect(Array.from(new KeyedSeq(iterator).filter(filterFn))).toEqual([[2, 2], [3, 3]]);
+      const filterMockFn = jest.fn(filterFn);
+      expect(Array.from(new KeyedSeq(iterator).filter(filterMockFn))).toEqual([[2, 2], [3, 3]]);
+      expect(filterMockFn.mock.calls).toEqual(entriesArray);
     });
 
     it('has keys iterator', function() {
