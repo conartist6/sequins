@@ -1,7 +1,12 @@
 import { map, tap, filter, iter } from 'iter-tools';
+// Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
 import Sequence from './sequence';
 import KeyedSeq from './sequence-keyed';
 import SetSeq from './sequence-set';
+
+import makeFlatten from './factories/flatten';
+
+const flatten = makeFlatten('Indexed');
 
 export default class IndexedSeq extends Sequence {
   constructor(iterable) {
@@ -16,6 +21,15 @@ export default class IndexedSeq extends Sequence {
     return this;
   }
 
+  flatMap(mapFn) {
+    return this.map(mapFn).flatten(true);
+  }
+
+  flatten(shallowOrDepth) {
+    this.__transforms.push(flatten(shallowOrDepth));
+    return this;
+  }
+
   tap(tapFn) {
     this.__transforms.push(tap(tapFn));
     return this;
@@ -23,6 +37,11 @@ export default class IndexedSeq extends Sequence {
 
   filter(filterFn) {
     this.__transforms.push(filter(filterFn));
+    return this;
+  }
+
+  filterNot(filterFn) {
+    this.__transforms.push(filter((item, i) => !filterFn(item, i)));
     return this;
   }
 

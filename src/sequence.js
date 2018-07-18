@@ -1,4 +1,5 @@
 import { compose, concat, map } from 'iter-tools';
+// Sequence must not import any of its subclasses
 
 export default class Sequence {
   constructor(iterable) {

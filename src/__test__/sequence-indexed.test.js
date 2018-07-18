@@ -1,4 +1,5 @@
 import { iter } from 'iter-tools';
+// Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
 import IndexedSeq from '../sequence-indexed';
 import KeyedSeq from '../sequence-keyed';
 import SetSeq from '../sequence-set';
@@ -7,6 +8,11 @@ describe('Seq.Indexed', function() {
   describe('basic functionality', function() {
     let array;
     let iterator;
+    let calls;
+
+    beforeAll(function() {
+      calls = [[1, 0], [2, 1], [3, 2]];
+    });
 
     beforeEach(function() {
       array = [1, 2, 3];
@@ -25,13 +31,41 @@ describe('Seq.Indexed', function() {
       const mapFn = val => val + 1;
       const mapMockFn = jest.fn(mapFn);
       expect(Array.from(new IndexedSeq(iterator).map(mapMockFn))).toEqual(array.map(mapFn));
-      expect(mapMockFn.mock.calls).toEqual([[1, 0], [2, 1], [3, 2]]);
+      expect(mapMockFn.mock.calls).toEqual(calls);
+    });
+
+    it('can flatMap IndexedSequences', function() {
+      const mapFn = val => new IndexedSeq([val + 1, val + 1.5]);
+      const mapMockFn = jest.fn(mapFn);
+      expect(Array.from(new IndexedSeq(iterator).flatMap(mapMockFn))).toEqual([
+        2,
+        2.5,
+        3,
+        3.5,
+        4,
+        4.5,
+      ]);
+      expect(mapMockFn.mock.calls).toEqual(calls);
+    });
+
+    it('can flatMap Arrays', function() {
+      const mapFn = val => [val + 1, val + 1.5];
+      const mapMockFn = jest.fn(mapFn);
+      expect(Array.from(new IndexedSeq(iterator).flatMap(mapMockFn))).toEqual([
+        2,
+        2.5,
+        3,
+        3.5,
+        4,
+        4.5,
+      ]);
+      expect(mapMockFn.mock.calls).toEqual(calls);
     });
 
     it('can tap', function() {
       const tapFn = jest.fn();
       Array.from(new IndexedSeq(iterator).tap(tapFn));
-      expect(tapFn.mock.calls).toEqual([[1, 0], [2, 1], [3, 2]]);
+      expect(tapFn.mock.calls).toEqual(calls);
     });
 
     it('can filter', function() {
@@ -40,7 +74,16 @@ describe('Seq.Indexed', function() {
       expect(Array.from(new IndexedSeq(iterator).filter(filterMockFn))).toEqual(
         array.filter(filterFn),
       );
-      expect(filterMockFn.mock.calls).toEqual([[1, 0], [2, 1], [3, 2]]);
+      expect(filterMockFn.mock.calls).toEqual(calls);
+    });
+
+    it('can filterNot', function() {
+      const filterFn = val => val > 1;
+      const filterMockFn = jest.fn(filterFn);
+      expect(Array.from(new IndexedSeq(iterator).filterNot(filterMockFn))).toEqual(
+        array.filter(val => !filterFn(val)),
+      );
+      expect(filterMockFn.mock.calls).toEqual(calls);
     });
 
     it('can be converted to IndexedSeq (noop)', function() {
