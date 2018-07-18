@@ -1,7 +1,16 @@
 import { map, tap, filter } from 'iter-tools';
 import Sequence from './sequence';
+import IndexedSeq from './sequence-indexed';
+import KeyedSeq from './sequence-keyed';
 
 export default class SetSeq extends Sequence {
+  constructor(iterable) {
+    super(iterable);
+    if (iterable instanceof Sequence && !(iterable instanceof SetSeq)) {
+      this.__transforms.push(iterable => iterable.values());
+    }
+  }
+
   map(mapFn) {
     this.__transforms.push(map(item => mapFn(item)));
     return this;
@@ -15,6 +24,18 @@ export default class SetSeq extends Sequence {
   filter(filterFn) {
     this.__transforms.push(filter(item => filterFn(item)));
     return this;
+  }
+
+  toSetSeq() {
+    return this;
+  }
+
+  toKeyedSeq() {
+    return new KeyedSeq(this);
+  }
+
+  toIndexedSeq() {
+    return new IndexedSeq(this);
   }
 
   *keys() {

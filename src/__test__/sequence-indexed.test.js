@@ -1,5 +1,7 @@
 import { iter } from 'iter-tools';
 import IndexedSeq from '../sequence-indexed';
+import KeyedSeq from '../sequence-keyed';
+import SetSeq from '../sequence-set';
 
 describe('Seq.Indexed', function() {
   describe('basic functionality', function() {
@@ -35,6 +37,23 @@ describe('Seq.Indexed', function() {
         array.filter(filterFn),
       );
       expect(filterMockFn.mock.calls).toEqual([[1, 0], [2, 1], [3, 2]]);
+    });
+
+    it('can be converted to IndexedSeq (noop)', function() {
+      const indexed = new IndexedSeq([1, 2, 3]);
+      expect(indexed.toIndexedSeq()).toBe(indexed);
+    });
+
+    it('can be converted to KeyedSeq', function() {
+      const keyed = new IndexedSeq([1, 2, 3]).toKeyedSeq();
+      expect(Array.from(keyed)).toEqual([[0, 1], [1, 2], [2, 3]]);
+      expect(keyed).toBeInstanceOf(KeyedSeq);
+    });
+
+    it('can be converted to SetSeq', function() {
+      const set = new IndexedSeq([1, 2, 3]).toSetSeq();
+      expect(Array.from(set)).toEqual([1, 2, 3]);
+      expect(set).toBeInstanceOf(SetSeq);
     });
 
     it('has keys iterator', function() {

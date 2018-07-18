@@ -1,5 +1,7 @@
 import { iter } from 'iter-tools';
+import IndexedSeq from '../sequence-indexed';
 import KeyedSeq from '../sequence-keyed';
+import SetSeq from '../sequence-set';
 
 describe('Seq.Keyed', function() {
   describe('basic functionality', function() {
@@ -35,6 +37,23 @@ describe('Seq.Keyed', function() {
       const filterMockFn = jest.fn(filterFn);
       expect(Array.from(new KeyedSeq(iterator).filter(filterMockFn))).toEqual([[2, 2], [3, 3]]);
       expect(filterMockFn.mock.calls).toEqual(entriesArray);
+    });
+
+    it('can be converted to IndexedSeq (noop)', function() {
+      const indexed = new KeyedSeq([[2, 1], [3, 2], [4, 3]]).toIndexedSeq();
+      expect(Array.from(indexed)).toEqual([1, 2, 3]);
+      expect(indexed).toBeInstanceOf(IndexedSeq);
+    });
+
+    it('can be converted to KeyedSeq (noop)', function() {
+      const keyed = new KeyedSeq([1, 2, 3]);
+      expect(keyed.toKeyedSeq()).toBe(keyed);
+    });
+
+    it('can be converted to SetSeq', function() {
+      const set = new KeyedSeq([[2, 1], [3, 2], [4, 3]]).toSetSeq();
+      expect(Array.from(set)).toEqual([1, 2, 3]);
+      expect(set).toBeInstanceOf(SetSeq);
     });
 
     it('has keys iterator', function() {

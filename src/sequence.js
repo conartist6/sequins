@@ -11,4 +11,16 @@ export default class Sequence {
 
     yield* this.__transforms.length ? compose(...transforms)(this.__iterable) : this.__iterable;
   }
+
+  toSetSeq() {
+    return new SetSeq(this);
+  }
+
+  toKeyedSeq() {
+    return new KeyedSeq(this);
+  }
+
+  toIndexedSeq() {
+    return new IndexedSeq(this);
+  }
 }
