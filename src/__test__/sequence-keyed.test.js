@@ -37,6 +37,20 @@ describe('Seq.Keyed', function() {
       expect(mapMockFn.mock.calls).toEqual(calls);
     });
 
+    it('can mapKeys', function() {
+      const mapFn = key => key - 1;
+      const mapMockFn = jest.fn(mapFn);
+      expect(Array.from(keyed.mapKeys(mapMockFn))).toEqual([[8, 1], [7, 2], [6, 3]]);
+      expect(mapMockFn.mock.calls).toEqual(entries);
+    });
+
+    it('can mapEntries', function() {
+      const mapFn = ([key, val]) => [val, key];
+      const mapMockFn = jest.fn(mapFn);
+      expect(Array.from(keyed.mapEntries(mapMockFn))).toEqual([[1, 9], [2, 8], [3, 7]]);
+      expect(mapMockFn.mock.calls).toEqual([[[9, 1], 0], [[8, 2], 1], [[7, 3], 2]]);
+    });
+
     it('can flatMap KeyedSequences', function() {
       const mapFn = val => new KeyedSeq([[val + 1, val + 2]]);
       const mapMockFn = jest.fn(mapFn);

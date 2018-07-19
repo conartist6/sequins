@@ -20,6 +20,16 @@ export default class KeyedSeq extends Sequence {
     return this;
   }
 
+  mapKeys(mapFn) {
+    this.__transforms.push(map(([key, value]) => [mapFn(key, value), value]));
+    return this;
+  }
+
+  mapEntries(mapFn) {
+    this.__transforms.push(map((entry, i) => mapFn(entry, i)));
+    return this;
+  }
+
   flatMap(mapFn) {
     return this.map(mapFn).flatten(true);
   }
