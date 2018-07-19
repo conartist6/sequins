@@ -1,4 +1,4 @@
-import { map, flatMap, tap, filter, iter } from 'iter-tools';
+import { map, flatMap, tap, filter } from 'iter-tools';
 // Import order is always Sequnce, Indexed, Keyed, Set to avoid circular dep breakdown
 import Sequence from './sequence';
 import IndexedSeq from './sequence-indexed';
@@ -56,12 +56,22 @@ export default class KeyedSeq extends Sequence {
     return new IndexedSeq(this);
   }
 
+  toMap() {
+    return new Map(this);
+  }
+
+  toObject(proto = Object.prototype) {
+    const obj = Object.create(proto);
+    for (const [key, value] of this) obj[key] = value;
+    return obj;
+  }
+
   *keys() {
-    yield* map(([key, _]) => key, iter(this));
+    yield* map(([key, _]) => key, this);
   }
 
   *values() {
-    yield* map(([_, value]) => value, iter(this));
+    yield* map(([_, value]) => value, this);
   }
 
   *entries() {

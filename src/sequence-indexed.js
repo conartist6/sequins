@@ -1,4 +1,4 @@
-import { map, tap, filter, iter } from 'iter-tools';
+import { map, tap, filter } from 'iter-tools';
 // Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
 import Sequence from './sequence';
 import KeyedSeq from './sequence-keyed';
@@ -57,8 +57,12 @@ export default class IndexedSeq extends Sequence {
     return this;
   }
 
+  toArray() {
+    return Array.from(this);
+  }
+
   *keys() {
-    yield* map((_, i) => i, iter(this));
+    yield* map((_, i) => i, this);
   }
 
   *values() {
@@ -66,6 +70,6 @@ export default class IndexedSeq extends Sequence {
   }
 
   *entries() {
-    yield* map((value, i) => [i, value], iter(this));
+    yield* map((value, i) => [i, value], this);
   }
 }

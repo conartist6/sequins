@@ -2,7 +2,7 @@
   "name": "sequins",
   "version": "0.0.1",
   "description": "An object oriented wrapper for iterators, a la Immutable.Seq",
-  "main": "lib/index.js",
+  "main": "lib/index",
   "scripts": {
     "build": "broccoli build lib --overwrite"
   },

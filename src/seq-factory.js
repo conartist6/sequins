@@ -1,9 +1,10 @@
+import { entries } from 'iter-tools';
 // Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
 import Sequence from './sequence';
 import IndexedSeq from './sequence-indexed';
 import KeyedSeq from './sequence-keyed';
 import SetSeq from './sequence-set';
-import { isKeyed, isSet } from './utils/shape';
+import { isKeyed, isSet, isIteratorish } from './utils/shape';
 
 const emptyArray = [];
 
@@ -19,15 +20,12 @@ export function SeqOrNull(initial) {
     return new SetSeq(initial);
   } else if (typeof initial[Symbol.iterator] === 'function') {
     return new IndexedSeq(initial);
+  } else if (isIteratorish(initial)) {
+    return new IndexedSeq(initial);
+  } else if (typeof initial === 'object') {
+    return new KeyedSeq(entries(initial));
   }
   return null;
-
-  // Immutable's logic:
-  //   DONE If an Collection, a Seq of the same kind (Keyed, Indexed, or Set).
-  //   If an Array-like, an Seq.Indexed.
-  //   DONE If an Object with an Iterator, an Seq.Indexed.
-  //   If an Iterator, an Seq.Indexed.
-  //   If an Object, a Seq.Keyed.
 }
 
 function Seq(initial) {

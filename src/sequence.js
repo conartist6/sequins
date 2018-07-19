@@ -19,15 +19,19 @@ export default class Sequence {
     return this;
   }
 
-  toSetSeq() {
-    return new SetSeq(this);
+  toArray() {
+    return this.toIndexedSeq().toArray();
   }
 
-  toKeyedSeq() {
-    return new KeyedSeq(this);
+  toObject() {
+    return this.toKeyedSeq().toObject();
   }
 
-  toIndexedSeq() {
-    return new IndexedSeq(this);
+  toMap() {
+    return this.toKeyedSeq().toMap();
+  }
+
+  toSet() {
+    return this.toSetSeq().toSet();
   }
 }

@@ -57,6 +57,10 @@ export default class SetSeq extends Sequence {
     return new IndexedSeq(this);
   }
 
+  toSet() {
+    return new Set(this);
+  }
+
   *keys() {
     yield* this;
   }
