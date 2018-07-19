@@ -30,8 +30,8 @@ export default class SetSeq extends Sequence {
     return this;
   }
 
-  tap(tapFn) {
-    this.__transforms.push(tap(item => tapFn(item)));
+  forEach(eachFn) {
+    this.__transforms.push(tap(item => eachFn(item)));
     return this;
   }
 

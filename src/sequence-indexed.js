@@ -30,8 +30,8 @@ export default class IndexedSeq extends Sequence {
     return this;
   }
 
-  tap(tapFn) {
-    this.__transforms.push(tap(tapFn));
+  forEach(eachFn) {
+    this.__transforms.push(tap(eachFn));
     return this;
   }
 

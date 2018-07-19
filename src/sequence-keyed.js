@@ -39,8 +39,8 @@ export default class KeyedSeq extends Sequence {
     return this;
   }
 
-  tap(tapFn) {
-    this.__transforms.push(tap(([key, value]) => tapFn(value, key)));
+  forEach(eachFn) {
+    this.__transforms.push(tap(([key, value]) => eachFn(value, key)));
     return this;
   }
 
