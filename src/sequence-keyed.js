@@ -1,5 +1,6 @@
 import { map, flatMap, tap, filter } from 'iter-tools';
-// Import order is always Sequnce, Indexed, Keyed, Set to avoid circular dep breakdown
+import forEach from './functions/for-each';
+// Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
 import Sequence from './sequence';
 import IndexedSeq from './sequence-indexed';
 import SetSeq from './sequence-set';
@@ -39,8 +40,8 @@ export default class KeyedSeq extends Sequence {
     return this;
   }
 
-  forEach(eachFn) {
-    this.__transforms.push(tap(([key, value]) => eachFn(value, key)));
+  tap(tapFn) {
+    this.__transforms.push(tap(([key, value]) => tapFn(value, key)));
     return this;
   }
 
@@ -52,6 +53,10 @@ export default class KeyedSeq extends Sequence {
   filterNot(filterFn) {
     this.__transforms.push(filter(([key, value]) => !filterFn(value, key)));
     return this;
+  }
+
+  forEach(eachFn) {
+    return forEach(([key, value]) => eachFn(value, key), this);
   }
 
   toSetSeq() {

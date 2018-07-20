@@ -4,6 +4,7 @@ import Sequence from './sequence';
 import IndexedSeq from './sequence-indexed';
 import KeyedSeq from './sequence-keyed';
 import SetSeq from './sequence-set';
+import { Range, Repeat } from './static';
 import { isKeyed, isSet, isIteratorish } from './utils/shape';
 
 const emptyArray = [];
@@ -38,5 +39,7 @@ function Seq(initial) {
 Seq.Indexed = iterable => new IndexedSeq(iterable);
 Seq.Keyed = iterable => new KeyedSeq(iterable);
 Seq.Set = iterable => new SetSeq(iterable);
+Seq.Range = Range;
+Seq.Repeat = Repeat;
 
 export default Seq;

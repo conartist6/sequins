@@ -65,10 +65,10 @@ describe('Seq.Keyed', function() {
       expect(mapMockFn.mock.calls).toEqual(calls);
     });
 
-    it('can forEach', function() {
-      const eachFn = jest.fn();
-      Array.from(keyed.forEach(eachFn));
-      expect(eachFn.mock.calls).toEqual(calls);
+    it('can tap', function() {
+      const tapFn = jest.fn();
+      Array.from(keyed.tap(tapFn));
+      expect(tapFn.mock.calls).toEqual(calls);
     });
 
     it('can filter', function() {
@@ -83,6 +83,12 @@ describe('Seq.Keyed', function() {
       const filterMockFn = jest.fn(filterFn);
       expect(Array.from(keyed.filterNot(filterMockFn))).toEqual(entries.slice(0, 1));
       expect(filterMockFn.mock.calls).toEqual(calls);
+    });
+
+    it('can forEach', function() {
+      const eachFn = jest.fn();
+      expect(keyed.forEach(eachFn)).toBe(3);
+      expect(eachFn.mock.calls).toEqual(calls);
     });
 
     it('can be converted to IndexedSeq (noop)', function() {

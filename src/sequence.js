@@ -2,6 +2,10 @@ import { compose, concat, map } from 'iter-tools';
 // Sequence must not import any of its subclasses
 
 export default class Sequence {
+  static isSeq(thing) {
+    return !!thing['@@__MUTABLE_SEQUENCE_SENTINEL__@@'];
+  }
+
   constructor(iterable) {
     this.__iterable = iterable;
     this.__transforms = [];
@@ -35,3 +39,5 @@ export default class Sequence {
     return this.toSetSeq().toSet();
   }
 }
+
+Object.defineProperty(Sequence, '@@__MUTABLE_SEQUENCE_SENTINEL__@@', { value: true });

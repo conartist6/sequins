@@ -1,4 +1,5 @@
 import { map, flatMap, tap, filter } from 'iter-tools';
+import forEach from './functions/for-each';
 // Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
 import Sequence from './sequence';
 import IndexedSeq from './sequence-indexed';
@@ -30,8 +31,8 @@ export default class SetSeq extends Sequence {
     return this;
   }
 
-  forEach(eachFn) {
-    this.__transforms.push(tap(item => eachFn(item)));
+  tap(tapFn) {
+    this.__transforms.push(tap(item => tapFn(item)));
     return this;
   }
 
@@ -43,6 +44,10 @@ export default class SetSeq extends Sequence {
   filterNot(filterFn) {
     this.__transforms.push(filter(item => !filterFn(item)));
     return this;
+  }
+
+  forEach(eachFn) {
+    return forEach(item => eachFn(item), this);
   }
 
   toSetSeq() {

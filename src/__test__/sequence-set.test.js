@@ -41,10 +41,10 @@ describe('Seq.Set', function() {
       expect(mapMockFn.mock.calls).toEqual(calls);
     });
 
-    it('can forEach', function() {
-      const eachFn = jest.fn();
-      Array.from(set.forEach(eachFn));
-      expect(eachFn.mock.calls).toEqual(calls);
+    it('can tap', function() {
+      const tapFn = jest.fn();
+      Array.from(set.tap(tapFn));
+      expect(tapFn.mock.calls).toEqual(calls);
     });
 
     it('can filter', function() {
@@ -52,6 +52,12 @@ describe('Seq.Set', function() {
       const filterMockFn = jest.fn(filterFn);
       expect(Array.from(set.filter(filterMockFn))).toEqual(array.filter(filterFn));
       expect(filterMockFn.mock.calls).toEqual(calls);
+    });
+
+    it('can forEach', function() {
+      const eachFn = jest.fn();
+      expect(set.forEach(eachFn)).toBe(3);
+      expect(eachFn.mock.calls).toEqual(calls);
     });
 
     it('can be converted to IndexedSeq', function() {
