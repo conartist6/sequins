@@ -1,4 +1,3 @@
-// Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
 import IndexedSeq from '../../sequence-indexed';
 import KeyedSeq from '../../sequence-keyed';
 import SetSeq from '../../sequence-set';

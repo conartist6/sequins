@@ -1,14 +1,7 @@
 import { map, tap, filter } from 'iter-tools';
 import { isKeyed } from './utils/shape';
 import forEach from './functions/for-each';
-// Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
-import Sequence from './sequence';
-import KeyedSeq from './sequence-keyed';
-import SetSeq from './sequence-set';
-
-import makeFlatten from './factories/flatten';
-
-const flatten = makeFlatten('Indexed');
+import Sequence, { registerSubtype } from './sequence';
 
 export default class IndexedSeq extends Sequence {
   constructor(iterable) {
@@ -25,11 +18,6 @@ export default class IndexedSeq extends Sequence {
 
   flatMap(mapFn) {
     return this.map(mapFn).flatten(true);
-  }
-
-  flatten(shallowOrDepth) {
-    this.__transforms.push(flatten(shallowOrDepth));
-    return this;
   }
 
   tap(tapFn) {
@@ -49,14 +37,6 @@ export default class IndexedSeq extends Sequence {
 
   forEach(eachFn) {
     return forEach(eachFn, this);
-  }
-
-  toSetSeq() {
-    return new SetSeq(this);
-  }
-
-  toKeyedSeq() {
-    return new KeyedSeq(this);
   }
 
   toIndexedSeq() {
@@ -89,3 +69,4 @@ export default class IndexedSeq extends Sequence {
 }
 
 Object.defineProperty(IndexedSeq.prototype, '@@__MUTABLE_INDEXED__@@', { value: true });
+registerSubtype('Indexed', IndexedSeq);

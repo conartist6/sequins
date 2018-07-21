@@ -1,10 +1,10 @@
 import { isDataStructure } from '../utils/shape';
-import Seq from '../seq-factory';
+import Sequence from '../sequence';
 
 // Implementation borrowed from immutable
 export function toJS(value) {
   return isDataStructure(value)
-    ? Seq(value)
+    ? Sequence.from(value)
         .map(toJS)
         .toJSON()
     : value;
