@@ -43,6 +43,12 @@ export default class Sequence {
       : this.__iterable;
   }
 
+  cacheResult() {
+    this.__iterable = Array.from(this);
+    this.__transforms.length = 0;
+    return this;
+  }
+
   concat(...args) {
     const SequenceConstructor = this.constructor;
     this.__transforms.push(iterable => concat(iterable, ...args));
@@ -51,6 +57,12 @@ export default class Sequence {
 
   flatten(shallowOrDepth) {
     this.__transforms.push(makeFlatten(this._reflectionKey)(shallowOrDepth));
+    return this;
+  }
+
+  reverse() {
+    this.cacheResult();
+    this.__iterable.reverse();
     return this;
   }
 
@@ -88,6 +100,18 @@ export default class Sequence {
 
   toSetSeq() {
     return new Seq.Set(this);
+  }
+
+  keySeq() {
+    return new Seq.Indexed(this.keys());
+  }
+
+  valueSeq() {
+    return new Seq.Indexed(this.values());
+  }
+
+  entrySeq() {
+    return new Seq.Indexed(this.entries());
   }
 }
 

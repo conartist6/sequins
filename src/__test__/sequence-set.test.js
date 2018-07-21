@@ -7,10 +7,12 @@ describe('Seq.Set', function() {
     let array;
     let calls;
     let set;
+    let entries;
 
     beforeAll(function() {
       array = [1, 2, 3];
       calls = [[1], [2], [3]];
+      entries = [[1, 1], [2, 2], [3, 3]];
     });
 
     beforeEach(function() {
@@ -52,6 +54,10 @@ describe('Seq.Set', function() {
       expect(filterMockFn.mock.calls).toEqual(calls);
     });
 
+    it('can reverse', function() {
+      expect(Array.from(set.reverse())).toEqual([...array].reverse());
+    });
+
     it('can forEach', function() {
       const eachFn = jest.fn();
       expect(set.forEach(eachFn)).toBe(3);
@@ -66,7 +72,7 @@ describe('Seq.Set', function() {
 
     it('can be converted to KeyedSeq', function() {
       const keyed = set.toKeyedSeq();
-      expect(Array.from(keyed)).toEqual([[1, 1], [2, 2], [3, 3]]);
+      expect(Array.from(keyed)).toEqual(entries);
       expect(keyed).toBeInstanceOf(KeyedSeq);
     });
 
@@ -83,7 +89,7 @@ describe('Seq.Set', function() {
     });
 
     it('can be converted to Map', function() {
-      expect(set.toMap()).toEqual(new Map([[1, 1], [2, 2], [3, 3]]));
+      expect(set.toMap()).toEqual(new Map(entries));
     });
 
     it('can be converted to Set', function() {
@@ -99,7 +105,25 @@ describe('Seq.Set', function() {
     });
 
     it('has entries iterator', function() {
-      expect(Array.from(set.entries())).toEqual([[1, 1], [2, 2], [3, 3]]);
+      expect(Array.from(set.entries())).toEqual(entries);
+    });
+
+    it('can be converted to a key sequence', function() {
+      const keySeq = set.keySeq();
+      expect(keySeq).toBeInstanceOf(IndexedSeq);
+      expect(Array.from(keySeq)).toEqual(array);
+    });
+
+    it('can be converted to a value sequence', function() {
+      const valueSeq = set.valueSeq();
+      expect(valueSeq).toBeInstanceOf(IndexedSeq);
+      expect(Array.from(valueSeq)).toEqual(array);
+    });
+
+    it('can be converted to an entries sequence', function() {
+      const entriesSeq = set.entrySeq();
+      expect(entriesSeq).toBeInstanceOf(IndexedSeq);
+      expect(Array.from(entriesSeq)).toEqual(entries);
     });
   });
 });

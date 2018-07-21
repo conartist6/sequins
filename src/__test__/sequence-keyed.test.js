@@ -83,6 +83,10 @@ describe('Seq.Keyed', function() {
       expect(filterMockFn.mock.calls).toEqual(calls);
     });
 
+    it('can reverse', function() {
+      expect(Array.from(keyed.reverse())).toEqual([...entries].reverse());
+    });
+
     it('can forEach', function() {
       const eachFn = jest.fn();
       expect(keyed.forEach(eachFn)).toBe(3);
@@ -131,6 +135,24 @@ describe('Seq.Keyed', function() {
 
     it('has entries iterator', function() {
       expect(Array.from(keyed.entries())).toEqual(entries);
+    });
+
+    it('can be converted to a key sequence', function() {
+      const keySeq = keyed.keySeq();
+      expect(keySeq).toBeInstanceOf(IndexedSeq);
+      expect(Array.from(keySeq)).toEqual(keys);
+    });
+
+    it('can be converted to a value sequence', function() {
+      const valueSeq = keyed.valueSeq();
+      expect(valueSeq).toBeInstanceOf(IndexedSeq);
+      expect(Array.from(valueSeq)).toEqual(values);
+    });
+
+    it('can be converted to an entries sequence', function() {
+      const entriesSeq = keyed.entrySeq();
+      expect(entriesSeq).toBeInstanceOf(IndexedSeq);
+      expect(Array.from(entriesSeq)).toEqual(entries);
     });
   });
 });
