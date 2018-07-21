@@ -1,8 +1,6 @@
-import { iter } from 'iter-tools';
-
 function forEach(func, iterable) {
   let c = 0;
-  for (const item of iter(iterable)) {
+  for (const item of iterable) {
     const ret = func(item, c++);
 
     if (ret === false) {

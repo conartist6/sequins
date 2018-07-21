@@ -1,4 +1,3 @@
-import { iter } from 'iter-tools';
 import { SeqOrNull } from '../seq-factory';
 import reflect from '../reflect';
 import memoize from 'memoizee';
@@ -9,7 +8,7 @@ function makeFlatten(sequenceType) {
   function* flatten(shallowOrDepth, iterable) {
     const depth = shallowOrDepth === true ? 0 : shallowOrDepth;
 
-    for (const item of iter(iterable)) {
+    for (const item of iterable) {
       const itemSeq = item == null ? item : SeqOrNull(itemValue(item));
 
       if (itemSeq && (depth === false || depth > 0)) {

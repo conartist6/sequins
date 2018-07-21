@@ -5,23 +5,20 @@ import IndexedSeq from './sequence-indexed';
 import KeyedSeq from './sequence-keyed';
 import SetSeq from './sequence-set';
 import { Range, Repeat } from './static';
-import { isKeyed, isSet, isIteratorish } from './utils/shape';
+import { isIndexed, isKeyed, isSet, isIteratorish } from './utils/shape';
 
 const emptyArray = [];
 
 export function SeqOrNull(initial) {
   if (initial == null) {
     return new IndexedSeq(emptyArray);
-  } else if (initial instanceof Sequence) {
-    const SequenceConstructor = initial.constructor;
-    return new SequenceConstructor(initial);
+  } else if (isIndexed(initial)) {
+    return new IndexedSeq(initial);
   } else if (isKeyed(initial)) {
     return new KeyedSeq(initial);
   } else if (isSet(initial)) {
     return new SetSeq(initial);
   } else if (typeof initial[Symbol.iterator] === 'function') {
-    return new IndexedSeq(initial);
-  } else if (isIteratorish(initial)) {
     return new IndexedSeq(initial);
   } else if (typeof initial === 'object') {
     return new KeyedSeq(entries(initial));

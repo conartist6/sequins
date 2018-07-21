@@ -1,4 +1,5 @@
 import { map, flatMap, tap, filter } from 'iter-tools';
+import { isKeyed } from './utils/shape';
 import forEach from './functions/for-each';
 // Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
 import Sequence from './sequence';
@@ -11,8 +12,8 @@ const flatten = makeFlatten('Set');
 
 export default class SetSeq extends Sequence {
   constructor(iterable) {
-    super(iterable);
-    if (iterable instanceof Sequence && !(iterable instanceof SetSeq)) {
+    super(iterable, 'Set');
+    if (isKeyed(iterable)) {
       this.__transforms.push(iterable => iterable.values());
     }
   }
@@ -64,6 +65,14 @@ export default class SetSeq extends Sequence {
 
   toSet() {
     return new Set(this);
+  }
+
+  toJSON() {
+    return this.toArray();
+  }
+
+  toNative() {
+    return this.toSet();
   }
 
   *keys() {

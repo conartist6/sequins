@@ -1,4 +1,5 @@
 import { map, flatMap, tap, filter } from 'iter-tools';
+import { isSet, isIndexed } from './utils/shape';
 import forEach from './functions/for-each';
 // Import order is always Sequence, Indexed, Keyed, Set to avoid circular dep breakdown
 import Sequence from './sequence';
@@ -10,8 +11,9 @@ const flatten = makeFlatten('Keyed');
 
 export default class KeyedSeq extends Sequence {
   constructor(iterable) {
-    super(iterable);
-    if (iterable instanceof Sequence && !(iterable instanceof KeyedSeq)) {
+    super(iterable, 'Keyed');
+
+    if (isSet(iterable) || (!Array.isArray(iterable) && isIndexed(iterable))) {
       this.__transforms.push(iterable => iterable.entries());
     }
   }
@@ -81,6 +83,14 @@ export default class KeyedSeq extends Sequence {
     return obj;
   }
 
+  toJSON() {
+    return this.toObject();
+  }
+
+  toNative() {
+    return this.toMap();
+  }
+
   *keys() {
     yield* map(([key, _]) => key, this);
   }
@@ -93,3 +103,5 @@ export default class KeyedSeq extends Sequence {
     yield* this;
   }
 }
+
+Object.defineProperty(KeyedSeq.prototype, '@@__MUTABLE_KEYED__@@', { value: true });

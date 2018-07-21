@@ -1,18 +1,72 @@
-export function isKeyed(shape) {
-  return shape instanceof Map || shape['@@__IMMUTABLE_KEYED__@@'];
+function isImmutable(shape) {
+  return !!shape['@@__IMMUTABLE_ITERABLE__@@'];
 }
 
-export function isSet(shape) {
-  return (
-    shape instanceof Set ||
-    (shape['@@__IMMUTABLE_ITERABLE__@@'] && !shape['@@__IMMUTABLE_KEYED__@@'])
-  );
+function isImmutableIndexed(shape) {
+  return !!shape['@@__IMMUTABLE_INDEXED__@@'];
+}
+
+function isImmutableKeyed(shape) {
+  return !!shape['@@__IMMUTABLE_KEYED__@@'];
+}
+
+function isImmutableSet(shape) {
+  return isImmutable(shape) && !isImmutableIndexed(shape) && !isImmutableKeyed(shape);
+}
+
+function isNativeSet(shape) {
+  return shape instanceof Set;
+}
+
+function isNativeKeyed(shape) {
+  return shape instanceof Map;
+}
+
+function isNativeIndexed(shape) {
+  return Array.isArray(shape);
+}
+
+export function isNative(shape) {
+  return isNativeIndexed(shape) || isNativeKeyed(shape) || isNativeSet(shape);
+}
+
+// Impl. borrowed from immutable
+export function isPlainObj(shape) {
+  return shape && (shape.constructor === Object || shape.constructor === undefined);
+}
+
+export function isDataStructure(shape) {
+  return isMutableSeq(shape) || isImmutable(shape) || isNative(shape) || isPlainObj(shape);
+}
+
+export function isMutableSeq(shape) {
+  return !!shape['@@__MUTABLE_SEQUENCE__@@'];
+}
+
+export function isMutableIndexedSeq(shape) {
+  return !!shape['@@__MUTABLE_INDEXED__@@'];
+}
+
+export function isMutableKeyedSeq(shape) {
+  return !!shape['@@__MUTABLE_KEYED__@@'];
+}
+
+export function isMutableSetSeq(shape) {
+  return isMutableSeq(shape) && !isMutableIndexedSeq(shape) && !isMutableKeyedSeq(shape);
 }
 
 export function isIndexed(shape) {
-  return Array.isArray(shape) || shape['@@__IMMUTABLE_INDEXED__@@'];
+  return isNativeIndexed(shape) || isMutableIndexedSeq(shape) || isImmutableIndexed(shape);
 }
 
-export function isIteratorish(shape) {
-  return !!shape && typeof shape.next === 'function';
+export function isKeyed(shape) {
+  return isNativeKeyed(shape) || isMutableKeyedSeq(shape) || isImmutableKeyed(shape);
+}
+
+export function isSet(shape) {
+  return isNativeSet(shape) || isMutableSetSeq(shape) || isImmutableSet(shape);
+}
+
+export function isSeq(shape) {
+  return !!shape['@@__MUTABLE_SEQUENCE__@@'] || !!shape['@@__IMMUTABLE_SEQ__@@'];
 }

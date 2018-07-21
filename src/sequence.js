@@ -2,11 +2,7 @@ import { compose, concat, map } from 'iter-tools';
 // Sequence must not import any of its subclasses
 
 export default class Sequence {
-  static isSeq(thing) {
-    return !!thing['@@__MUTABLE_SEQUENCE_SENTINEL__@@'];
-  }
-
-  constructor(iterable) {
+  constructor(iterable, reflectionKey) {
     this.__iterable = iterable;
     this.__transforms = [];
   }
@@ -40,4 +36,4 @@ export default class Sequence {
   }
 }
 
-Object.defineProperty(Sequence, '@@__MUTABLE_SEQUENCE_SENTINEL__@@', { value: true });
+Object.defineProperty(Sequence.prototype, '@@__MUTABLE_SEQUENCE__@@', { value: true });
