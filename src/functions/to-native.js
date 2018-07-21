@@ -1,10 +1,11 @@
-import { isDataStructure } from './utils/shape';
-import Seq from '../seq-factory';
+import { isDataStructure, reflectionKey } from '../utils/shape';
+import Sequence from '../sequence';
+import reflect from '../reflect';
 
-export function toNative(value) {
-  return isDataStructure(value)
-    ? Seq(value)
-        .map(toNative)
-        .toNative()
-    : value;
+function flatNative(value) {
+  return reflect[reflectionKey(value)].toNative(value);
+}
+
+export default function toNative(value) {
+  return isDataStructure(value) ? flatNative(Sequence.from(value).map(toNative)) : value;
 }

@@ -68,10 +68,6 @@ export default class KeyedSeq extends Sequence {
     return this.toObject();
   }
 
-  toNative() {
-    return this.toMap();
-  }
-
   *keys() {
     yield* map(([key, _]) => key, this);
   }

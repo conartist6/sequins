@@ -1,6 +1,7 @@
-import { compose, concat, map } from 'iter-tools';
+import { compose, concat, map, entries } from 'iter-tools';
 import { isIndexed, isKeyed, isSet } from './utils/shape';
 import { toJS } from './functions/to-js';
+import { toNative } from './functions/to-native';
 
 import makeFlatten from './factories/flatten';
 
@@ -70,6 +71,10 @@ export default class Sequence {
 
   toJS() {
     return toJS(this);
+  }
+
+  toNative() {
+    return toNative(this);
   }
 
   toIndexedSeq() {

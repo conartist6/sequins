@@ -70,3 +70,14 @@ export function isSet(shape) {
 export function isSeq(shape) {
   return !!shape['@@__MUTABLE_SEQUENCE__@@'] || !!shape['@@__IMMUTABLE_SEQ__@@'];
 }
+
+export function reflectionKey(shape) {
+  if (isIndexed(shape)) {
+    return 'Indexed';
+  } else if (isKeyed(shape)) {
+    return 'Keyed';
+  } else if (isSet(shape)) {
+    return 'Set';
+  }
+  return null;
+}

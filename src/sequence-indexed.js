@@ -51,10 +51,6 @@ export default class IndexedSeq extends Sequence {
     return this.toArray();
   }
 
-  toNative() {
-    return this.toArray();
-  }
-
   *keys() {
     yield* map((_, i) => i, this);
   }

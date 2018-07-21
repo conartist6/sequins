@@ -3,7 +3,7 @@ import reflect from '../reflect';
 import memoize from 'memoizee';
 
 function makeFlatten(sequenceType) {
-  const { itemValue, toOwnTypeSeq } = reflect[sequenceType];
+  const { itemValue, toNative } = reflect[sequenceType];
 
   function* flatten(shallowOrDepth, iterable) {
     const depth = shallowOrDepth === true ? 0 : shallowOrDepth;
@@ -12,9 +12,9 @@ function makeFlatten(sequenceType) {
       const itemSeq = item == null ? item : Sequence.from(itemValue(item));
 
       if (itemSeq && (depth === false || depth > 0)) {
-        yield* flatten(depth === false ? depth : depth - 1, toOwnTypeSeq(itemSeq));
+        yield* flatten(depth === false ? depth : depth - 1, toNative(itemSeq));
       } else if (itemSeq) {
-        yield* toOwnTypeSeq(itemSeq);
+        yield* toNative(itemSeq);
       } else {
         yield item;
       }

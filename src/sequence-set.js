@@ -51,10 +51,6 @@ export default class SetSeq extends Sequence {
     return this.toArray();
   }
 
-  toNative() {
-    return this.toSet();
-  }
-
   *keys() {
     yield* this;
   }

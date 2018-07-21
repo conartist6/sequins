@@ -1,4 +1,3 @@
-import { entries } from 'iter-tools';
 import Sequence from './sequence';
 import { Range, Repeat } from './static';
 import { isIndexed, isKeyed, isSet } from './utils/shape';
