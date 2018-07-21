@@ -1,5 +1,6 @@
 import { compose, concat, map, entries } from 'iter-tools';
 import { isIndexed, isKeyed, isSet } from './utils/shape';
+import { reverseArrayIterator } from './utils/array';
 import { toJS } from './functions/to-js';
 import { toNative } from './functions/to-native';
 
@@ -37,9 +38,9 @@ export default class Sequence {
   }
 
   *[Symbol.iterator]() {
-    const transforms = [...this.__transforms].reverse();
-
-    yield* this.__transforms.length ? compose(...transforms)(this.__iterable) : this.__iterable;
+    yield* this.__transforms.length
+      ? compose(...reverseArrayIterator(this.__transforms))(this.__iterable)
+      : this.__iterable;
   }
 
   concat(...args) {
