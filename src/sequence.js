@@ -69,15 +69,12 @@ export default class Sequence {
   toArray() {
     return this.toIndexedSeq().toArray();
   }
-
   toObject() {
     return this.toKeyedSeq().toObject();
   }
-
   toMap() {
     return this.toKeyedSeq().toMap();
   }
-
   toSet() {
     return this.toSetSeq().toSet();
   }
@@ -85,7 +82,6 @@ export default class Sequence {
   toJS() {
     return toJS(this);
   }
-
   toNative() {
     return toNative(this);
   }
@@ -93,11 +89,9 @@ export default class Sequence {
   toIndexedSeq() {
     return new Seq.Indexed(this);
   }
-
   toKeyedSeq() {
     return new Seq.Keyed(this);
   }
-
   toSetSeq() {
     return new Seq.Set(this);
   }
@@ -105,11 +99,9 @@ export default class Sequence {
   keySeq() {
     return new Seq.Indexed(this.keys());
   }
-
   valueSeq() {
     return new Seq.Indexed(this.values());
   }
-
   entrySeq() {
     return new Seq.Indexed(this.entries());
   }
