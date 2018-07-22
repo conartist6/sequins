@@ -11,8 +11,8 @@ describe('Seq.Set', function() {
 
     beforeAll(function() {
       array = [1, 2, 3];
-      calls = [[1], [2], [3]];
       entries = [[1, 1], [2, 2], [3, 3]];
+      calls = entries;
     });
 
     beforeEach(function() {
@@ -58,6 +58,13 @@ describe('Seq.Set', function() {
       expect(Array.from(set.reverse())).toEqual([...array].reverse());
     });
 
+    it('can reduce', function() {
+      const reducer = (acc, val, key) => acc + val;
+      const reducerMockFn = jest.fn(reducer);
+      expect(set.reduce(reducerMockFn)).toBe(6);
+      expect(reducerMockFn.mock.calls).toEqual([[1, 2, 2], [3, 3, 3]]);
+    });
+
     it('can forEach', function() {
       const eachFn = jest.fn();
       expect(set.forEach(eachFn)).toBe(3);
@@ -94,6 +101,10 @@ describe('Seq.Set', function() {
 
     it('can be converted to Set', function() {
       expect(set.toSet()).toEqual(new Set(array));
+    });
+
+    it('can be converted to native', function() {
+      expect(set.toNative()).toEqual(set.toSet());
     });
 
     it('has keys iterator', function() {

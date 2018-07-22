@@ -9,9 +9,9 @@ function Seq(initial) {
   }
   return seq;
 }
-Seq.Indexed = iterable => new IndexedSeq(iterable);
-Seq.Keyed = iterable => new KeyedSeq(iterable);
-Seq.Set = iterable => new SetSeq(iterable);
+Seq.Indexed = iterable => new Sequence.Indexed(iterable);
+Seq.Keyed = iterable => new Sequence.Keyed(iterable);
+Seq.Set = iterable => new Sequence.Set(iterable);
 Seq.Range = Range;
 Seq.Repeat = Repeat;
 

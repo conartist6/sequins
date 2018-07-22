@@ -87,6 +87,13 @@ describe('Seq.Keyed', function() {
       expect(Array.from(keyed.reverse())).toEqual([...entries].reverse());
     });
 
+    it('can reduce', function() {
+      const reducer = (acc, val, key) => acc + val;
+      const reducerMockFn = jest.fn(reducer);
+      expect(keyed.reduce(reducerMockFn)).toBe(6);
+      expect(reducerMockFn.mock.calls).toEqual([[1, 2, 8], [3, 3, 7]]);
+    });
+
     it('can forEach', function() {
       const eachFn = jest.fn();
       expect(keyed.forEach(eachFn)).toBe(3);
@@ -123,6 +130,10 @@ describe('Seq.Keyed', function() {
 
     it('can be converted to Set', function() {
       expect(keyed.toSet()).toEqual(new Set(values));
+    });
+
+    it('can be converted to native', function() {
+      expect(keyed.toNative()).toEqual(keyed.toMap());
     });
 
     it('has keys iterator', function() {

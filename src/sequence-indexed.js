@@ -1,4 +1,4 @@
-import { map, tap, filter } from 'iter-tools';
+import { map, tap, filter, reduce } from 'iter-tools';
 import { isKeyed } from './utils/shape';
 import forEach from './functions/for-each';
 import Sequence, { registerSubtype } from './sequence';
@@ -11,6 +11,7 @@ export default class IndexedSeq extends Sequence {
     }
   }
 
+  // Sequence methods
   map(mapFn) {
     this.__transforms.push(map(mapFn));
     return this;
@@ -35,10 +36,20 @@ export default class IndexedSeq extends Sequence {
     return this;
   }
 
+  // Eager functions
+  reduce(reducer, initial) {
+    if (arguments.length === 1) {
+      return reduce(reducer, this);
+    } else {
+      return reduce(initial, reducer, this);
+    }
+  }
+
   forEach(eachFn) {
     return forEach(eachFn, this);
   }
 
+  // Conversions
   toIndexedSeq() {
     return this;
   }
@@ -51,6 +62,7 @@ export default class IndexedSeq extends Sequence {
     return this.toArray();
   }
 
+  // Iterators
   *keys() {
     yield* map((_, i) => i, this);
   }

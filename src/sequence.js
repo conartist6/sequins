@@ -1,10 +1,7 @@
-import { compose, concat, map, entries } from 'iter-tools';
+import { compose, concat, map, keys, entries } from 'iter-tools';
 import { isIndexed, isKeyed, isSet } from './utils/shape';
 import { reverseArrayIterator } from './utils/array';
-import { toJS } from './functions/to-js';
-import { toNative } from './functions/to-native';
-
-import makeFlatten from './factories/flatten';
+import * as factories from './factories';
 
 const emptyArray = [];
 const Seq = {};
@@ -31,10 +28,25 @@ export default class Sequence {
     return null;
   }
 
+  static get Indexed() {
+    return Seq.Indexed;
+  }
+
+  static get Keyed() {
+    return Seq.Keyed;
+  }
+
+  static get Set() {
+    return Seq.Set;
+  }
+
   constructor(iterable, reflectionKey) {
     this.__iterable = iterable;
     this.__transforms = [];
-    this._reflectionKey = reflectionKey;
+    this._dynamicMethods = {};
+    for (const name of keys(factories)) {
+      this._dynamicMethods[name] = factories[name](reflectionKey);
+    }
   }
 
   *[Symbol.iterator]() {
@@ -56,7 +68,13 @@ export default class Sequence {
   }
 
   flatten(shallowOrDepth) {
-    this.__transforms.push(makeFlatten(this._reflectionKey)(shallowOrDepth));
+    this.__transforms.push(this._dynamicMethods.flatten(shallowOrDepth));
+    return this;
+  }
+
+  groupBy(grouper) {
+    this.__iterable = this._dynamicMethods.groupBy(this, grouper);
+    this.__transforms.length = 0;
     return this;
   }
 
@@ -80,10 +98,10 @@ export default class Sequence {
   }
 
   toJS() {
-    return toJS(this);
+    return this._dynamicMethods.toJS(this);
   }
   toNative() {
-    return toNative(this);
+    return this._dynamicMethods.toNative(this);
   }
 
   toIndexedSeq() {

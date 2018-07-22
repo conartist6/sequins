@@ -1,4 +1,4 @@
-import { map, flatMap, tap, filter } from 'iter-tools';
+import { map, flatMap, tap, filter, reduce } from 'iter-tools';
 import { isKeyed } from './utils/shape';
 import forEach from './functions/for-each';
 import Sequence, { registerSubtype } from './sequence';
@@ -11,8 +11,9 @@ export default class SetSeq extends Sequence {
     }
   }
 
+  // Sequence methods
   map(mapFn) {
-    this.__transforms.push(map(item => mapFn(item)));
+    this.__transforms.push(map(item => mapFn(item, item)));
     return this;
   }
 
@@ -21,24 +22,35 @@ export default class SetSeq extends Sequence {
   }
 
   tap(tapFn) {
-    this.__transforms.push(tap(item => tapFn(item)));
+    this.__transforms.push(tap(item => tapFn(item, item)));
     return this;
   }
 
   filter(filterFn) {
-    this.__transforms.push(filter(item => filterFn(item)));
+    this.__transforms.push(filter(item => filterFn(item, item)));
     return this;
   }
 
   filterNot(filterFn) {
-    this.__transforms.push(filter(item => !filterFn(item)));
+    this.__transforms.push(filter(item => !filterFn(item, item)));
     return this;
   }
 
-  forEach(eachFn) {
-    return forEach(item => eachFn(item), this);
+  // Eager functions
+  reduce(reducer, initial) {
+    const setReducer = (acc, item) => reducer(acc, item, item);
+    if (arguments.length === 1) {
+      return reduce(setReducer, this);
+    } else {
+      return reduce(initial, setReducer, this);
+    }
   }
 
+  forEach(eachFn) {
+    return forEach(item => eachFn(item, item), this);
+  }
+
+  // Conversions
   toSetSeq() {
     return this;
   }
@@ -51,6 +63,7 @@ export default class SetSeq extends Sequence {
     return this.toArray();
   }
 
+  // Iterators
   *keys() {
     yield* this;
   }

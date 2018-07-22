@@ -1,6 +1,6 @@
 import Sequence from '../sequence';
+import { memoizeFactory } from '../utils/memoize';
 import reflect from '../reflect';
-import memoize from 'memoizee';
 
 function makeFlatten(sequenceType) {
   const { itemValue, toNative } = reflect[sequenceType];
@@ -31,4 +31,4 @@ function makeFlatten(sequenceType) {
   return curriedFlatten;
 }
 
-export default memoize(makeFlatten);
+export default memoizeFactory(makeFlatten);

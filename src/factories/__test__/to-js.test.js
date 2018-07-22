@@ -1,9 +1,15 @@
-import toJS from '../to-js';
+import makeToJS from '../to-js';
 import IndexedSeq from '../../sequence-indexed';
 import KeyedSeq from '../../sequence-keyed';
 import SetSeq from '../../sequence-set';
 
 describe('toJS', function() {
+  let toJS;
+
+  beforeAll(function() {
+    toJS = makeToJS();
+  });
+
   it('behaves like toJSON with flat structures', function() {
     const indexed = new IndexedSeq([1, 2, 3]);
     const keyed = new KeyedSeq([[1, 1], [2, 2], [3, 3]]);
