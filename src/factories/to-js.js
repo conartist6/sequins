@@ -1,12 +1,11 @@
-import Sequence from '../sequence';
 import { memoizeFactory } from '../utils/memoize';
 import { isDataStructure } from '../utils/shape';
 
 // Implementation borrowed from immutable
-function makeToJS() {
+function makeToJS(Collection) {
   return function toJS(value) {
     return isDataStructure(value)
-      ? Sequence.from(value)
+      ? Collection.from(value)
           .map(toJS)
           .toJSON()
       : value;

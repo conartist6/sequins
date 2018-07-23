@@ -1,9 +1,9 @@
 import { memoizeFactory } from '../utils/memoize';
 
-function makeNativePush(sequenceType) {
-  if (sequenceType === 'Indexed') {
+function makeNativePush(_, collectionType) {
+  if (collectionType === 'Indexed') {
     return (native, key, value) => native.push(value);
-  } else if (sequenceType === 'Keyed') {
+  } else if (collectionType === 'Keyed') {
     return (native, key, value) => native.set(key, value);
   } else {
     return (native, value) => native.add(value);

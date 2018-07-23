@@ -1,13 +1,14 @@
 import makeToNative from '../to-native';
-import IndexedSeq from '../../sequence-indexed';
-import KeyedSeq from '../../sequence-keyed';
-import SetSeq from '../../sequence-set';
+import IndexedSeq from '../../subtypes/sequence/indexed';
+import KeyedSeq from '../../subtypes/sequence/keyed';
+import SetSeq from '../../subtypes/sequence/set';
+import Sequence from '../../sequence';
 
 describe('toNative', function() {
   let toNative;
 
   beforeAll(function() {
-    toNative = makeToNative();
+    toNative = makeToNative(Sequence);
   });
 
   it('works with flat structures', function() {

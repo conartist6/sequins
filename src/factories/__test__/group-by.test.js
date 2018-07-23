@@ -1,6 +1,7 @@
-import IndexedSeq from '../../sequence-indexed';
-import KeyedSeq from '../../sequence-keyed';
-import SetSeq from '../../sequence-set';
+import IndexedSeq from '../../subtypes/sequence/indexed';
+import KeyedSeq from '../../subtypes/sequence/keyed';
+import SetSeq from '../../subtypes/sequence/set';
+import Sequence from '../../sequence';
 import makeGroupBy from '../group-by';
 
 describe('groupBy', function() {
@@ -8,7 +9,7 @@ describe('groupBy', function() {
 
   describe('Indexed', function() {
     beforeAll(function() {
-      groupBy = makeGroupBy('Indexed');
+      groupBy = makeGroupBy(Sequence, 'Indexed');
     });
 
     it('works', function() {
@@ -25,7 +26,7 @@ describe('groupBy', function() {
 
   describe('Keyed', function() {
     beforeAll(function() {
-      groupBy = makeGroupBy('Keyed');
+      groupBy = makeGroupBy(Sequence, 'Keyed');
     });
 
     it('works', function() {
@@ -44,7 +45,7 @@ describe('groupBy', function() {
 
   describe('Set', function() {
     beforeAll(function() {
-      groupBy = makeGroupBy('Set');
+      groupBy = makeGroupBy(Sequence, 'Set');
     });
 
     it('works', function() {

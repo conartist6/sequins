@@ -1,13 +1,12 @@
-import Sequence from '../sequence';
 import { memoizeFactory } from '../utils/memoize';
 import reflect from '../reflect';
 import makeNativePush from './native-push';
 
-function makeGroupBy(sequenceType) {
-  const SequenceType = Sequence[sequenceType];
-  const { nativeSet, nativeSize, NativeConstructor } = reflect[sequenceType];
+function makeGroupBy(Collection, collectionType) {
+  const TypedCollection = Collection[collectionType];
+  const { nativeSet, nativeSize, NativeConstructor } = reflect[collectionType];
 
-  const nativePush = makeNativePush(sequenceType);
+  const nativePush = makeNativePush(Collection, collectionType);
 
   return function groupBy(sequence, grouper) {
     const map = sequence.reduce(function(result, value, key) {
@@ -22,7 +21,7 @@ function makeGroupBy(sequenceType) {
       return result;
     }, new Map());
     for (const key of map.keys()) {
-      map.set(key, new SequenceType(map.get(key)));
+      map.set(key, new TypedCollection(map.get(key)));
     }
     return map;
   };

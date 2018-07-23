@@ -1,6 +1,6 @@
-import IndexedSeq from '../sequence-indexed';
-import KeyedSeq from '../sequence-keyed';
-import SetSeq from '../sequence-set';
+import IndexedSeq from '../indexed';
+import KeyedSeq from '../keyed';
+import SetSeq from '../set';
 
 describe('Seq.Set', function() {
   describe('basic functionality', function() {
@@ -27,48 +27,8 @@ describe('Seq.Set', function() {
       expect(Array.from(new SetSeq([1, 2]).concat([3, 4]))).toEqual([1, 2, 3, 4]);
     });
 
-    it('can map', function() {
-      const mapFn = val => val + 1;
-      const mapMockFn = jest.fn(mapFn);
-      expect(Array.from(set.map(mapMockFn))).toEqual(array.map(mapFn));
-      expect(mapMockFn.mock.calls).toEqual(calls);
-    });
-
-    it('can flatMap SetSequences', function() {
-      const mapFn = val => new SetSeq([val + 1, val + 1.5]);
-      const mapMockFn = jest.fn(mapFn);
-      expect(Array.from(set.flatMap(mapMockFn))).toEqual([2, 2.5, 3, 3.5, 4, 4.5]);
-      expect(mapMockFn.mock.calls).toEqual(calls);
-    });
-
-    it('can tap', function() {
-      const tapFn = jest.fn();
-      Array.from(set.tap(tapFn));
-      expect(tapFn.mock.calls).toEqual(calls);
-    });
-
-    it('can filter', function() {
-      const filterFn = val => val > 1;
-      const filterMockFn = jest.fn(filterFn);
-      expect(Array.from(set.filter(filterMockFn))).toEqual(array.filter(filterFn));
-      expect(filterMockFn.mock.calls).toEqual(calls);
-    });
-
     it('can reverse', function() {
       expect(Array.from(set.reverse())).toEqual([...array].reverse());
-    });
-
-    it('can reduce', function() {
-      const reducer = (acc, val, key) => acc + val;
-      const reducerMockFn = jest.fn(reducer);
-      expect(set.reduce(reducerMockFn)).toBe(6);
-      expect(reducerMockFn.mock.calls).toEqual([[1, 2, 2], [3, 3, 3]]);
-    });
-
-    it('can forEach', function() {
-      const eachFn = jest.fn();
-      expect(set.forEach(eachFn)).toBe(3);
-      expect(eachFn.mock.calls).toEqual(calls);
     });
 
     it('can be converted to IndexedSeq', function() {

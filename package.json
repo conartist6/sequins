@@ -1,10 +1,10 @@
 {
   "name": "sequins",
   "version": "0.0.1",
-  "description": "An object oriented wrapper for iterators, a la Immutable.Seq",
   "main": "lib/index",
   "scripts": {
-    "build": "broccoli build lib --overwrite"
+    "build": "broccoli build lib --overwrite",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -29,19 +29,24 @@
   "homepage": "https://github.com/conartist6/sequins#readme",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",
+    "@babel/plugin-transform-classes": "^7.0.0-beta.54",
     "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.54",
+    "@babel/preset-env": "^7.0.0-beta.54",
     "babel-core": "^7.0.0-beta.41",
     "babel-jest": "^23.4.0",
+    "babel-plugin-transform-builtin-extend": "^1.1.2",
     "broccoli": "^2.0.0-beta.2",
     "jest": "^23.4.1"
   },
   "dependencies": {
     "iter-tools": "^4.1.1",
-    "memoizee": "^0.4.12"
+    "memoizee": "^0.4.12",
+    "stable": "^0.1.8"
   },
   "jest": {
     "moduleFileExtensions": [
       "js"
-    ]
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/jest_setup.js"
   }
 }

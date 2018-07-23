@@ -1,6 +1,6 @@
-import IndexedSeq from '../sequence-indexed';
-import KeyedSeq from '../sequence-keyed';
-import SetSeq from '../sequence-set';
+import IndexedSeq from '../indexed';
+import KeyedSeq from '../keyed';
+import SetSeq from '../set';
 
 describe('Seq.Indexed', function() {
   describe('basic functionality', function() {
@@ -31,64 +31,8 @@ describe('Seq.Indexed', function() {
       expect(Array.from(new IndexedSeq([1, 2]).concat([3, 4]))).toEqual([1, 2, 3, 4]);
     });
 
-    it('can map', function() {
-      const mapFn = val => val + 1;
-      const mapMockFn = jest.fn(mapFn);
-      expect(Array.from(indexed.map(mapMockFn))).toEqual(array.map(mapFn));
-      expect(mapMockFn.mock.calls).toEqual(calls);
-    });
-
-    it('can flatMap IndexedSequences', function() {
-      const mapFn = val => new IndexedSeq([val + 1, val + 1.5]);
-      const mapMockFn = jest.fn(mapFn);
-      expect(Array.from(indexed.flatMap(mapMockFn))).toEqual([2, 2.5, 3, 3.5, 4, 4.5]);
-      expect(mapMockFn.mock.calls).toEqual(calls);
-    });
-
-    it('can flatMap Arrays', function() {
-      const mapFn = val => [val + 1, val + 1.5];
-      const mapMockFn = jest.fn(mapFn);
-      expect(Array.from(indexed.flatMap(mapMockFn))).toEqual([2, 2.5, 3, 3.5, 4, 4.5]);
-      expect(mapMockFn.mock.calls).toEqual(calls);
-    });
-
-    it('can tap', function() {
-      const tapFn = jest.fn();
-      Array.from(indexed.tap(tapFn));
-      expect(tapFn.mock.calls).toEqual(calls);
-    });
-
-    it('can filter', function() {
-      const filterFn = val => val > 1;
-      const filterMockFn = jest.fn(filterFn);
-      expect(Array.from(indexed.filter(filterMockFn))).toEqual(array.filter(filterFn));
-      expect(filterMockFn.mock.calls).toEqual(calls);
-    });
-
-    it('can filterNot', function() {
-      const filterFn = val => val > 1;
-      const filterMockFn = jest.fn(filterFn);
-      expect(Array.from(indexed.filterNot(filterMockFn))).toEqual(
-        array.filter(val => !filterFn(val)),
-      );
-      expect(filterMockFn.mock.calls).toEqual(calls);
-    });
-
     it('can reverse', function() {
       expect(Array.from(indexed.reverse())).toEqual([...array].reverse());
-    });
-
-    it('can reduce', function() {
-      const reducer = (acc, val) => acc + val;
-      const reducerMockFn = jest.fn(reducer);
-      expect(indexed.reduce(reducerMockFn)).toBe(6);
-      expect(reducerMockFn.mock.calls).toEqual([[1, 2, 1], [3, 3, 2]]);
-    });
-
-    it('can forEach', function() {
-      const eachFn = jest.fn();
-      expect(indexed.forEach(eachFn)).toBe(3);
-      expect(eachFn.mock.calls).toEqual(calls);
     });
 
     it('can be converted to IndexedSeq (noop)', function() {

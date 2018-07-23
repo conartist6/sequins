@@ -1,13 +1,14 @@
 import makeToJS from '../to-js';
-import IndexedSeq from '../../sequence-indexed';
-import KeyedSeq from '../../sequence-keyed';
-import SetSeq from '../../sequence-set';
+import IndexedSeq from '../../subtypes/sequence/indexed';
+import KeyedSeq from '../../subtypes/sequence/keyed';
+import SetSeq from '../../subtypes/sequence/set';
+import Sequence from '../../sequence';
 
 describe('toJS', function() {
   let toJS;
 
   beforeAll(function() {
-    toJS = makeToJS();
+    toJS = makeToJS(Sequence);
   });
 
   it('behaves like toJSON with flat structures', function() {
