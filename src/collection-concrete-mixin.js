@@ -1,5 +1,5 @@
 import CollectionMixin from './collection-mixin';
-import makeFrom from '../factories/from';
+import makeFrom from './factories/from';
 
 const Concrete = {};
 
@@ -40,12 +40,6 @@ export default Base =>
 
     groupBy(grouper) {
       return this.__dynamicMethods.groupBy(this, grouper);
-    }
-
-    reverse() {
-      return this.toSeq()
-        .reverse()
-        .toMap();
     }
 
     toArray() {

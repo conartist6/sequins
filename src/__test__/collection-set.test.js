@@ -1,7 +1,7 @@
-import makeTestMethod from '../../../test-helpers/make-test-method';
-import SetSequence from '../../sequence/set';
-import SequinsSet from '../../concrete/set';
-import testData from '../../../__test__/data';
+import makeTestMethod from './helpers/make-test-method';
+import SetSequence from '../subtypes/sequence/set';
+import SequinsSet from '../subtypes/concrete/set';
+import testData from './data';
 
 function makeTests(SetConstructor, description) {
   describe(description, function() {

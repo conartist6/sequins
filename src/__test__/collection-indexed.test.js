@@ -1,7 +1,7 @@
-import makeTestMethod from '../../../test-helpers/make-test-method';
-import IndexedSequence from '../../sequence/indexed';
-import SequinsList from '../../concrete/list';
-import testData from '../../../__test__/data';
+import makeTestMethod from './helpers/make-test-method';
+import IndexedSequence from '../subtypes/sequence/indexed';
+import SequinsList from '../subtypes/concrete/list';
+import testData from './data';
 
 function makeTests(IndexedConstructor, description) {
   describe(description, function() {

@@ -1,5 +1,6 @@
-import ConcreteCollectionMixin, { registerSubtype } from '../../mixins/collection-concrete-mixin';
-import { IndexedMixin } from '../mixins';
+import { range } from 'iter-tools';
+import ConcreteCollectionMixin, { registerSubtype } from '../../collection-concrete-mixin';
+import { IndexedMixin } from '..';
 
 const aProto = Array.prototype;
 
@@ -55,6 +56,11 @@ export class List {
     this._array.unshift(value);
     return this;
   }
+  clear() {
+    this._array = [];
+    return this;
+  }
+
   fill(...args) {
     this._array.fill(...args);
     return this;
@@ -68,12 +74,14 @@ export class List {
   slice(...args) {
     return this.__doCollectionTransform(() => this._array.slice(...args));
   }
+  concat(...args) {
+    return this.__doCollectionTransform(() => this._array.concat(...args));
+  }
+  reverse(...args) {
+    return this.__doCollectionTransform(() => this._array.reverse(...args));
+  }
   reduce(...args) {
     return this._array.reduce(...args);
-  }
-  concat(...args) {
-    this._array.concat(...args);
-    return this;
   }
   join(separator) {
     return this._array.join(separator);
@@ -90,6 +98,25 @@ export class List {
   }
   toArray() {
     return Array.from(this._array);
+  }
+
+  // Iterators
+  *[Symbol.iterator]() {
+    yield* this._array;
+  }
+
+  keys() {
+    return range(this._array.length);
+  }
+
+  values() {
+    return this[Symbol.iterator]();
+  }
+
+  *entries() {
+    for (let i = 0; i < this._array.length; i++) {
+      yield [i, this._array[i]];
+    }
   }
 }
 

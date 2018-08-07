@@ -1,6 +1,6 @@
 import { keys, concat, slice } from 'iter-tools';
-import * as factories from '../factories';
-import reflect from '../reflect';
+import * as factories from './factories';
+import reflect from './reflect';
 
 const Subtypes = {};
 

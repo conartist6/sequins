@@ -1,8 +1,8 @@
 import { map } from 'iter-tools';
 import { isKeyed } from '../../utils/shape';
 import Sequence, { registerSubtype } from '../../sequence';
-import { ConcreteCollection } from '../../mixins/collection-concrete-mixin';
-import { IndexedMixin } from '../mixins';
+import { ConcreteCollection } from '../../collection-concrete-mixin';
+import { IndexedMixin } from '..';
 
 export default class IndexedSeq extends IndexedMixin(Sequence) {
   constructor(iterable) {

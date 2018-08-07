@@ -1,9 +1,7 @@
 import { compose, map, concat } from 'iter-tools';
 import { isIndexed, isKeyed, isSet } from './utils/shape';
 import { reverseArrayIterator } from './utils/array';
-import CollectionMixin, {
-  registerSubtype as registerCollectionSubtype,
-} from './mixins/collection-mixin';
+import CollectionMixin, { registerSubtype as registerCollectionSubtype } from './collection-mixin';
 import makeFrom from './factories/from';
 
 const Seq = {};

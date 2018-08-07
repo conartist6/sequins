@@ -1,7 +1,4 @@
 import Sequence from './sequence';
-import './subtypes/sequence/indexed';
-import './subtypes/sequence/keyed';
-import './subtypes/sequence/set';
 import { Range, Repeat } from './static';
 import { isIndexed, isKeyed, isSet } from './utils/shape';
 

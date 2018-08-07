@@ -1,13 +1,12 @@
 import { map } from 'iter-tools';
 import { isSet, isIndexed } from '../../utils/shape';
 import Sequence, { registerSubtype } from '../../sequence';
-import { ConcreteCollection } from '../../mixins/collection-concrete-mixin';
-import { KeyedMixin } from '../mixins';
+import { ConcreteCollection } from '../../collection-concrete-mixin';
+import { KeyedMixin } from '..';
 
 export default class KeyedSeq extends KeyedMixin(Sequence) {
   constructor(iterable) {
     super(iterable);
-    // TODO List is an array subtype which passes Array.isArray but should be considered indexed not keyed
     if (isSet(iterable) || (!Array.isArray(iterable) && isIndexed(iterable))) {
       this.__transforms.push(iterable => iterable.entries());
     }
