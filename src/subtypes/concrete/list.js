@@ -1,14 +1,95 @@
 import ConcreteCollectionMixin, { registerSubtype } from '../../mixins/collection-concrete-mixin';
 import { IndexedMixin } from '../mixins';
 
-export class List extends Array {
+const aProto = Array.prototype;
+
+/**
+ * List is a little extra special in that it does not derive from Array,
+ * particularly because there is no mechanism to fall back on if es6 extend
+ * is not supported. See article:
+ * http://perfectionkills.com/how-ecmascript-5-still-does-not-allow-to-subclass-an-array/
+ *
+ * At some point in the future (when IE is well and truly dead) there should
+ * additionally be an Array type which extends Array.
+ **/
+export class List {
   constructor(iterable) {
-    super();
-    this.push(...iterable);
+    this._array = Array.from(iterable);
   }
 
-  toArray() {
+  get size() {
+    return this._array.length;
+  }
+
+  __doCollectionTransform(transform) {
+    const CollectionConstructor = this.constructor;
+    const arr = new CollectionConstructor();
+    arr._array = transform(this._array);
+    return arr;
+  }
+
+  __possiblyUseNativeImplementaton(methodName, ...args) {
+    return typeof aProto[methodName] === 'function'
+      ? this.__doCollectionTransform(arr => aProto[methodName].apply(arr, args))
+      : super[methodName](...args);
+  }
+
+  get(idx) {
+    return this._array[idx];
+  }
+  set(idx, value) {
+    this._array[idx] = value;
     return this;
+  }
+  push(...values) {
+    this._array.push(...values);
+    return this;
+  }
+  pop() {
+    return this._array.pop();
+  }
+  shift() {
+    return this._array.shift();
+  }
+  unshift(value) {
+    this._array.unshift(value);
+    return this;
+  }
+  fill(...args) {
+    this._array.fill(...args);
+    return this;
+  }
+  map(mapFn) {
+    return this.__doCollectionTransform(() => this._array.map(mapFn));
+  }
+  filter(filterFn) {
+    return this.__doCollectionTransform(() => this._array.filter(filterFn));
+  }
+  slice(...args) {
+    return this.__doCollectionTransform(() => this._array.slice(...args));
+  }
+  reduce(...args) {
+    return this._array.reduce(...args);
+  }
+  concat(...args) {
+    this._array.concat(...args);
+    return this;
+  }
+  join(separator) {
+    return this._array.join(separator);
+  }
+
+  // Possibly native functions
+  reduceRight(...args) {
+    return this.__possiblyUseNativeImplementaton('reduceRight', ...args);
+  }
+
+  // Conversions
+  toList() {
+    return this;
+  }
+  toArray() {
+    return Array.from(this._array);
   }
 }
 

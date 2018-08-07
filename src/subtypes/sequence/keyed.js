@@ -1,6 +1,7 @@
 import { map } from 'iter-tools';
 import { isSet, isIndexed } from '../../utils/shape';
 import Sequence, { registerSubtype } from '../../sequence';
+import { ConcreteCollection } from '../../mixins/collection-concrete-mixin';
 import { KeyedMixin } from '../mixins';
 
 export default class KeyedSeq extends KeyedMixin(Sequence) {
@@ -18,17 +19,8 @@ export default class KeyedSeq extends KeyedMixin(Sequence) {
   }
 
   toMap() {
+    const Map = ConcreteCollection.Keyed;
     return new Map(this);
-  }
-
-  toObject(proto = Object.prototype) {
-    const obj = Object.create(proto);
-    for (const [key, value] of this) obj[key] = value;
-    return obj;
-  }
-
-  toJSON() {
-    return this.toObject();
   }
 
   // Iterators
@@ -45,5 +37,4 @@ export default class KeyedSeq extends KeyedMixin(Sequence) {
   }
 }
 
-Object.defineProperty(KeyedSeq.prototype, '@@__MUTABLE_KEYED__@@', { value: true });
 registerSubtype('Keyed', KeyedSeq);

@@ -20,7 +20,7 @@ describe('groupBy', function() {
       expect(grouped.get(1)).toBeInstanceOf(IndexedSeq);
       expect(grouped.get(2)).toBeInstanceOf(IndexedSeq);
 
-      expect(new KeyedSeq(grouped).toNative()).toEqual(new Map([[1, [1, 1]], [2, [2, 2]]]));
+      expect(new Map(new KeyedSeq(grouped))).toEqual(new Map([[1, [1, 1]], [2, [2, 2]]]));
     });
   });
 
@@ -37,7 +37,7 @@ describe('groupBy', function() {
       expect(grouped.get(1)).toBeInstanceOf(KeyedSeq);
       expect(grouped.get(2)).toBeInstanceOf(KeyedSeq);
 
-      expect(new KeyedSeq(grouped).toNative()).toEqual(
+      expect(new Map(new KeyedSeq(grouped))).toEqual(
         new Map([[1, new Map([[1, 1], [1, 1]])], [2, new Map([[2, 2], [2, 2]])]]),
       );
     });
@@ -56,7 +56,7 @@ describe('groupBy', function() {
       expect(grouped.get(1)).toBeInstanceOf(SetSeq);
       expect(grouped.get(2)).toBeInstanceOf(SetSeq);
 
-      expect(new KeyedSeq(grouped).toNative()).toEqual(
+      expect(new Map(new KeyedSeq(grouped))).toEqual(
         new Map([[1, new Set([1, 1])], [2, new Set([2, 2])]]),
       );
     });

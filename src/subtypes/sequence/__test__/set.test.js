@@ -63,10 +63,6 @@ describe('Seq.Set', function() {
       expect(set.toSet()).toEqual(new Set(array));
     });
 
-    it('can be converted to native', function() {
-      expect(set.toNative()).toEqual(set.toSet());
-    });
-
     it('has keys iterator', function() {
       expect(Array.from(set.keys())).toEqual(array);
     });

@@ -23,6 +23,8 @@ const statics = {
   },
 };
 
+export const ConcreteCollection = statics;
+
 const concreteFrom = makeFrom(statics);
 
 export default Base =>
@@ -37,15 +39,13 @@ export default Base =>
     }
 
     groupBy(grouper) {
-      this.__iterable = this.__dynamicMethods.groupBy(this, grouper);
-      this.__transforms.length = 0;
-      return this;
+      return this.__dynamicMethods.groupBy(this, grouper);
     }
 
     reverse() {
-      this.cacheResult();
-      this.__iterable.reverse();
-      return this;
+      return this.toSeq()
+        .reverse()
+        .toMap();
     }
 
     toArray() {
@@ -60,4 +60,5 @@ export default Base =>
     toSet() {
       return this.toSetSeq().toSet();
     }
+    toSeq() {}
   };

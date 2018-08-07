@@ -1,8 +1,8 @@
 import { tap, map, filter, reduce } from 'iter-tools';
 import forEach from '../../functions/for-each';
 
-export default Base =>
-  class extends Base {
+export default Base => {
+  class KeyedCollection extends Base {
     constructor(iterable) {
       super(iterable, 'Keyed');
     }
@@ -57,4 +57,20 @@ export default Base =>
     forEach(eachFn) {
       return forEach(([key, value]) => eachFn(value, key), this);
     }
-  };
+
+    // Conversions
+    toObject(proto = Object.prototype) {
+      const obj = Object.create(proto);
+      for (const [key, value] of this) obj[key] = value;
+      return obj;
+    }
+
+    toJSON() {
+      return this.toObject();
+    }
+  }
+
+  Object.defineProperty(KeyedCollection.prototype, '@@__MUTABLE_KEYED__@@', { value: true });
+
+  return KeyedCollection;
+};

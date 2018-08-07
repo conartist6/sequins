@@ -2,7 +2,7 @@ import { tap, map, filter, reduce } from 'iter-tools';
 import forEach from '../../functions/for-each';
 
 export default Base =>
-  class extends Base {
+  class SetCollection extends Base {
     constructor(iterable) {
       super(iterable, 'Set');
     }
@@ -40,5 +40,10 @@ export default Base =>
 
     forEach(eachFn) {
       return forEach(item => eachFn(item, item), this);
+    }
+
+    // Conversions
+    toJSON() {
+      return this.toArray();
     }
   };

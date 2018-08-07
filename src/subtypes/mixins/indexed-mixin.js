@@ -1,8 +1,8 @@
 import { tap, map, filter, reduce } from 'iter-tools';
 import forEach from '../../functions/for-each';
 
-export default Base =>
-  class extends Base {
+export default Base => {
+  class IndexedCollection extends Base {
     constructor(iterable) {
       super(iterable, 'Indexed');
     }
@@ -40,4 +40,14 @@ export default Base =>
     forEach(eachFn) {
       return forEach(eachFn, this);
     }
-  };
+
+    // Conversions
+    toJSON() {
+      return this.toArray();
+    }
+  }
+
+  Object.defineProperty(IndexedCollection.prototype, '@@__MUTABLE_INDEXED__@@', { value: true });
+
+  return IndexedCollection;
+};

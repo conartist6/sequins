@@ -67,10 +67,6 @@ describe('Seq.Indexed', function() {
       expect(indexed.toSet()).toEqual(new Set(indexed));
     });
 
-    it('can be converted to native', function() {
-      expect(indexed.toNative()).toEqual(indexed.toArray());
-    });
-
     it('has keys iterator', function() {
       expect(Array.from(indexed.keys())).toEqual(keys);
     });

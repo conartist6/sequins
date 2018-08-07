@@ -1,15 +1,13 @@
 import makeTestMethod from '../../../test-helpers/make-test-method';
 import IndexedSequence from '../../sequence/indexed';
 import SequinsList from '../../concrete/list';
+import testData from '../../../__test__/data';
 
 function makeTests(IndexedConstructor, description) {
   describe(description, function() {
-    const keys = Object.freeze([0, 1, 2]);
-    const values = Object.freeze([1, 2, 3]);
-    const entries = Object.freeze([[0, 1], [1, 2], [2, 3]]);
-    const calls = Object.freeze([[1, 0], [2, 1], [3, 2]]);
-    const array = Object.freeze([1, 2, 3]);
     let indexed;
+
+    const { keys, values, entries, calls, array } = testData.Indexed;
 
     const testMethod = makeTestMethod(IndexedConstructor);
 

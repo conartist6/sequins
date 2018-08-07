@@ -1,13 +1,13 @@
 import makeTestMethod from '../../../test-helpers/make-test-method';
 import SetSequence from '../../sequence/set';
 import SequinsSet from '../../concrete/set';
+import testData from '../../../__test__/data';
 
 function makeTests(SetConstructor, description) {
   describe(description, function() {
-    let array = [1, 2, 3];
-    let entries = [[1, 1], [2, 2], [3, 3]];
-    let calls = entries;
     let set;
+
+    const { keys, values, entries, calls, array } = testData.Set;
 
     const testMethod = makeTestMethod(SetConstructor);
 

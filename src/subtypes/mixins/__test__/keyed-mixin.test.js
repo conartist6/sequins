@@ -1,15 +1,13 @@
 import makeTestMethod from '../../../test-helpers/make-test-method';
 import KeyedSequence from '../../sequence/keyed';
 import SequinsMap from '../../concrete/map';
+import testData from '../../../__test__/data';
 
 function makeTests(KeyedConstructor, description) {
   describe(description, function() {
-    let values = Object.freeze([1, 2, 3]);
-    let keys = Object.freeze([9, 8, 7]);
-    let entries = Object.freeze([[9, 1], [8, 2], [7, 3]]);
-    let calls = Object.freeze([[1, 9], [2, 8], [3, 7]]);
-
     let keyed;
+
+    const { keys, values, entries, calls, array } = testData.Keyed;
 
     const testMethod = makeTestMethod(KeyedConstructor);
 
