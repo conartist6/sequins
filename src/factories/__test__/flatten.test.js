@@ -1,8 +1,6 @@
-import IndexedSeq from '../../subtypes/sequence/indexed';
-import KeyedSeq from '../../subtypes/sequence/keyed';
-import SetSeq from '../../subtypes/sequence/set';
+import { IndexedSeq, KeyedSeq, SetSeq } from '../..';
+import { Collection } from '../../collection-mixin';
 import makeFlatten from '../flatten';
-import Sequence from '../../sequence';
 
 describe('flatten', function() {
   describe('Indexed', function() {
@@ -17,7 +15,7 @@ describe('flatten', function() {
     let flatten;
 
     beforeAll(function() {
-      flatten = makeFlatten(Sequence, 'Indexed');
+      flatten = makeFlatten(Collection, 'Sequence', 'Indexed');
     });
 
     beforeEach(function() {

@@ -1,4 +1,4 @@
-import CollectionMixin from './collection-mixin';
+import CollectionMixin, { registerSubtype as registerCollectionSubtype } from './collection-mixin';
 import makeFrom from './factories/from';
 
 const Concrete = {};
@@ -22,6 +22,8 @@ const statics = {
     return Concrete.Set;
   },
 };
+
+registerCollectionSubtype('Concrete', Concrete);
 
 export const ConcreteCollection = statics;
 

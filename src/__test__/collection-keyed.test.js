@@ -1,6 +1,5 @@
 import makeTestMethod from './helpers/make-test-method';
-import KeyedSequence from '../subtypes/sequence/keyed';
-import SequinsMap from '../subtypes/concrete/map';
+import { KeyedSeq, Map } from '..';
 import testData from './data';
 
 function makeTests(KeyedConstructor, description) {
@@ -36,8 +35,8 @@ function makeTests(KeyedConstructor, description) {
       .run(mapFn => keyed.mapEntries(mapFn))
       .expectCollectionYields([[1, 9], [2, 8], [3, 7]]);
 
-    testMethod('flatMap (KeyedSequences)')
-      .callback(val => new KeyedSequence([[val + 1, val + 2]]))
+    testMethod('flatMap (KeyedSeqs)')
+      .callback(val => new KeyedSeq([[val + 1, val + 2]]))
       .expectCalls(calls)
       .run(mapFn => keyed.flatMap(mapFn))
       .expectCollectionYields([[2, 3], [3, 4], [4, 5]]);
@@ -68,74 +67,8 @@ function makeTests(KeyedConstructor, description) {
       .callback(() => true, calls)
       .run(eachFn => keyed.forEach(eachFn))
       .expectReturns(3);
-
-    it('can be converted to IndexedSeq (noop)', function() {
-      const indexed = keyed.toIndexedSeq();
-      expect(Array.from(indexed)).toEqual(values);
-      expect(indexed).toBeInstanceOf(IndexedSeq);
-    });
-
-    it('can be converted to KeyedSeq (noop)', function() {
-      expect(keyed.toKeyedSeq()).toBe(keyed);
-    });
-
-    it('can be converted to SetSeq', function() {
-      const set = keyed.toSetSeq();
-      expect(Array.from(set)).toEqual(values);
-      expect(set).toBeInstanceOf(SetSeq);
-    });
-
-    it('can be converted to Array', function() {
-      expect(keyed.toArray()).toEqual(values);
-    });
-
-    it('can be converted to Object', function() {
-      expect(keyed.toObject()).toEqual({ 9: 1, 8: 2, 7: 3 });
-    });
-
-    it('can be converted to List', function() {
-      expect(keyed.toList()).toEqual(new List(values));
-    });
-
-    it('can be converted to Map', function() {
-      expect(keyed.toMap()).toEqual(new Map(keyed));
-    });
-
-    it('can be converted to Set', function() {
-      expect(keyed.toSet()).toEqual(new Set(values));
-    });
-
-    it('has keys iterator', function() {
-      expect(Array.from(keyed.keys())).toEqual(keys);
-    });
-
-    it('has values iterator', function() {
-      expect(Array.from(keyed.values())).toEqual(values);
-    });
-
-    it('has entries iterator', function() {
-      expect(Array.from(keyed.entries())).toEqual(entries);
-    });
-
-    it('can be converted to a key sequence', function() {
-      const keySeq = keyed.keySeq();
-      expect(keySeq).toBeInstanceOf(IndexedSeq);
-      expect(Array.from(keySeq)).toEqual(keys);
-    });
-
-    it('can be converted to a value sequence', function() {
-      const valueSeq = keyed.valueSeq();
-      expect(valueSeq).toBeInstanceOf(IndexedSeq);
-      expect(Array.from(valueSeq)).toEqual(values);
-    });
-
-    it('can be converted to an entries sequence', function() {
-      const entriesSeq = keyed.entrySeq();
-      expect(entriesSeq).toBeInstanceOf(IndexedSeq);
-      expect(Array.from(entriesSeq)).toEqual(entries);
-    });
   });
 }
 
-makeTests(KeyedSequence, 'KeyedSequence');
-makeTests(SequinsMap, 'Map');
+makeTests(KeyedSeq, 'KeyedSeq');
+makeTests(Map, 'Map');

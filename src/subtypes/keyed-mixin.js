@@ -24,10 +24,6 @@ export default Base => {
       return this.__doCollectionTransform(map((entry, i) => mapFn(entry, i)));
     }
 
-    flatMap(mapFn) {
-      return this.map(mapFn).flatten(true);
-    }
-
     filter(filterFn) {
       return this.__doCollectionTransform(filter(([key, value]) => filterFn(value, key)));
     }

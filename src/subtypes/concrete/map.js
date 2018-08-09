@@ -3,7 +3,7 @@ import { KeyedMixin } from '..';
 
 export class TranspiledMap extends Map {}
 
-export default class SeqinsMap extends KeyedMixin(ConcreteCollectionMixin(TranspiledMap)) {
+export default class SequinsMap extends KeyedMixin(ConcreteCollectionMixin(TranspiledMap)) {
   reverse() {
     const reversedSeq = this.toKeyedSeq().reverse();
     this.clear();
@@ -18,4 +18,4 @@ export default class SeqinsMap extends KeyedMixin(ConcreteCollectionMixin(Transp
   }
 }
 
-registerSubtype('Keyed', SeqinsMap);
+registerSubtype('Keyed', SequinsMap);

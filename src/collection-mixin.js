@@ -2,10 +2,10 @@ import { keys, concat, slice } from 'iter-tools';
 import * as factories from './factories';
 import reflect from './reflect';
 
-const Subtypes = {};
+export const Collection = {};
 
 export function registerSubtype(key, type) {
-  Subtypes[key] = type;
+  Collection[key] = type;
 }
 
 export default Base => {
@@ -13,14 +13,16 @@ export default Base => {
     constructor(iterable, reflectionKey) {
       super(iterable, reflectionKey);
 
+      const collectionSubtype = Base.name === 'Sequence' ? Base.name : 'Concrete';
+
       this.__dynamicMethods = {};
       for (const name of keys(factories)) {
-        this.__dynamicMethods[name] = factories[name](this.__getStatics(), reflectionKey);
+        this.__dynamicMethods[name] = factories[name](Collection, collectionSubtype, reflectionKey);
       }
     }
 
     static get Sequence() {
-      return Subtypes.Sequence;
+      return Collection.Sequence;
     }
 
     flatten(shallowOrDepth) {
@@ -33,6 +35,10 @@ export default Base => {
 
     slice(start = 0, end = Infinity) {
       return this.__doCollectionTransform(iterable => slice({ start, end }, iterable));
+    }
+
+    flatMap(mapFn) {
+      return this.map(mapFn).flatten(true);
     }
 
     reduceRight(...args) {
@@ -48,23 +54,23 @@ export default Base => {
     }
 
     toIndexedSeq() {
-      return new Subtypes.Sequence.Indexed(this);
+      return new Collection.Sequence.Indexed(this);
     }
     toKeyedSeq() {
-      return new Subtypes.Sequence.Keyed(this);
+      return new Collection.Sequence.Keyed(this);
     }
     toSetSeq() {
-      return new Subtypes.Sequence.Set(this);
+      return new Collection.Sequence.Set(this);
     }
 
     keySeq() {
-      return new Subtypes.Sequence.Indexed(this.keys());
+      return new Collection.Sequence.Indexed(this.keys());
     }
     valueSeq() {
-      return new Subtypes.Sequence.Indexed(this.values());
+      return new Collection.Sequence.Indexed(this.values());
     }
     entrySeq() {
-      return new Subtypes.Sequence.Indexed(this.entries());
+      return new Collection.Sequence.Indexed(this.entries());
     }
 
     toList() {

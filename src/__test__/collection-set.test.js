@@ -1,6 +1,5 @@
 import makeTestMethod from './helpers/make-test-method';
-import SetSequence from '../subtypes/sequence/set';
-import SequinsSet from '../subtypes/concrete/set';
+import { SetSeq, Set } from '..';
 import testData from './data';
 
 function makeTests(SetConstructor, description) {
@@ -25,14 +24,14 @@ function makeTests(SetConstructor, description) {
       .run(mapFn => set.map(mapFn))
       .expectCollectionYields([2, 3, 4]);
 
-    testMethod('flatMap (SetSequences)')
-      .callback(val => new SetSequence([val + 1, val + 1.5]))
+    testMethod('flatMap (SetSeqs)')
+      .callback(val => new SetSeq([val + 1, val + 1.5]))
       .expectCalls(calls)
       .run(mapFn => set.flatMap(mapFn))
       .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
 
     testMethod('flatMap (Sets)')
-      .callback(val => new SequinsSet([val + 1, val + 1.5]))
+      .callback(val => new Set([val + 1, val + 1.5]))
       .expectCalls(calls)
       .run(mapFn => set.flatMap(mapFn))
       .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
@@ -60,5 +59,5 @@ function makeTests(SetConstructor, description) {
   });
 }
 
-makeTests(SetSequence, 'SetSequence');
-makeTests(SequinsSet, 'Set');
+makeTests(SetSeq, 'SetSeq');
+makeTests(Set, 'Set');

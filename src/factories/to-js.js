@@ -5,7 +5,7 @@ import { isDataStructure } from '../utils/shape';
 function makeToJS(Collection) {
   return function toJS(value) {
     return isDataStructure(value)
-      ? Collection.from(value)
+      ? Collection.Sequence.from(value)
           .map(toJS)
           .toJSON()
       : value;

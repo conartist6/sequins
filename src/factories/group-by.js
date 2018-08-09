@@ -1,23 +1,23 @@
 import { memoizeFactory } from '../utils/memoize';
 import reflect from '../reflect';
-import makeNativePush from './native-push';
+import makePush from './push';
 
-function makeGroupBy(Collection, collectionType) {
-  const TypedCollection = Collection[collectionType];
-  const { nativeSet, nativeSize, NativeConstructor } = reflect[collectionType];
+function makeGroupBy(Collection, collectionSubtype, collectionType) {
+  const TypedCollection = Collection[collectionSubtype][collectionType];
+  const ConcreteCollection = Collection.Concrete[collectionType];
+  const Map = Collection.Concrete.Keyed;
 
-  const nativePush = makeNativePush(Collection, collectionType);
+  const push = makePush(Collection, collectionSubtype, collectionType);
 
-  return function groupBy(sequence, grouper) {
-    const map = sequence.reduce(function(result, value, key) {
-      key = grouper(value, key);
-      if (result.has(key)) {
-        nativePush(result.get(key), key, value);
-      } else {
-        const native = new NativeConstructor();
-        nativePush(native, key, value);
-        result.set(key, native);
+  return function groupBy(collection, grouper) {
+    debugger;
+    const map = collection.reduce(function(result, value, key) {
+      const groupKey = grouper(value, key);
+      if (!result.get(groupKey)) {
+        const concrete = new ConcreteCollection();
+        result.set(groupKey, concrete);
       }
+      push(result.get(groupKey), key, value);
       return result;
     }, new Map());
     for (const key of map.keys()) {

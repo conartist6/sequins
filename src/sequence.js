@@ -1,7 +1,10 @@
 import { compose, map, concat } from 'iter-tools';
 import { isIndexed, isKeyed, isSet } from './utils/shape';
 import { reverseArrayIterator } from './utils/array';
-import CollectionMixin, { registerSubtype as registerCollectionSubtype } from './collection-mixin';
+import CollectionMixin, {
+  Collection,
+  registerSubtype as registerCollectionSubtype,
+} from './collection-mixin';
 import makeFrom from './factories/from';
 
 const Seq = {};
@@ -10,7 +13,7 @@ export function registerSubtype(key, type) {
   Seq[key] = type;
 }
 
-class SequenceBase {
+class Sequence {
   constructor() {
     this.__transforms = [];
   }
@@ -25,7 +28,7 @@ class SequenceBase {
   }
 }
 
-export default class Sequence extends CollectionMixin(SequenceBase) {
+export default class AbstractSequence extends CollectionMixin(Sequence) {
   static from(initial) {
     return sequenceFrom(initial);
   }
@@ -60,9 +63,7 @@ export default class Sequence extends CollectionMixin(SequenceBase) {
   }
 
   groupBy(grouper) {
-    this.__iterable = this.__dynamicMethods.groupBy(this, grouper);
-    this.__transforms.length = 0;
-    return this;
+    return new Seq.Keyed(this.__dynamicMethods.groupBy(this, grouper));
   }
 
   reverse() {
@@ -72,8 +73,8 @@ export default class Sequence extends CollectionMixin(SequenceBase) {
   }
 }
 
-registerCollectionSubtype('Sequence', Sequence);
+registerCollectionSubtype('Sequence', AbstractSequence);
 
-const sequenceFrom = makeFrom(Sequence);
+const sequenceFrom = makeFrom(Collection, 'Sequence');
 
-Object.defineProperty(Sequence.prototype, '@@__MUTABLE_SEQUENCE__@@', { value: true });
+Object.defineProperty(AbstractSequence.prototype, '@@__MUTABLE_SEQUENCE__@@', { value: true });

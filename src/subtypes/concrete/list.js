@@ -15,7 +15,7 @@ const aProto = Array.prototype;
  **/
 export class List {
   constructor(iterable) {
-    this._array = Array.from(iterable);
+    this._array = iterable != null ? Array.from(iterable) : [];
   }
 
   get size() {
@@ -77,8 +77,9 @@ export class List {
   concat(...args) {
     return this.__doCollectionTransform(() => this._array.concat(...args));
   }
-  reverse(...args) {
-    return this.__doCollectionTransform(() => this._array.reverse(...args));
+  reverse() {
+    this._array.reverse();
+    return this;
   }
   reduce(...args) {
     return this._array.reduce(...args);

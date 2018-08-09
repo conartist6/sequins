@@ -1,10 +1,13 @@
 import makeTestMethod from './helpers/make-test-method';
 import { IndexedSeq, KeyedSeq, SetSeq, List, Map, Set } from '..';
+import { Collection } from '../collection-mixin';
 import makeFlatten from '../factories/flatten';
 import testDataByType from './data';
 
-function makeTests(CollectionConstructor, type, description) {
-  describe(description, function() {
+function makeTests(type, collectionSubtype, description) {
+  const Collection = Collection[collectionSubtype];
+
+  describe(CollectionConstructor.name, function() {
     let collection;
 
     const { keys, values, entries, calls, array, object, js } = testDataByType[type];
@@ -21,7 +24,7 @@ function makeTests(CollectionConstructor, type, description) {
 
     it('can flatten', function() {
       // The flatten implementation has its own tests
-      const flatten = makeFlatten(collection.__getStatics(), type);
+      const flatten = makeFlatten(Collection, collectionSubtype, type);
       const result = collection.flatten();
       expect(result).toBeInstanceOf(CollectionConstructor);
       expect(collection.flatten(true)).toBeIterable(expect.yieldsEqual(flatten(true, collection)));
@@ -34,7 +37,6 @@ function makeTests(CollectionConstructor, type, description) {
     //   .expectCollectionYields([[1, 9], [2, 8], [3, 7]]);
 
     it('can toJS', function() {
-      // The flatten implementation has its own tests
       expect(collection.toJS()).toEqual(js);
     });
 
@@ -125,9 +127,9 @@ function makeTests(CollectionConstructor, type, description) {
   });
 }
 
-makeTests(IndexedSeq, 'Indexed', 'IndexedSeq');
-makeTests(KeyedSeq, 'Keyed', 'KeyedSeq');
-makeTests(SetSeq, 'Set', 'SetSeq');
-makeTests(List, 'Indexed', 'SequinsList');
-makeTests(Map, 'Keyed', 'SequinsMap');
-makeTests(Set, 'Set', 'SequinsSet');
+makeTests('Indexed', 'Sequence');
+makeTests('Keyed', 'Sequence');
+makeTests('Set', 'Sequence');
+makeTests('Indexed', 'Concrete');
+makeTests('Keyed', 'Concrete');
+makeTests('Set', 'Concrete');
