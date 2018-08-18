@@ -1,6 +1,7 @@
 import { keys, concat, slice } from 'iter-tools';
 import * as factories from './factories';
 import reflect from './reflect';
+import invariant from 'invariant';
 
 export const Collection = {};
 
@@ -12,6 +13,12 @@ export default Base => {
   class CollectionMixin extends Base {
     constructor(iterable, reflectionKey) {
       super(iterable, reflectionKey);
+
+      invariant(
+        reflectionKey,
+        'new CollectionMixin must be passed a reflectionKey. Received %s',
+        reflectionKey,
+      );
 
       const collectionSubtype = Base.name === 'Sequence' ? Base.name : 'Concrete';
 

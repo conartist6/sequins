@@ -39,6 +39,7 @@
     "jest": "^23.4.1"
   },
   "dependencies": {
+    "invariant": "^2.2.4",
     "iter-tools": "^4.1.1",
     "memoizee": "^0.4.12",
     "stable": "^0.1.8"

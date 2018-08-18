@@ -10,7 +10,9 @@ export default class SequinsSet extends SetMixin(ConcreteCollectionMixin(Transpi
   }
 
   reverse() {
-    const reversedSeq = this.toSetSeq().reverse();
+    const reversedSeq = this.toSetSeq()
+      .reverse()
+      .cacheResult();
     this.clear();
     for (const value of reversedSeq) {
       this.add(value);

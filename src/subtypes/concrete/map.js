@@ -14,7 +14,10 @@ export default class SequinsMap extends KeyedMixin(ConcreteCollectionMixin(Trans
   }
 
   reverse() {
-    const reversedSeq = this.toKeyedSeq().reverse();
+    const reversedSeq = this.toKeyedSeq()
+      .reverse()
+      .cacheResult();
+
     this.clear();
     for (const [key, value] of reversedSeq) {
       this.set(key, value);

@@ -26,6 +26,12 @@ class Sequence {
     this.__transforms.push(transform);
     return this;
   }
+
+  __transform() {
+    return this.__transforms.length
+      ? compose(...reverseArrayIterator(this.__transforms))(this.__iterable)
+      : this.__iterable;
+  }
 }
 
 export default class AbstractSequence extends CollectionMixin(Sequence) {
@@ -52,13 +58,14 @@ export default class AbstractSequence extends CollectionMixin(Sequence) {
   }
 
   *[Symbol.iterator]() {
-    yield* this.__transforms.length
-      ? compose(...reverseArrayIterator(this.__transforms))(this.__iterable)
-      : this.__iterable;
+    yield* this.__transform();
   }
 
   cacheResult() {
-    this.__iterable = Array.from(this);
+    const transformedIterable = this.__transform();
+    this.__iterable = Array.isArray(transformedIterable)
+      ? transformedIterable
+      : Array.from(transformedIterable);
     this.__transforms.length = 0;
     return this;
   }
@@ -68,9 +75,7 @@ export default class AbstractSequence extends CollectionMixin(Sequence) {
   }
 
   reverse() {
-    this.cacheResult();
-    this.__iterable.reverse();
-    return this;
+    return this.__doCollectionTransform(iterable => Array.from(iterable).reverse());
   }
 }
 
