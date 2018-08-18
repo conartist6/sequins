@@ -8,13 +8,11 @@ function makeTests(type, collectionSubtype) {
 
   describe(CollectionConstructor.name, function() {
     it('works', function() {
-      const grouped = new CollectionConstructor(new SetSeq([1, 2, 3, 4]).entries()).groupBy(
-        v => v % 2,
-      );
+      const grouped = new CollectionConstructor(new SetSeq([1, 2, 3, 4])).groupBy(v => v % 2);
       expect(grouped).toEqual(
         new KeyedCollectionConstructor([
-          [1, new CollectionConstructor(new SetSeq([1, 3]).entries())],
-          [0, new CollectionConstructor(new SetSeq([2, 4]).entries())],
+          [1, new CollectionConstructor(new SetSeq([1, 3]))],
+          [0, new CollectionConstructor(new SetSeq([2, 4]))],
         ]),
       );
     });

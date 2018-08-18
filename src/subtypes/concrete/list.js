@@ -1,6 +1,7 @@
 import { range } from 'iter-tools';
 import ConcreteCollectionMixin, { registerSubtype } from '../../collection-concrete-mixin';
 import { IndexedMixin } from '..';
+import { isKeyed } from '../../utils/shape';
 
 const aProto = Array.prototype;
 
@@ -15,7 +16,8 @@ const aProto = Array.prototype;
  **/
 export class List {
   constructor(iterable) {
-    this._array = iterable != null ? Array.from(iterable) : [];
+    this._array =
+      iterable != null ? Array.from(isKeyed(iterable) ? iterable.values() : iterable) : [];
   }
 
   get size() {

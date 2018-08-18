@@ -5,7 +5,7 @@ import makeFlatten from '../factories/flatten';
 import testDataByType from './data';
 
 function makeTests(type, collectionSubtype, description) {
-  const Collection = Collection[collectionSubtype];
+  const CollectionConstructor = Collection[collectionSubtype][type];
 
   describe(CollectionConstructor.name, function() {
     let collection;
