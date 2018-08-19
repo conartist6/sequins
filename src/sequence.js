@@ -1,5 +1,6 @@
 import { compose, map, concat } from 'iter-tools';
 import { isIndexed, isKeyed, isSet, isConcrete } from './utils/shape';
+import invariant from 'invariant';
 import { reverseArrayIterator } from './utils/array';
 import CollectionMixin, {
   Collection,
@@ -16,6 +17,7 @@ export function registerSubtype(key, type) {
 class Sequence {
   constructor() {
     this.__transforms = [];
+    this._closed = false;
   }
 
   __getStatics() {
@@ -23,6 +25,10 @@ class Sequence {
   }
 
   __doCollectionTransform(transform) {
+    invariant(
+      !this._closed,
+      'This sequence has been closed. Additional collection transforms may not be added.',
+    );
     this.__transforms.push(transform);
     return this;
   }
@@ -35,6 +41,10 @@ class Sequence {
     return this.__transforms.length
       ? compose(...reverseArrayIterator(this.__transforms))(this.__iterable)
       : this.__iterable;
+  }
+
+  _close() {
+    this._closed = true;
   }
 }
 
@@ -75,11 +85,36 @@ export default class AbstractSequence extends CollectionMixin(Sequence) {
   }
 
   groupBy(grouper) {
-    return new Seq.Keyed(this.__dynamicMethods.groupBy(this, grouper));
+    const CollectionContructor = this.constructor;
+    // Avoid creating more unlocked sequences when doing transforms by locking the old sequence.
+    this._close();
+    // Even the locked sequence will still exist and shouldn't contain garbage, so make a
+    // sequence which we can use as a scratch pad. It could be any sequence type, but it won't
+    // really behave like one since its internal iterable will end up as a Map.
+    const copy = new CollectionContructor(this);
+    copy.__transforms.push(iterable => this.__dynamicMethods.groupBy(iterable, grouper));
+    // Dodge the shape detection, essentially coercing our scratch sequence to be a Keyed sequence.
+    const keyed = new Seq.Keyed();
+    keyed.__iterable = copy;
+    return keyed;
   }
 
   reverse() {
     return this.__doCollectionTransform(iterable => Array.from(iterable).reverse());
+  }
+
+  // Shallow conversions
+  toIndexedSeq() {
+    this._close();
+    return super.toIndexedSeq();
+  }
+  toKeyedSeq() {
+    this._close();
+    return super.toKeyedSeq();
+  }
+  toSetSeq() {
+    this._close();
+    return super.toSetSeq();
   }
 }
 

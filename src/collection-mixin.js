@@ -67,6 +67,7 @@ export default Base => {
       return this.__dynamicMethods.toJS(this);
     }
 
+    // Shallow conversions
     toIndexedSeq() {
       return new Collection.Sequence.Indexed(this);
     }

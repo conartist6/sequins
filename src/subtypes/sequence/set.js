@@ -7,7 +7,7 @@ import { SetMixin } from '..';
 export default class SetSeq extends SetMixin(Sequence) {
   constructor(iterable) {
     super(iterable);
-    if (isKeyed(iterable)) {
+    if (isKeyed(this.__iterable)) {
       this.__transforms.push(iterable => iterable.values());
     }
   }

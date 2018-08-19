@@ -7,6 +7,7 @@ import { KeyedMixin } from '..';
 export default class KeyedSeq extends KeyedMixin(Sequence) {
   constructor(iterable) {
     super(iterable);
+    iterable = this.__iterable;
     if (isSet(iterable) || (!Array.isArray(iterable) && isIndexed(iterable))) {
       this.__transforms.push(iterable => iterable.entries());
     }

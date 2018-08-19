@@ -7,7 +7,7 @@ import { IndexedMixin } from '..';
 export default class IndexedSeq extends IndexedMixin(Sequence) {
   constructor(iterable) {
     super(iterable);
-    if (isKeyed(iterable)) {
+    if (isKeyed(this.__iterable)) {
       this.__transforms.push(iterable => iterable.values());
     }
   }
