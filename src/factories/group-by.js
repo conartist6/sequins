@@ -1,28 +1,32 @@
-import Sequence from '../sequence';
 import { memoizeFactory } from '../utils/memoize';
 import reflect from '../reflect';
-import makeNativePush from './native-push';
+import makePush from './push';
+import makeReduce from './reduce';
 
-function makeGroupBy(sequenceType) {
-  const SequenceType = Sequence[sequenceType];
-  const { nativeSet, nativeSize, NativeConstructor } = reflect[sequenceType];
+function makeGroupBy(Collection, collectionSubtype, collectionType) {
+  const TypedCollection = Collection[collectionSubtype][collectionType];
+  const ConcreteCollection = Collection.Concrete[collectionType];
+  const Map = Collection.Concrete.Keyed;
 
-  const nativePush = makeNativePush(sequenceType);
+  const push = makePush(...arguments);
+  const reduce = makeReduce(...arguments);
 
-  return function groupBy(sequence, grouper) {
-    const map = sequence.reduce(function(result, value, key) {
-      key = grouper(value, key);
-      if (result.has(key)) {
-        nativePush(result.get(key), key, value);
-      } else {
-        const native = new NativeConstructor();
-        nativePush(native, key, value);
-        result.set(key, native);
-      }
-      return result;
-    }, new Map());
+  return function groupBy(collection, grouper) {
+    const map = reduce(
+      collection,
+      function(result, value, key) {
+        const groupKey = grouper(value, key);
+        if (!result.get(groupKey)) {
+          const concrete = new ConcreteCollection();
+          result.set(groupKey, concrete);
+        }
+        push(result.get(groupKey), key, value);
+        return result;
+      },
+      new Map(),
+    );
     for (const key of map.keys()) {
-      map.set(key, new SequenceType(map.get(key)));
+      map.set(key, new TypedCollection(map.get(key)));
     }
     return map;
   };

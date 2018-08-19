@@ -1,4 +1,4 @@
-function isImmutable(shape) {
+function isImmutableCollection(shape) {
   return !!shape['@@__IMMUTABLE_ITERABLE__@@'];
 }
 
@@ -11,7 +11,7 @@ function isImmutableKeyed(shape) {
 }
 
 function isImmutableSet(shape) {
-  return isImmutable(shape) && !isImmutableIndexed(shape) && !isImmutableKeyed(shape);
+  return isImmutableCollection(shape) && !isImmutableIndexed(shape) && !isImmutableKeyed(shape);
 }
 
 function isNativeSet(shape) {
@@ -36,7 +36,16 @@ export function isPlainObj(shape) {
 }
 
 export function isDataStructure(shape) {
-  return isMutableSeq(shape) || isImmutable(shape) || isNative(shape) || isPlainObj(shape);
+  return (
+    isMutableCollection(shape) ||
+    isImmutableCollection(shape) ||
+    isNative(shape) ||
+    isPlainObj(shape)
+  );
+}
+
+export function isMutableCollection(shape) {
+  return !!shape['@@__MUTABLE_ITERABLE__@@'];
 }
 
 export function isMutableSeq(shape) {
@@ -69,6 +78,14 @@ export function isSet(shape) {
 
 export function isSeq(shape) {
   return !!shape['@@__MUTABLE_SEQUENCE__@@'] || !!shape['@@__IMMUTABLE_SEQ__@@'];
+}
+
+export function isConcreteCollection(shape) {
+  return !!shape['@@__MUTABLE_ITERABLE__@@'] && !shape['@@__MUTABLE_SEQUENCE__@@'];
+}
+
+export function isConcrete(shape) {
+  return isConcreteCollection(shape) || isNative(shape);
 }
 
 export function reflectionKey(shape) {

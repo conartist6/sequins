@@ -1,15 +1,14 @@
-import Sequence from '../sequence';
 import { memoizeFactory } from '../utils/memoize';
 import reflect from '../reflect';
 
-function makeFlatten(sequenceType) {
-  const { itemValue, toNative } = reflect[sequenceType];
+function makeFlatten(Collection, collectionSubtype, collectionType) {
+  const { itemValue, toNative } = reflect[collectionType];
 
   function* flatten(shallowOrDepth, iterable) {
     const depth = shallowOrDepth === true ? 0 : shallowOrDepth;
 
     for (const item of iterable) {
-      const itemSeq = item == null ? item : Sequence.from(itemValue(item));
+      const itemSeq = item == null ? item : Collection.Sequence.from(itemValue(item));
 
       if (itemSeq && (depth === false || depth > 0)) {
         yield* flatten(depth === false ? depth : depth - 1, toNative(itemSeq));
