@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "invariant": "^2.2.4",
-    "iter-tools": "^4.1.1",
+    "iter-tools": "^6.0.0",
     "memoizee": "^0.4.12",
     "stable": "^0.1.8"
   },

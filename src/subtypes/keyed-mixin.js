@@ -33,23 +33,6 @@ export default Base => {
     }
 
     // Reductive functions
-    reduce(reducer, initial) {
-      let invocations = 0;
-      let hasInitial = arguments.length > 1;
-      const keyedReducer = (acc, [key, value]) => {
-        if (invocations++ === 0 && !hasInitial) {
-          acc = acc[1];
-        }
-
-        return reducer(acc, value, key);
-      };
-      if (hasInitial) {
-        return reduce(initial, keyedReducer, this);
-      } else {
-        return reduce(keyedReducer, this);
-      }
-    }
-
     forEach(eachFn) {
       return forEach(([key, value]) => eachFn(value, key), this);
     }

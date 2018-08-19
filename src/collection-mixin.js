@@ -48,6 +48,13 @@ export default Base => {
       return this.map(mapFn).flatten(true);
     }
 
+    // Reductive functions
+    reduce(...args) {
+      return this.__doReductiveTransform(iterable =>
+        this.__dynamicMethods.reduce(iterable, ...args),
+      );
+    }
+
     reduceRight(...args) {
       return this.toSeq()
         .reverse()

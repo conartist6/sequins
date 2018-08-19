@@ -25,14 +25,6 @@ export default Base => {
     }
 
     // Reductive functions
-    reduce(reducer, initial) {
-      if (arguments.length === 1) {
-        return reduce(reducer, this);
-      } else {
-        return reduce(initial, reducer, this);
-      }
-    }
-
     forEach(eachFn) {
       return forEach(eachFn, this);
     }

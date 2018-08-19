@@ -80,6 +80,14 @@ export function isSeq(shape) {
   return !!shape['@@__MUTABLE_SEQUENCE__@@'] || !!shape['@@__IMMUTABLE_SEQ__@@'];
 }
 
+export function isConcreteCollection(shape) {
+  return !!shape['@@__MUTABLE_ITERABLE__@@'] && !shape['@@__MUTABLE_SEQUENCE__@@'];
+}
+
+export function isConcrete(shape) {
+  return isConcreteCollection(shape) || isNative(shape);
+}
+
 export function reflectionKey(shape) {
   if (isIndexed(shape)) {
     return 'Indexed';

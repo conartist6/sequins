@@ -1,5 +1,5 @@
 import { compose, map, concat } from 'iter-tools';
-import { isIndexed, isKeyed, isSet } from './utils/shape';
+import { isIndexed, isKeyed, isSet, isConcrete } from './utils/shape';
 import { reverseArrayIterator } from './utils/array';
 import CollectionMixin, {
   Collection,
@@ -27,7 +27,11 @@ class Sequence {
     return this;
   }
 
-  __transform() {
+  __doReductiveTransform(transform) {
+    return transform(this._transform());
+  }
+
+  _transform() {
     return this.__transforms.length
       ? compose(...reverseArrayIterator(this.__transforms))(this.__iterable)
       : this.__iterable;
@@ -58,12 +62,12 @@ export default class AbstractSequence extends CollectionMixin(Sequence) {
   }
 
   *[Symbol.iterator]() {
-    yield* this.__transform();
+    yield* this._transform();
   }
 
   cacheResult() {
-    const transformedIterable = this.__transform();
-    this.__iterable = Array.isArray(transformedIterable)
+    const transformedIterable = this._transform();
+    this.__iterable = isConcrete(transformedIterable)
       ? transformedIterable
       : Array.from(transformedIterable);
     this.__transforms.length = 0;

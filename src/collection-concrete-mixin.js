@@ -30,10 +30,17 @@ export const ConcreteCollection = statics;
 const concreteFrom = makeFrom(statics);
 
 export default Base =>
-  class extends CollectionMixin(Base) {
+  class ConcreteCollectionMixin extends CollectionMixin(Base) {
     __doCollectionTransform(transform) {
       const CollectionConstructor = this.constructor;
-      return new CollectionConstructor(transform(this));
+      const transformed = transform(this);
+      return transformed instanceof ConcreteCollectionMixin
+        ? transformed
+        : new CollectionConstructor(transformed);
+    }
+
+    __doReductiveTransform(transform) {
+      return transform(this);
     }
 
     __getStatics() {

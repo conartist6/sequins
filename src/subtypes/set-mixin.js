@@ -25,15 +25,6 @@ export default Base =>
     }
 
     // Reductive functions
-    reduce(reducer, initial) {
-      const setReducer = (acc, item) => reducer(acc, item, item);
-      if (arguments.length === 1) {
-        return reduce(setReducer, this);
-      } else {
-        return reduce(initial, setReducer, this);
-      }
-    }
-
     forEach(eachFn) {
       return forEach(item => eachFn(item, item), this);
     }
