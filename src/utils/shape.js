@@ -88,7 +88,7 @@ export function isConcrete(shape) {
   return isConcreteCollection(shape) || isNative(shape);
 }
 
-export function reflectionKey(shape) {
+export function collectionType(shape) {
   if (isIndexed(shape)) {
     return 'Indexed';
   } else if (isKeyed(shape)) {

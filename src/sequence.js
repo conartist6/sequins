@@ -65,9 +65,9 @@ export default class AbstractSequence extends CollectionMixin(Sequence) {
     return Seq.Set;
   }
 
-  constructor(iterable, reflectionKey) {
+  constructor(iterable, collectionType) {
     iterable = iterable || [];
-    super(iterable, reflectionKey);
+    super(iterable, collectionType);
     this.__iterable = iterable;
   }
 

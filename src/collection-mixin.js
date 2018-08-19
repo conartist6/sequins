@@ -11,20 +11,24 @@ export function registerSubtype(key, type) {
 
 export default Base => {
   class CollectionMixin extends Base {
-    constructor(iterable, reflectionKey) {
-      super(iterable, reflectionKey);
+    constructor(iterable, collectionType) {
+      super(iterable, collectionType);
 
       invariant(
-        reflectionKey,
-        'new CollectionMixin must be passed a reflectionKey. Received %s',
-        reflectionKey,
+        collectionType,
+        'new CollectionMixin must be passed a collectionType. Received %s',
+        collectionType,
       );
 
       const collectionSubtype = Base.name === 'Sequence' ? Base.name : 'Concrete';
 
       this.__dynamicMethods = {};
       for (const name of keys(factories)) {
-        this.__dynamicMethods[name] = factories[name](Collection, collectionSubtype, reflectionKey);
+        this.__dynamicMethods[name] = factories[name](
+          Collection,
+          collectionSubtype,
+          collectionType,
+        );
       }
     }
 
