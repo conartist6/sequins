@@ -1,13 +1,20 @@
+import { Collection } from '../collection-mixin';
+import { IndexedSeq, List } from '..';
 import makeTestMethod from './helpers/make-test-method';
-import IndexedSequence from '../subtypes/sequence/indexed';
-import SequinsList from '../subtypes/concrete/list';
 import testData from './data';
 
-function makeTests(IndexedConstructor, description) {
-  describe(description, function() {
+function makeTests(collectionSubtype) {
+  const IndexedConstructor = Collection[collectionSubtype].Indexed;
+
+  describe(IndexedConstructor.name, function() {
+    const { keys, values, entries, array } = testData.Indexed;
+    const staticIndexed = new IndexedConstructor(array);
+    const calls = makeCalls(testData.Indexed.calls);
     let indexed;
 
-    const { keys, values, entries, calls, array } = testData.Indexed;
+    function makeCalls(calls) {
+      return collectionSubtype === 'Concrete' ? calls.map(call => [...call, staticIndexed]) : calls;
+    }
 
     const testMethod = makeTestMethod(IndexedConstructor);
 
@@ -26,13 +33,13 @@ function makeTests(IndexedConstructor, description) {
       .expectCollectionYields([2, 3, 4]);
 
     testMethod('flatMap (IndexedSequences)')
-      .callback(val => new IndexedSequence([val + 1, val + 1.5]))
+      .callback(val => new IndexedSeq([val + 1, val + 1.5]))
       .expectCalls(calls)
       .run(mapFn => indexed.flatMap(mapFn))
       .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
 
-    testMethod('flatMap (Arrays)')
-      .callback(val => [val + 1, val + 1.5])
+    testMethod('flatMap (Lists)')
+      .callback(val => new List([val + 1, val + 1.5]))
       .expectCalls(calls)
       .run(mapFn => indexed.flatMap(mapFn))
       .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
@@ -49,7 +56,7 @@ function makeTests(IndexedConstructor, description) {
 
     testMethod('reduce')
       .callback((acc, val) => acc + val)
-      .expectCalls([[1, 2, 1], [3, 3, 2]])
+      .expectCalls(makeCalls([[1, 2, 1], [3, 3, 2]]))
       .run(reducerFn => indexed.reduce(reducerFn))
       .expectReturns(6);
 
@@ -60,5 +67,5 @@ function makeTests(IndexedConstructor, description) {
   });
 }
 
-makeTests(IndexedSequence, 'IndexedSequence');
-makeTests(SequinsList, 'List');
+makeTests('Sequence');
+makeTests('Concrete');

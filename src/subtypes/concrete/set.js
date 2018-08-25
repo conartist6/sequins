@@ -1,28 +1,33 @@
-import ConcreteCollectionMixin, { registerSubtype } from '../../collection-concrete-mixin';
+import { range } from 'iter-tools';
+import ConcreteCollection, { registerSubtype } from '../../collection-concrete';
 import { SetMixin } from '..';
 import { isKeyed } from '../../utils/shape';
 
-export class TranspiledSet extends Set {}
-
-export default class SequinsSet extends SetMixin(ConcreteCollectionMixin(TranspiledSet)) {
+class SequinsSet extends SetMixin(ConcreteCollection) {
   constructor(iterable) {
-    super(iterable && isKeyed(iterable) ? iterable.values() : iterable);
+    super(iterable);
+    this.__native = new Set(
+      iterable == null ? [] : isKeyed(iterable) ? iterable.values() : iterable,
+    );
+  }
+
+  add(key, value) {
+    this.__native.add(key, value);
+    return this;
   }
 
   reverse() {
-    const reversedSeq = this.toSetSeq()
-      .reverse()
-      .cacheResult();
-    this.clear();
+    const reversedSeq = this.__reverse();
     for (const value of reversedSeq) {
       this.add(value);
     }
     return this;
   }
 
+  // Conversions
   toSet() {
     return this;
   }
 }
 
-registerSubtype('Set', SequinsSet);
+export default registerSubtype('Set', SequinsSet);

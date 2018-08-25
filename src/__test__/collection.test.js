@@ -4,7 +4,7 @@ import { Collection } from '../collection-mixin';
 import makeFlatten from '../factories/flatten';
 import testDataByType from './data';
 
-function makeTests(type, collectionSubtype, description) {
+function makeTests(type, collectionSubtype) {
   const CollectionConstructor = Collection[collectionSubtype][type];
 
   describe(CollectionConstructor.name, function() {
@@ -127,9 +127,9 @@ function makeTests(type, collectionSubtype, description) {
   });
 }
 
-makeTests('Indexed', 'Sequence');
-makeTests('Keyed', 'Sequence');
-makeTests('Set', 'Sequence');
+// makeTests('Indexed', 'Sequence');
+// makeTests('Keyed', 'Sequence');
+// makeTests('Set', 'Sequence');
 makeTests('Indexed', 'Concrete');
-makeTests('Keyed', 'Concrete');
-makeTests('Set', 'Concrete');
+// makeTests('Keyed', 'Concrete');
+// makeTests('Set', 'Concrete');

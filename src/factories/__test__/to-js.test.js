@@ -39,7 +39,8 @@ describe('toJS', function() {
     expect(toJS(seq)).toEqual([{ foo: 'bar' }, ['socks', 'shoes'], ['bork', 'bork', 'bork']]);
   });
 
-  it('converts structures inside objects', function() {
+  it.only('converts structures inside objects', function() {
+    debugger;
     const seq = new KeyedSeq([
       ['moo', { value: new SetSeq(['moar']) }],
       [

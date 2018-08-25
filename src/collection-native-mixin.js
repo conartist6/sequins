@@ -1,50 +1,46 @@
 import CollectionMixin, { registerSubtype as registerCollectionSubtype } from './collection-mixin';
 import makeFrom from './factories/from';
 
-const Concrete = {};
+const Native = {};
 
 export function registerSubtype(key, type) {
-  Concrete[key] = type;
+  return (Native[key] = type);
 }
 
 const statics = {
   from(initial) {
-    return concreteFrom(initial);
+    return nativeFrom(initial);
   },
 
   get Indexed() {
-    return Concrete.Indexed;
+    throw new Error('There is no native indexed type in Sequins.');
   },
   get Keyed() {
-    return Concrete.Keyed;
+    return Native.Keyed;
   },
   get Set() {
-    return Concrete.Set;
+    return Native.Set;
   },
 };
 
-registerCollectionSubtype('Concrete', Concrete);
+registerCollectionSubtype('Native', Native);
 
-export const ConcreteCollection = statics;
+export const NativeCollection = statics;
 
-const concreteFrom = makeFrom(statics);
+const nativeFrom = makeFrom(statics);
 
 export default Base =>
-  class ConcreteCollectionMixin extends CollectionMixin(Base) {
+  class NativeCollectionMixin extends CollectionMixin(Base) {
     __doCollectionTransform(transform) {
       const CollectionConstructor = this.constructor;
       const transformed = transform(this);
-      return transformed instanceof ConcreteCollectionMixin
+      return transformed instanceof NativeCollectionMixin
         ? transformed
         : new CollectionConstructor(transformed);
     }
 
     __doReductiveTransform(transform) {
       return transform(this);
-    }
-
-    __getStatics() {
-      return statics;
     }
 
     groupBy(grouper) {

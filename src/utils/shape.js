@@ -2,32 +2,28 @@ function isImmutableCollection(shape) {
   return !!shape['@@__IMMUTABLE_ITERABLE__@@'];
 }
 
-function isImmutableIndexed(shape) {
-  return !!shape['@@__IMMUTABLE_INDEXED__@@'];
+function isImmutableSequence(shape) {
+  return !!shape['@@__IMMUTABLE_SEQUENCE__@@'];
 }
 
-function isImmutableKeyed(shape) {
-  return !!shape['@@__IMMUTABLE_KEYED__@@'];
+function isImmutableConcrete(shape) {
+  return isImmutableCollection(shape) && !isImmutableSequence(shape);
 }
 
-function isImmutableSet(shape) {
-  return isImmutableCollection(shape) && !isImmutableIndexed(shape) && !isImmutableKeyed(shape);
+export function isMutableCollection(shape) {
+  return !!shape['@@__MUTABLE_ITERABLE__@@'];
 }
 
-function isNativeSet(shape) {
-  return shape instanceof Set;
+export function isMutableSeq(shape) {
+  return !!shape['@@__MUTABLE_SEQUENCE__@@'];
 }
 
-function isNativeKeyed(shape) {
-  return shape instanceof Map;
-}
-
-function isNativeIndexed(shape) {
-  return Array.isArray(shape);
+export function isCollection(shape) {
+  return isImmutableCollection(shape) || isMutableCollection(shape);
 }
 
 export function isNative(shape) {
-  return isNativeIndexed(shape) || isNativeKeyed(shape) || isNativeSet(shape);
+  return isNativeKeyed(shape) || isNativeSet(shape);
 }
 
 // Impl. borrowed from immutable
@@ -40,52 +36,21 @@ export function isDataStructure(shape) {
     isMutableCollection(shape) ||
     isImmutableCollection(shape) ||
     isNative(shape) ||
+    Array.isArray(shape) ||
     isPlainObj(shape)
   );
-}
-
-export function isMutableCollection(shape) {
-  return !!shape['@@__MUTABLE_ITERABLE__@@'];
-}
-
-export function isMutableSeq(shape) {
-  return !!shape['@@__MUTABLE_SEQUENCE__@@'];
-}
-
-export function isMutableIndexedSeq(shape) {
-  return !!shape['@@__MUTABLE_INDEXED__@@'];
-}
-
-export function isMutableKeyedSeq(shape) {
-  return !!shape['@@__MUTABLE_KEYED__@@'];
-}
-
-export function isMutableSetSeq(shape) {
-  return isMutableSeq(shape) && !isMutableIndexedSeq(shape) && !isMutableKeyedSeq(shape);
-}
-
-export function isIndexed(shape) {
-  return isNativeIndexed(shape) || isMutableIndexedSeq(shape) || isImmutableIndexed(shape);
-}
-
-export function isKeyed(shape) {
-  return isNativeKeyed(shape) || isMutableKeyedSeq(shape) || isImmutableKeyed(shape);
-}
-
-export function isSet(shape) {
-  return isNativeSet(shape) || isMutableSetSeq(shape) || isImmutableSet(shape);
 }
 
 export function isSeq(shape) {
   return !!shape['@@__MUTABLE_SEQUENCE__@@'] || !!shape['@@__IMMUTABLE_SEQ__@@'];
 }
 
-export function isConcreteCollection(shape) {
+export function isMutableConcrete(shape) {
   return !!shape['@@__MUTABLE_ITERABLE__@@'] && !shape['@@__MUTABLE_SEQUENCE__@@'];
 }
 
 export function isConcrete(shape) {
-  return isConcreteCollection(shape) || isNative(shape);
+  return isMutableConcrete(shape) || isImmutableConcrete(shape) || isNative(shape);
 }
 
 export function collectionType(shape) {
@@ -93,8 +58,52 @@ export function collectionType(shape) {
     return 'Indexed';
   } else if (isKeyed(shape)) {
     return 'Keyed';
-  } else if (isSet(shape)) {
+  } else {
     return 'Set';
   }
   return null;
+}
+
+// Indexed, Keyed, Set
+
+function isImmutableIndexed(shape) {
+  return !!shape['@@__IMMUTABLE_INDEXED__@@'];
+}
+function isImmutableKeyed(shape) {
+  return !!shape['@@__IMMUTABLE_KEYED__@@'];
+}
+
+function isNativeSet(shape) {
+  return shape instanceof Set;
+}
+function isNativeKeyed(shape) {
+  return shape instanceof Map;
+}
+
+export function isMutableIndexed(shape) {
+  return !!shape['@@__MUTABLE_INDEXED__@@'];
+}
+export function isMutableKeyed(shape) {
+  return !!shape['@@__MUTABLE_KEYED__@@'];
+}
+
+export function isMutableIndexedSeq(shape) {
+  return isMutableSeq(shape) && isMutableIndexed(shape);
+}
+export function isMutableKeyedSeq(shape) {
+  return isMutableSeq(shape) && isMutableKeyed(shape);
+}
+
+export function isConcreteIndexed(shape) {
+  return isConcrete(shape) && isIndexed(shape);
+}
+export function isConcreteKeyed(shape) {
+  return isConcrete(shape) && isKeyed(shape);
+}
+
+export function isIndexed(shape) {
+  return Array.isArray(shape) || isMutableIndexed(shape) || isImmutableIndexed(shape);
+}
+export function isKeyed(shape) {
+  return isNativeKeyed(shape) || isMutableKeyed(shape) || isImmutableKeyed(shape);
 }

@@ -1,33 +1,37 @@
-import ConcreteCollectionMixin, { registerSubtype } from '../../collection-concrete-mixin';
+import { range } from 'iter-tools';
+import ConcreteCollection, { registerSubtype } from '../../collection-concrete';
 import { KeyedMixin } from '..';
-import { isSet, isIndexed } from '../../utils/shape';
+import { isKeyed } from '../../utils/shape';
 
-export class TranspiledMap extends Map {}
-
-export default class SequinsMap extends KeyedMixin(ConcreteCollectionMixin(TranspiledMap)) {
+class SequinsMap extends KeyedMixin(ConcreteCollection) {
   constructor(iterable) {
-    super(
-      iterable && !Array.isArray(iterable) && (isSet(iterable) || isIndexed(iterable))
-        ? iterable.entries()
-        : iterable,
+    super(iterable);
+    this.__native = new Map(
+      iterable == null
+        ? []
+        : !isKeyed(iterable) && !Array.isArray(iterable)
+          ? iterable.entries()
+          : iterable,
     );
   }
 
-  reverse() {
-    const reversedSeq = this.toKeyedSeq()
-      .reverse()
-      .cacheResult();
+  set(key, value) {
+    this.__native.set(key, value);
+    return this;
+  }
 
-    this.clear();
+  reverse() {
+    const reversedSeq = this.__reverse();
     for (const [key, value] of reversedSeq) {
       this.set(key, value);
     }
     return this;
   }
 
+  // Conversions
   toMap() {
     return this;
   }
 }
 
-registerSubtype('Keyed', SequinsMap);
+export default registerSubtype('Keyed', SequinsMap);

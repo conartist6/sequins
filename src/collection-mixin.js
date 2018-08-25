@@ -6,13 +6,16 @@ import invariant from 'invariant';
 export const Collection = {};
 
 export function registerSubtype(key, type) {
-  Collection[key] = type;
+  return (Collection[key] = type);
 }
+
+const emptyArray = [];
 
 export default Base => {
   class CollectionMixin extends Base {
     constructor(iterable, collectionType) {
       super(iterable, collectionType);
+      this.__selfParam = emptyArray;
 
       invariant(
         collectionType,
@@ -32,10 +35,6 @@ export default Base => {
       }
     }
 
-    static get Sequence() {
-      return Collection.Sequence;
-    }
-
     flatten(shallowOrDepth) {
       return this.__doCollectionTransform(this.__dynamicMethods.flatten(shallowOrDepth));
     }
@@ -52,10 +51,20 @@ export default Base => {
       return this.map(mapFn).flatten(true);
     }
 
+    groupBy(grouper) {
+      return this.__doCollectionTransform(iterable =>
+        this.__dynamicMethods.groupBy(iterable, grouper),
+      );
+    }
+
     // Reductive functions
-    reduce(...args) {
+    reduce(reducer, ...args) {
       return this.__doReductiveTransform(iterable =>
-        this.__dynamicMethods.reduce(iterable, ...args),
+        this.__dynamicMethods.reduce(
+          iterable,
+          (acc, value, index) => reducer(acc, value, index, ...this.__selfParam),
+          ...args,
+        ),
       );
     }
 
@@ -107,16 +116,11 @@ export default Base => {
     toSet() {
       return this.toSetSeq().toSet();
     }
-  }
 
-  // For native arrays, use native array methods.
-  for (const method of ['concat', 'slice']) {
-    if (Base.prototype[method]) {
-      CollectionMixin.prototype[method] = Base.prototype[method];
+    static get Sequence() {
+      return Collection.Sequence;
     }
   }
-
-  Object.defineProperty(CollectionMixin.prototype, '@@__MUTABLE_ITERABLE__@@', { value: true });
 
   return CollectionMixin;
 };

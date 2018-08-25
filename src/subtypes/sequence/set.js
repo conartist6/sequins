@@ -1,7 +1,7 @@
 import { map } from 'iter-tools';
 import { isKeyed } from '../../utils/shape';
 import Sequence, { registerSubtype } from '../../sequence';
-import { ConcreteCollection } from '../../collection-concrete-mixin';
+import ConcreteCollection from '../../collection-concrete';
 import { SetMixin } from '..';
 
 export default class SetSeq extends SetMixin(Sequence) {

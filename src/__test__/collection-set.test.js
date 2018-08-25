@@ -1,12 +1,20 @@
-import makeTestMethod from './helpers/make-test-method';
+import { Collection } from '../collection-mixin';
 import { SetSeq, Set } from '..';
+import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 
-function makeTests(SetConstructor, description) {
-  describe(description, function() {
+function makeTests(collectionSubtype) {
+  const SetConstructor = Collection[collectionSubtype].Set;
+
+  describe(SetConstructor.name, function() {
+    const { keys, values, entries, array } = testData.Set;
+    const staticSet = new SetConstructor(array);
+    const calls = makeCalls(testData.Set.calls);
     let set;
 
-    const { keys, values, entries, calls, array } = testData.Set;
+    function makeCalls(calls) {
+      return collectionSubtype === 'Concrete' ? calls.map(call => [...call, staticSet]) : calls;
+    }
 
     const testMethod = makeTestMethod(SetConstructor);
 
@@ -48,7 +56,7 @@ function makeTests(SetConstructor, description) {
 
     testMethod('reduce')
       .callback((acc, val, key) => acc + val)
-      .expectCalls([[1, 2, 2], [3, 3, 3]])
+      .expectCalls(makeCalls([[1, 2, 2], [3, 3, 3]]))
       .run(reducerFn => set.reduce(reducerFn))
       .expectReturns(6);
 
@@ -59,5 +67,5 @@ function makeTests(SetConstructor, description) {
   });
 }
 
-makeTests(SetSeq, 'SetSeq');
-makeTests(Set, 'Set');
+makeTests('Sequence');
+makeTests('Concrete');

@@ -9,32 +9,42 @@ export default Base => {
 
     // Collection functions
     tap(tapFn) {
-      return this.__doCollectionTransform(tap(([key, value]) => tapFn(value, key)));
+      return this.__doCollectionTransform(
+        tap(([key, value]) => tapFn(value, key, ...this.__selfParam)),
+      );
     }
 
     map(mapFn) {
-      return this.__doCollectionTransform(map(([key, value]) => [key, mapFn(value, key)]));
+      return this.__doCollectionTransform(
+        map(([key, value]) => [key, mapFn(value, key, ...this.__selfParam)]),
+      );
     }
 
     mapKeys(mapFn) {
-      return this.__doCollectionTransform(map(([key, value]) => [mapFn(key, value), value]));
+      return this.__doCollectionTransform(
+        map(([key, value]) => [mapFn(key, value, ...this.__selfParam), value]),
+      );
     }
 
     mapEntries(mapFn) {
-      return this.__doCollectionTransform(map((entry, i) => mapFn(entry, i)));
+      return this.__doCollectionTransform(map((entry, i) => mapFn(entry, i, ...this.__selfParam)));
     }
 
     filter(filterFn) {
-      return this.__doCollectionTransform(filter(([key, value]) => filterFn(value, key)));
+      return this.__doCollectionTransform(
+        filter(([key, value]) => filterFn(value, key, ...this.__selfParam)),
+      );
     }
 
     filterNot(filterFn) {
-      return this.__doCollectionTransform(filter(([key, value]) => !filterFn(value, key)));
+      return this.__doCollectionTransform(
+        filter(([key, value]) => !filterFn(value, key, ...this.__selfParam)),
+      );
     }
 
     // Reductive functions
     forEach(eachFn) {
-      return forEach(([key, value]) => eachFn(value, key), this);
+      return forEach(([key, value]) => eachFn(value, key, ...this.__selfParam), this);
     }
 
     // Conversions

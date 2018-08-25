@@ -1,98 +1,99 @@
 import { range } from 'iter-tools';
-import ConcreteCollectionMixin, { registerSubtype } from '../../collection-concrete-mixin';
+import ConcreteCollection, { registerSubtype } from '../../collection-concrete';
 import { IndexedMixin } from '..';
 import { isKeyed } from '../../utils/shape';
 
-const aProto = Array.prototype;
-
 /**
- * List is a little extra special in that it does not derive from Array,
- * particularly because there is no mechanism to fall back on if es6 extend
- * is not supported. See article:
- * http://perfectionkills.com/how-ecmascript-5-still-does-not-allow-to-subclass-an-array/
- *
- * At some point in the future (when IE is well and truly dead) there should
- * additionally be an Array type which extends Array.
+ * List is a little extra special in that it does not have a native counterpart.
+ * I feel that that would dangerously blur the line between primitives and data structures
  **/
-export class List {
+
+class List extends IndexedMixin(ConcreteCollection) {
   constructor(iterable) {
-    this._array =
-      iterable != null ? Array.from(isKeyed(iterable) ? iterable.values() : iterable) : [];
-  }
-
-  get size() {
-    return this._array.length;
-  }
-
-  __doCollectionTransform(transform) {
-    const CollectionConstructor = this.constructor;
-    const arr = new CollectionConstructor();
-    arr._array = transform(this._array);
-    return arr;
-  }
-
-  __possiblyUseNativeImplementaton(methodName, ...args) {
-    return typeof aProto[methodName] === 'function'
-      ? this.__doCollectionTransform(arr => aProto[methodName].apply(arr, args))
-      : super[methodName](...args);
+    super(iterable);
+    this.__native =
+      iterable == null ? [] : Array.from(isKeyed(iterable) ? iterable.values() : iterable);
   }
 
   get(idx) {
-    return this._array[idx];
+    return this.__native[idx];
   }
   set(idx, value) {
-    this._array[idx] = value;
+    this.__native[idx] = value;
     return this;
   }
+  has(value) {
+    return this.includes(value);
+  }
   push(...values) {
-    this._array.push(...values);
+    this.__native.push(...values);
     return this;
   }
   pop() {
-    return this._array.pop();
+    return this.__native.pop();
   }
   shift() {
-    return this._array.shift();
+    return this.__native.shift();
   }
   unshift(value) {
-    this._array.unshift(value);
+    this.__native.unshift(value);
     return this;
   }
-  clear() {
-    this._array = [];
-    return this;
+  first() {
+    return this.__native[0];
+  }
+  last() {
+    return this.__native[this.__native.length];
   }
 
   fill(...args) {
-    this._array.fill(...args);
+    this.__native.fill(...args);
     return this;
+  }
+  includes(value) {
+    return this.__native.includes(value);
   }
   map(mapFn) {
-    return this.__doCollectionTransform(() => this._array.map(mapFn));
+    return this.__doCollectionTransform(() =>
+      this.__native.map((value, index) => mapFn(value, index, this)),
+    );
   }
   filter(filterFn) {
-    return this.__doCollectionTransform(() => this._array.filter(filterFn));
+    return this.__doCollectionTransform(() =>
+      this.__native.filter((value, index) => filterFn(value, index, this)),
+    );
+  }
+  filterNot(filterFn) {
+    return this.__doCollectionTransform(() =>
+      this.__native.filter((value, index) => !filterFn(value, index, this)),
+    );
   }
   slice(...args) {
-    return this.__doCollectionTransform(() => this._array.slice(...args));
+    return this.__doCollectionTransform(() => this.__native.slice(...args));
   }
   concat(...args) {
-    return this.__doCollectionTransform(() => this._array.concat(...args));
+    return this.__doCollectionTransform(() => this.__native.concat(...args));
   }
   reverse() {
-    this._array.reverse();
+    this.__native.reverse();
     return this;
   }
-  reduce(...args) {
-    return this._array.reduce(...args);
+  reduce(reducer, ...args) {
+    return this.__native.reduce((acc, value, index) => reducer(acc, value, index, this), ...args);
   }
   join(separator) {
-    return this._array.join(separator);
+    return this.__native.join(separator);
   }
 
-  // Possibly native functions
-  reduceRight(...args) {
-    return this.__possiblyUseNativeImplementaton('reduceRight', ...args);
+  has(idx) {
+    return idx < this.size();
+  }
+  delete(idx) {
+    const hasIdx = this.has(idx);
+    if (hasIdx) {
+      this.__native[idx] = undefined;
+    }
+    return hasIdx;
   }
 
   // Conversions
@@ -100,16 +101,12 @@ export class List {
     return this;
   }
   toArray() {
-    return Array.from(this._array);
+    return Array.from(this.__native);
   }
 
   // Iterators
-  *[Symbol.iterator]() {
-    yield* this._array;
-  }
-
   keys() {
-    return range(this._array.length);
+    return range(this.__native.length);
   }
 
   values() {
@@ -117,12 +114,10 @@ export class List {
   }
 
   *entries() {
-    for (let i = 0; i < this._array.length; i++) {
-      yield [i, this._array[i]];
+    for (let i = 0; i < this.__native.length; i++) {
+      yield [i, this.__native[i]];
     }
   }
 }
 
-export default class SequinsList extends IndexedMixin(ConcreteCollectionMixin(List)) {}
-
-registerSubtype('Indexed', SequinsList);
+export default registerSubtype('Indexed', List);

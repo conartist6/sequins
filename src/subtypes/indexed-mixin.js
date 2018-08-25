@@ -9,24 +9,28 @@ export default Base => {
 
     // Collection functions
     tap(tapFn) {
-      return this.__doCollectionTransform(tap(tapFn));
+      return this.__doCollectionTransform(tap((value, i) => tapFn(value, i, ...this.__selfParam)));
     }
 
     map(mapFn) {
-      return this.__doCollectionTransform(map(mapFn));
+      return this.__doCollectionTransform(map((value, i) => mapFn(value, i, ...this.__selfParam)));
     }
 
     filter(filterFn) {
-      return this.__doCollectionTransform(filter(filterFn));
+      return this.__doCollectionTransform(
+        filter((value, i) => filterFn(value, i, ...this.__selfParam)),
+      );
     }
 
     filterNot(filterFn) {
-      return this.__doCollectionTransform(filter((item, i) => !filterFn(item, i)));
+      return this.__doCollectionTransform(
+        filter((value, i) => !filterFn(value, i, ...this.__selfParam)),
+      );
     }
 
     // Reductive functions
     forEach(eachFn) {
-      return forEach(eachFn, this);
+      return forEach((value, i) => eachFn(value, i, ...this.__selfParam), this);
     }
 
     // Conversions

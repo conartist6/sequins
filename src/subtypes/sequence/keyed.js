@@ -1,14 +1,14 @@
 import { map } from 'iter-tools';
-import { isSet, isIndexed } from '../../utils/shape';
+import { isKeyed } from '../../utils/shape';
 import Sequence, { registerSubtype } from '../../sequence';
-import { ConcreteCollection } from '../../collection-concrete-mixin';
+import ConcreteCollection from '../../collection-concrete';
 import { KeyedMixin } from '..';
 
 export default class KeyedSeq extends KeyedMixin(Sequence) {
   constructor(iterable) {
     super(iterable);
     iterable = this.__iterable;
-    if (isSet(iterable) || (!Array.isArray(iterable) && isIndexed(iterable))) {
+    if (!isKeyed(iterable) && !Array.isArray(iterable) && iterable.entries) {
       this.__transforms.push(iterable => iterable.entries());
     }
   }

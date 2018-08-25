@@ -7,7 +7,7 @@ class MethodTest {
   callback(method, calls) {
     this._method = method;
     this._methodMock = jest.fn(method);
-    if (calls) {
+    if (arguments.length > 1) {
       this._calls = calls;
     }
     return this;

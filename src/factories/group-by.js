@@ -5,7 +5,8 @@ import makeReduce from './reduce';
 
 function makeGroupBy(Collection, collectionSubtype, collectionType) {
   const TypedCollection = Collection[collectionSubtype][collectionType];
-  const ConcreteCollection = Collection.Concrete[collectionType];
+  const concreteSubtype = collectionSubtype === 'Sequence' ? 'Concrete' : collectionSubtype;
+  const ConcreteCollection = Collection[concreteSubtype][collectionType];
   const Map = Collection.Concrete.Keyed;
 
   const push = makePush(...arguments);

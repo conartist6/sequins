@@ -7,6 +7,8 @@ function makeFlatten(Collection, collectionSubtype, collectionType) {
   function* flatten(shallowOrDepth, iterable) {
     const depth = shallowOrDepth === true ? 0 : shallowOrDepth;
 
+    debugger;
+
     for (const item of iterable) {
       const itemSeq = item == null ? item : Collection.Sequence.from(itemValue(item));
 

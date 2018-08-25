@@ -20,10 +20,6 @@ class Sequence {
     this._closed = false;
   }
 
-  __getStatics() {
-    return Sequence;
-  }
-
   __doCollectionTransform(transform) {
     invariant(
       !this._closed,
@@ -48,31 +44,15 @@ class Sequence {
   }
 }
 
-export default class AbstractSequence extends CollectionMixin(Sequence) {
-  static from(initial) {
-    return sequenceFrom(initial);
-  }
-
-  static get Indexed() {
-    return Seq.Indexed;
-  }
-
-  static get Keyed() {
-    return Seq.Keyed;
-  }
-
-  static get Set() {
-    return Seq.Set;
-  }
-
+class AbstractSequence extends CollectionMixin(Sequence) {
   constructor(iterable, collectionType) {
     iterable = iterable || [];
     super(iterable, collectionType);
     this.__iterable = iterable;
   }
 
-  *[Symbol.iterator]() {
-    yield* this._transform();
+  [Symbol.iterator]() {
+    return this._transform()[Symbol.iterator]();
   }
 
   cacheResult() {
@@ -116,10 +96,27 @@ export default class AbstractSequence extends CollectionMixin(Sequence) {
     this._close();
     return super.toSetSeq();
   }
+
+  static from(initial) {
+    return sequenceFrom(initial);
+  }
+
+  static get Indexed() {
+    return Seq.Indexed;
+  }
+
+  static get Keyed() {
+    return Seq.Keyed;
+  }
+
+  static get Set() {
+    return Seq.Set;
+  }
 }
 
-registerCollectionSubtype('Sequence', AbstractSequence);
+export default registerCollectionSubtype('Sequence', AbstractSequence);
 
 const sequenceFrom = makeFrom(Collection, 'Sequence');
 
+Object.defineProperty(AbstractSequence.prototype, '@@__MUTABLE_ITERABLE__@@', { value: true });
 Object.defineProperty(AbstractSequence.prototype, '@@__MUTABLE_SEQUENCE__@@', { value: true });

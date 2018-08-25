@@ -1,12 +1,20 @@
-import makeTestMethod from './helpers/make-test-method';
+import { Collection } from '../collection-mixin';
 import { KeyedSeq, Map } from '..';
+import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 
-function makeTests(KeyedConstructor, description) {
-  describe(description, function() {
+function makeTests(collectionSubtype) {
+  const KeyedConstructor = Collection[collectionSubtype].Keyed;
+
+  describe(KeyedConstructor.name, function() {
+    const { keys, values, entries, array } = testData.Keyed;
+    const staticKeyed = new KeyedConstructor(array);
+    let calls = makeCalls(testData.Keyed.calls);
     let keyed;
 
-    const { keys, values, entries, calls, array } = testData.Keyed;
+    function makeCalls(calls) {
+      return collectionSubtype === 'Concrete' ? calls.map(call => [...call, staticKeyed]) : calls;
+    }
 
     const testMethod = makeTestMethod(KeyedConstructor);
 
@@ -25,13 +33,14 @@ function makeTests(KeyedConstructor, description) {
       .expectCollectionYields([[9, 2], [8, 3], [7, 4]]);
 
     testMethod('mapKeys')
-      .callback(key => key - 1, entries)
+      .callback(key => key - 1)
+      .expectCalls(makeCalls(entries))
       .run(mapFn => keyed.mapKeys(mapFn))
       .expectCollectionYields([[8, 1], [7, 2], [6, 3]]);
 
     testMethod('mapEntries')
       .callback(([key, val]) => [val, key])
-      .expectCalls([[[9, 1], 0], [[8, 2], 1], [[7, 3], 2]])
+      .expectCalls(makeCalls([[[9, 1], 0], [[8, 2], 1], [[7, 3], 2]]))
       .run(mapFn => keyed.mapEntries(mapFn))
       .expectCollectionYields([[1, 9], [2, 8], [3, 7]]);
 
@@ -59,7 +68,7 @@ function makeTests(KeyedConstructor, description) {
 
     testMethod('reduce')
       .callback((acc, val, key) => acc + val)
-      .expectCalls([[1, 2, 8], [3, 3, 7]])
+      .expectCalls(makeCalls([[1, 2, 8], [3, 3, 7]]))
       .run(reducerFn => keyed.reduce(reducerFn))
       .expectReturns(6);
 
@@ -70,5 +79,5 @@ function makeTests(KeyedConstructor, description) {
   });
 }
 
-makeTests(KeyedSeq, 'KeyedSeq');
-makeTests(Map, 'Map');
+makeTests('Sequence');
+makeTests('Concrete');
