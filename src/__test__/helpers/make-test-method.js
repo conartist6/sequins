@@ -54,7 +54,8 @@ class MethodTest {
   _checkCollectionYields(result) {
     if (this.hasOwnProperty('_expectedCollectionValues')) {
       expect(result).toBeInstanceOf(this._ConstructorType);
-      expect(result).toBeIterable(expect.yieldsEqual(this._expectedCollectionValues));
+      expect(result).toBeIterable();
+      expect(Array.from(result)).toEqual(Array.from(this._expectedCollectionValues));
     }
   }
 

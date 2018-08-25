@@ -27,7 +27,10 @@ function makeTests(type, collectionSubtype) {
       const flatten = makeFlatten(Collection, collectionSubtype, type);
       const result = collection.flatten();
       expect(result).toBeInstanceOf(CollectionConstructor);
-      expect(collection.flatten(true)).toBeIterable(expect.yieldsEqual(flatten(true, collection)));
+      const flattened = collection.flatten(true);
+      expect(flattened).toBeIterable();
+
+      expect(Array.from(flattened)).toEqual(Array.from(flatten(true, collection)));
     });
 
     // testMethod('mapEntries')

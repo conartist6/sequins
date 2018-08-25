@@ -1,6 +1,5 @@
 import Sequence from './sequence';
 import { Range, Repeat } from './static';
-import { isIndexed, isKeyed, isSet } from './utils/shape';
 
 function Seq(initial) {
   const seq = Sequence.from(initial);

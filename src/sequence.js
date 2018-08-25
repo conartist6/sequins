@@ -1,5 +1,5 @@
 import { compose, map, concat } from 'iter-tools';
-import { isIndexed, isKeyed, isSet, isConcrete } from './utils/shape';
+import { isConcrete } from './utils/shape';
 import invariant from 'invariant';
 import { reverseArrayIterator } from './utils/array';
 import CollectionMixin, {
