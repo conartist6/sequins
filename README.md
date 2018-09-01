@@ -16,6 +16,8 @@ OR
 
 Sequins does not yet support being included outside of a module system.
 
+**IMPORTANT NOTE**: Sequins depends on a working implementation of Map and Set. If you need to support browsers which lack some or all of the implementation, it is your responsibility to setup `core-js`.
+
 ## Status
 
 This project is in alpha. It is not ready for production usage and should be expected to contain (many) omissions and bugs.

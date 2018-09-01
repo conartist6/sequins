@@ -8,7 +8,7 @@ module.exports = {
     file: 'dist/sequins.mjs',
     format: 'es',
   },
-  external: ['iter-tools', 'invariant', 'stable', '@babel/runtime/regenerator'],
+  external: module => /^(iter-tools|invariant|stable|@babel\/runtime)\b/.test(module),
   plugins: [
     resolve({
       extensions: ['.mjs', '.js', '.json'],
