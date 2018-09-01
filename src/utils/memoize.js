@@ -1,7 +1,15 @@
-import memoize from 'memoizee';
+function makeKey(collectionSubtype, collectionType) {
+  return `${collectionSubtype}__${collectionType}`;
+}
 
 export function memoizeFactory(factory) {
-  //const normalizeFn = factory.length > 0 ? collectionType => collectionType : () => null;
-  //return memoize(factory, normalizeFn);
-  return memoize(factory);
+  const results = Object.create(null);
+
+  return function memoizedFactory(Collection, ...dynamicArgs) {
+    const key = makeKey(...dynamicArgs);
+    if (!results[key]) {
+      results[key] = factory(Collection, ...dynamicArgs);
+    }
+    return results[key];
+  };
 }

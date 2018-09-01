@@ -1,41 +1,25 @@
+const mergeTrees = require('broccoli-merge-trees');
 const esTranspiler = require('broccoli-babel-transpiler');
-const Rollup = require('broccoli-rollup');
 const resolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
+const Rollup = require('broccoli-rollup');
+const rollupConfig = require('./rollup.config.js');
 
 let es = 'src';
-es = esTranspiler(es, {
-  filterExtensions: ['js'],
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        modules: false,
-      },
-    ],
-  ],
-  plugins: ['@babel/plugin-external-helpers'],
-});
 
-module.exports = es;
-
-let bundled = new Rollup(es, {
+let bundledModule = new Rollup(es, {
   rollup: {
+    ...rollupConfig,
     input: 'index.js',
     output: {
-      file: 'sequins.js',
-      format: 'es',
+      ...rollupConfig.output,
+      file: 'sequins.mjs',
     },
-    plugins: [
-      resolve({
-        extensions: ['.mjs', '.js', '.json'],
-      }),
-
-      commonjs({
-        include: ['node_modules/memoizee', 'node_modules/invariant'],
-      }),
-    ],
   },
 });
 
-// module.exports = bundled;
+let bundledCJS = esTranspiler(bundledModule, {
+  filterExtensions: ['mjs'],
+  plugins: [['@babel/plugin-transform-modules-commonjs', { loose: true, strict: true }]],
+});
+
+module.exports = mergeTrees([bundledModule, bundledCJS, 'compat']);

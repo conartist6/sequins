@@ -1,52 +1,41 @@
 {
   "name": "sequins",
   "version": "0.0.1",
-  "main": "lib/index",
+  "description": "Mutable sequences and native data structures (Map, Set, List) following the Immutable.js API",
+  "author": "conrad@burningpotato.com",
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "main": "dist/_sequins.js",
+  "module": "dist/sequins.mjs",
   "scripts": {
     "build": "broccoli build dist --overwrite",
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/conartist6/sequins.git"
-  },
-  "keywords": [
-    "iterator",
-    "generator",
-    "mutable",
-    "sequence",
-    "seq",
-    "iter-tools",
-    "es6",
-    "es2015"
-  ],
-  "author": "conrad@burningpotato.com",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/conartist6/sequins/issues"
-  },
-  "files": "lib",
-  "homepage": "https://github.com/conartist6/sequins#readme",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.56",
     "@babel/plugin-external-helpers": "^7.0.0-rc.3",
     "@babel/plugin-transform-classes": "^7.0.0-beta.56",
-    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.56",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "7.0.0-beta.56",
     "babel-core": "^7.0.0-beta.41",
     "babel-jest": "^23.4.2",
     "broccoli": "^2.0.0-beta.4",
     "broccoli-babel-transpiler": "7.0.0-beta.4",
+    "broccoli-cli": "^1.0.0",
+    "broccoli-merge-trees": "^3.0.1",
     "broccoli-rollup": "^2.1.1",
     "jest": "^23.4.2",
-    "rollup-plugin-babel": "^4.0.0-beta.8",
+    "rollup-plugin-babel": "^4.0.2",
     "rollup-plugin-commonjs": "^9.1.6",
     "rollup-plugin-node-resolve": "^3.3.0"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0",
     "invariant": "^2.2.4",
     "iter-tools": "^6.0.0",
-    "memoizee": "^0.4.12",
     "stable": "^0.1.8"
   },
   "jest": {
@@ -54,5 +43,27 @@
       "js"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/jest_setup.js"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/conartist6/sequins.git"
+  },
+  "keywords": [
+    "mutable",
+    "immutable",
+    "map",
+    "set",
+    "list",
+    "stable",
+    "sort",
+    "sequence",
+    "seq",
+    "iter-tools",
+    "es6",
+    "es2015"
+  ],
+  "bugs": {
+    "url": "https://github.com/conartist6/sequins/issues"
+  },
+  "homepage": "https://github.com/conartist6/sequins#readme"
 }
