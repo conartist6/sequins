@@ -522,13 +522,6 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.0.0-beta.49":
-  version "7.0.0-beta.54"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-beta.54.tgz#39ebb42723fe7ca4b3e1b00e967e80138d47cadf"
-  dependencies:
-    core-js "^2.5.7"
-    regenerator-runtime "^0.12.0"
-
 "@babel/template@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.0.0.tgz#c2bc9870405959c89a9c814376a2ecb247838c80"
@@ -1226,12 +1219,11 @@ cliui@^4.0.0:
     strip-ansi "^4.0.0"
     wrap-ansi "^2.0.0"
 
-clone-regexp@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/clone-regexp/-/clone-regexp-1.0.1.tgz#051805cd33173375d82118fc0918606da39fd60f"
+clone-regexp@^2.0.1:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/clone-regexp/-/clone-regexp-2.1.0.tgz#d17b9ff55840b2cb2d84eab618bc4f8d2af4b631"
   dependencies:
-    is-regexp "^1.0.0"
-    is-supported-regexp-flag "^1.0.0"
+    is-regexp "^2.0.0"
 
 clone@^2.1.2:
   version "2.1.2"
@@ -1305,7 +1297,7 @@ copy-descriptor@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
 
-core-js@^2.4.0, core-js@^2.5.7:
+core-js@^2.4.0:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
 
@@ -1422,10 +1414,6 @@ delegates@^1.0.0:
 depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
-
-deprecate@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/deprecate/-/deprecate-1.0.0.tgz#661490ed2428916a6c8883d8834e5646f4e4a4a8"
 
 dequeue@^1.0.5:
   version "1.0.5"
@@ -2282,17 +2270,13 @@ is-regex@^1.0.4:
   dependencies:
     has "^1.0.1"
 
-is-regexp@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/is-regexp/-/is-regexp-1.0.0.tgz#fd2d883545c46bac5a633e7b9a09e87fa2cb5069"
+is-regexp@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/is-regexp/-/is-regexp-2.0.0.tgz#d669511d64a620c7a8dffa9a1e00710f9275ace0"
 
 is-stream@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
-
-is-supported-regexp-flag@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/is-supported-regexp-flag/-/is-supported-regexp-flag-1.0.1.tgz#21ee16518d2c1dd3edd3e9a0d57e50207ac364ca"
 
 is-symbol@^1.0.1:
   version "1.0.1"
@@ -2404,13 +2388,12 @@ istextorbinary@2.1.0:
     editions "^1.1.1"
     textextensions "1 || 2"
 
-iter-tools@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/iter-tools/-/iter-tools-6.0.0.tgz#3f1093342108b4668d259a329b50f348dccc6f2b"
+iter-tools@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/iter-tools/-/iter-tools-6.1.1.tgz#33470ab2938f4bc2cf72345e71a21691a62894fc"
   dependencies:
-    "@babel/runtime" "^7.0.0-beta.49"
-    clone-regexp "^1.0.1"
-    deprecate "^1.0.0"
+    "@babel/runtime" "^7.0.0"
+    clone-regexp "^2.0.1"
     dequeue "^1.0.5"
     little-ds-toolkit "^1.1.0"
 
