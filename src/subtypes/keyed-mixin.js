@@ -1,5 +1,5 @@
 import { tap, map, filter, reduce } from 'iter-tools';
-import forEach from '../functions/for-each';
+import forEach from '../transforms/for-each';
 
 export default Base => {
   class KeyedCollection extends Base {

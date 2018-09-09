@@ -1,4 +1,5 @@
-import { Seq, KeyedSeq, IndexedSeq, SetSeq } from '../index';
+import { Seq } from '..';
+import { KeyedSeq, IndexedSeq, SetSeq } from '../index-test';
 
 describe('Seq', function() {
   describe('construction', function() {

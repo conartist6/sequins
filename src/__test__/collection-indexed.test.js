@@ -1,5 +1,5 @@
 import { Collection } from '../collection-mixin';
-import { IndexedSeq, List } from '..';
+import { IndexedSeq, List } from '../index-test';
 import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 

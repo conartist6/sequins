@@ -1,13 +1,21 @@
-function isImmutableCollection(shape) {
+export function isImmutableCollection(shape) {
   return !!shape['@@__IMMUTABLE_ITERABLE__@@'];
 }
 
-function isImmutableSequence(shape) {
+export function isImmutableRecord(shape) {
+  return !!shape['@@__IMMUTABLE_RECORD__@@'];
+}
+
+export function isImmutableSequence(shape) {
   return !!shape['@@__IMMUTABLE_SEQUENCE__@@'];
 }
 
-function isImmutableConcrete(shape) {
-  return isImmutableCollection(shape) && !isImmutableSequence(shape);
+export function isImmutableConcrete(shape) {
+  return isImmutable(shape) && !isImmutableSequence(shape);
+}
+
+export function isImmutable(shape) {
+  return isImmutableCollection(shape) || isImmutableRecord(shape);
 }
 
 export function isMutableCollection(shape) {
@@ -26,23 +34,27 @@ export function isNative(shape) {
   return isNativeKeyed(shape) || isNativeSet(shape);
 }
 
-// Impl. borrowed from immutable
+// Impl. borrowed from immutable, Copyright (c) 2014-present, Facebook, Inc.
 export function isPlainObj(shape) {
-  return shape && (shape.constructor === Object || shape.constructor === undefined);
+  return shape.constructor === Object || shape.constructor === undefined;
 }
 
 export function isDataStructure(shape) {
   return (
-    isMutableCollection(shape) ||
-    isImmutableCollection(shape) ||
-    isNative(shape) ||
-    Array.isArray(shape) ||
-    isPlainObj(shape)
+    isFancyDataStructure(shape) || isNative(shape) || Array.isArray(shape) || isPlainObj(shape)
   );
 }
 
+export function isFancyDataStructure(shape) {
+  return isMutableCollection(shape) || isImmutable(shape);
+}
+
+export function isModernDataStructure(shape) {
+  return isFancyDataStructure(shape) || isNative(shape);
+}
+
 export function isSeq(shape) {
-  return !!shape['@@__MUTABLE_SEQUENCE__@@'] || !!shape['@@__IMMUTABLE_SEQ__@@'];
+  return isMutableSeq(shape) || isImmutableSequence(shape);
 }
 
 export function isMutableConcrete(shape) {
@@ -66,17 +78,17 @@ export function collectionType(shape) {
 
 // Indexed, Keyed, Set
 
-function isImmutableIndexed(shape) {
+export function isImmutableIndexed(shape) {
   return !!shape['@@__IMMUTABLE_INDEXED__@@'];
 }
-function isImmutableKeyed(shape) {
+export function isImmutableKeyed(shape) {
   return !!shape['@@__IMMUTABLE_KEYED__@@'];
 }
 
-function isNativeSet(shape) {
+export function isNativeSet(shape) {
   return shape instanceof Set;
 }
-function isNativeKeyed(shape) {
+export function isNativeKeyed(shape) {
   return shape instanceof Map;
 }
 
@@ -85,6 +97,9 @@ export function isMutableIndexed(shape) {
 }
 export function isMutableKeyed(shape) {
   return !!shape['@@__MUTABLE_KEYED__@@'];
+}
+export function isMutableAssociative(shape) {
+  return isMutableIndexed(shape) || isMutableKeyed(shape);
 }
 
 export function isMutableIndexedSeq(shape) {

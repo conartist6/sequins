@@ -64,6 +64,14 @@ class AbstractSequence extends CollectionMixin(Sequence) {
     return this;
   }
 
+  set(key, newValue) {
+    return this.map((value, key) => (key === key ? newValue : value));
+  }
+
+  delete(key) {
+    return this.filter((_, key) => key !== key);
+  }
+
   groupBy(grouper) {
     const CollectionContructor = this.constructor;
     // Avoid creating more unlocked sequences when doing transforms by locking the old sequence.

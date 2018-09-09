@@ -10,9 +10,4 @@ function forEach(func, iterable) {
   return c;
 }
 
-export default function curriedForEach(func, iterable) {
-  if (!iterable) {
-    return iterable => forEach(func, iterable);
-  }
-  return forEach(func, iterable);
-}
+export default func => iterable => forEach(func, iterable);

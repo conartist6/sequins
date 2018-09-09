@@ -1,4 +1,4 @@
-import { equals } from 'expect/build/jasmine_utils';
+const { equals } = require('expect/build/jasmine_utils');
 
 expect.extend({
   toBeIterable(received, argument) {

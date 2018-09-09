@@ -1,5 +1,7 @@
 import SequinsList from '../list';
 
+debugger;
+
 describe('SequinsList', function() {
   const array = Object.freeze([1, 2, 3]);
   let list;
@@ -8,7 +10,7 @@ describe('SequinsList', function() {
     list = new SequinsList(array);
   });
 
-  it('has size', function() {
+  fit('has size', function() {
     expect(list.size).toBe(3);
   });
 

@@ -1,5 +1,5 @@
 import { Collection } from '../collection-mixin';
-import { SetSeq, Set } from '..';
+import { SetSeq, Set } from '../index-test';
 import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 

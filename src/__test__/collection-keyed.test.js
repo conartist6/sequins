@@ -1,5 +1,5 @@
 import { Collection } from '../collection-mixin';
-import { KeyedSeq, Map } from '..';
+import { KeyedSeq, Map } from '../index-test';
 import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 

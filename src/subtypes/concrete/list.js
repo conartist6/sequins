@@ -22,8 +22,8 @@ class List extends IndexedMixin(ConcreteCollection) {
     this.__native[idx] = value;
     return this;
   }
-  has(value) {
-    return this.includes(value);
+  has(idx) {
+    return idx < this.__native.length;
   }
   push(...values) {
     this.__native.push(...values);

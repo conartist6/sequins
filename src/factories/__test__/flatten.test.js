@@ -1,4 +1,4 @@
-import { IndexedSeq, KeyedSeq, SetSeq } from '../..';
+import { IndexedSeq, KeyedSeq, SetSeq } from '../../index-test';
 import { Collection } from '../../collection-mixin';
 import makeFlatten from '../flatten';
 

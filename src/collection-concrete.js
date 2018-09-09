@@ -10,7 +10,9 @@ export function registerSubtype(key, type) {
   return (Concrete[key] = type);
 }
 
-class ConcreteCollection extends CollectionMixin(Object) {
+class Base {}
+
+class ConcreteCollection extends CollectionMixin(Base) {
   constructor(iterable, collectionType) {
     super(iterable, collectionType);
     this.__selfParam = [this];
@@ -40,8 +42,8 @@ class ConcreteCollection extends CollectionMixin(Object) {
     return this.__native.length;
   }
 
-  get(key) {
-    return this.__native.get(key);
+  get(key, defaultValue) {
+    return this.has(key) ? this.__native.get(key) : defaultValue;
   }
 
   has(key) {
