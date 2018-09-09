@@ -46,3 +46,7 @@ sequins/
 ## Major decisions
 
 -   **Avoid circular dependencies**: Initially I tried to embrace some circular dependencies in a structured fashion. This experiment failed. In order to eliminate circular deps I created namespaces and forced subclasses to register themselves. By eliminating the need of base classes to import thier subclasses, the dependency loops were broken.
+
+-   **Don't extend native data sturctures**: There were several reasons that I chose not to extend native Map and Set. Firstly, it would have needed to be inconsistent, because I think subclassing Array would be a bad choice. Array has a full API of its own, and any inconsistencies would be glaringly obvious. It also serves as the most fundamental underlying primative type for literals. Secondly IE 11 is still supported for a while, and does not support extending native types. Finally, Immutable, which which this project hopes to achieve relative parity, does not extend native data types. I did however leave the door open to publishing a separate package which uses this library's mixins to create types which extend native ones. For a fuller explanation of all the semantics involved, take a look at [this article](http://perfectionkills.com/how-ecmascript-5-still-does-not-allow-to-subclass-an-array/).
+
+
