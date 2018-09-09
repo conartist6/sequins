@@ -25,7 +25,7 @@ This project is in alpha. It is not ready for production usage and should be exp
 ### Project milestones:
 
     Name chosen and registered on npm: 6/14/18
-    First npm version that isn't broken: ---
+    First npm version that isn't broken: 9/9/18
     First production usage: ---
     Immutable recognizes Sequins data types: ---
     1.0: ---

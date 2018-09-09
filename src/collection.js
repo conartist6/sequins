@@ -8,20 +8,28 @@ const Collection = Namespace;
 
 const emptyArray = [];
 
+class MethodFactory {
+  constructor(collectionType, collectionSubtype) {
+    this._collectionType = collectionType;
+    this._collectionSubtype = collectionSubtype;
+  }
+}
+
+for (const name of keys(factories)) {
+  Object.defineProperty(MethodFactory.prototype, name, {
+    get() {
+      return factories[name](Collection, this._collectionType, this._collectionSubtype);
+    },
+  });
+}
+
 export const CollectionMixin = Base => {
   class CollectionMixin extends Base {
     constructor(iterable, collectionType, collectionSubtype) {
       super(iterable, collectionSubtype);
       this.__selfParam = emptyArray;
 
-      this.__dynamicMethods = {};
-      for (const name of keys(factories)) {
-        this.__dynamicMethods[name] = factories[name](
-          Collection,
-          collectionType,
-          collectionSubtype,
-        );
-      }
+      this.__dynamicMethods = new MethodFactory(collectionType, collectionSubtype);
     }
 
     flatten(shallowOrDepth) {
