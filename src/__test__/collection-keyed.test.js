@@ -1,10 +1,10 @@
-import { Collection } from '../collection-mixin';
+import { Namespace as Collection } from '../collection';
 import { KeyedSeq, Map } from '../index-test';
 import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 
-function makeTests(collectionSubtype) {
-  const KeyedConstructor = Collection[collectionSubtype].Keyed;
+function makeTests(collectionType) {
+  const KeyedConstructor = Collection[collectionType].Keyed;
 
   describe(KeyedConstructor.name, function() {
     const { keys, values, entries, array } = testData.Keyed;
@@ -13,7 +13,7 @@ function makeTests(collectionSubtype) {
     let keyed;
 
     function makeCalls(calls) {
-      return collectionSubtype === 'Concrete' ? calls.map(call => [...call, staticKeyed]) : calls;
+      return collectionType === 'Concrete' ? calls.map(call => [...call, staticKeyed]) : calls;
     }
 
     const testMethod = makeTestMethod(KeyedConstructor);

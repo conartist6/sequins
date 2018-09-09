@@ -1,7 +1,7 @@
 import { map } from 'iter-tools';
 import { isKeyed } from '../../utils/shape';
-import Sequence, { registerSubtype } from '../../sequence';
-import ConcreteCollection from '../../collection-concrete';
+import Sequence, { Namespace } from '../../collection-sequence';
+import { Namespace as ConcreteCollection } from '../../collection-concrete';
 import { SetMixin } from '..';
 
 export default class SetSeq extends SetMixin(Sequence) {
@@ -36,4 +36,4 @@ export default class SetSeq extends SetMixin(Sequence) {
   }
 }
 
-registerSubtype('Set', SetSeq);
+Namespace.__register('Set', SetSeq);

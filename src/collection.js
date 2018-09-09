@@ -1,36 +1,25 @@
 import { keys, concat, slice } from 'iter-tools';
+import { RootNamespace } from './utils/namespace';
 import * as factories from './factories';
-import reflect from './reflect';
-import invariant from 'invariant';
+import reflect from './utils/reflect';
 
-export const Collection = {};
-
-export function registerSubtype(key, type) {
-  return (Collection[key] = type);
-}
+export const Namespace = new RootNamespace();
+const Collection = Namespace;
 
 const emptyArray = [];
 
-export default Base => {
+export const CollectionMixin = Base => {
   class CollectionMixin extends Base {
-    constructor(iterable, collectionType) {
-      super(iterable, collectionType);
+    constructor(iterable, collectionType, collectionSubtype) {
+      super(iterable, collectionSubtype);
       this.__selfParam = emptyArray;
-
-      invariant(
-        collectionType,
-        'new CollectionMixin must be passed a collectionType. Received %s',
-        collectionType,
-      );
-
-      const collectionSubtype = Base.name === 'Sequence' ? Base.name : 'Concrete';
 
       this.__dynamicMethods = {};
       for (const name of keys(factories)) {
         this.__dynamicMethods[name] = factories[name](
           Collection,
-          collectionSubtype,
           collectionType,
+          collectionSubtype,
         );
       }
     }
@@ -116,11 +105,13 @@ export default Base => {
     toSet() {
       return this.toSetSeq().toSet();
     }
-
-    static get Sequence() {
-      return Collection.Sequence;
-    }
   }
+
+  Object.defineProperty(CollectionMixin.prototype, '@@__MUTABLE_ITERABLE__@@', {
+    value: true,
+  });
 
   return CollectionMixin;
 };
+
+export default CollectionMixin(class SequinsBase {});

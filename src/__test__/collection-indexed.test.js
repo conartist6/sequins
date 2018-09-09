@@ -1,10 +1,10 @@
-import { Collection } from '../collection-mixin';
+import { Namespace as Collection } from '../collection';
 import { IndexedSeq, List } from '../index-test';
 import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 
-function makeTests(collectionSubtype) {
-  const IndexedConstructor = Collection[collectionSubtype].Indexed;
+function makeTests(collectionType) {
+  const IndexedConstructor = Collection[collectionType].Indexed;
 
   describe(IndexedConstructor.name, function() {
     const { keys, values, entries, array } = testData.Indexed;
@@ -13,7 +13,7 @@ function makeTests(collectionSubtype) {
     let indexed;
 
     function makeCalls(calls) {
-      return collectionSubtype === 'Concrete' ? calls.map(call => [...call, staticIndexed]) : calls;
+      return collectionType === 'Concrete' ? calls.map(call => [...call, staticIndexed]) : calls;
     }
 
     const testMethod = makeTestMethod(IndexedConstructor);

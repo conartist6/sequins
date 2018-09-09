@@ -2,20 +2,25 @@ import { compose, map, concat } from 'iter-tools';
 import { isConcrete } from './utils/shape';
 import invariant from 'invariant';
 import { reverseArrayIterator } from './utils/array';
-import CollectionMixin, {
-  Collection,
-  registerSubtype as registerCollectionSubtype,
-} from './collection-mixin';
+import { SubtypeNamespace } from './utils/namespace';
+import Collection, { Namespace as CollectionNamespace } from './collection';
 import makeFrom from './factories/from';
 
-const Seq = {};
-
-export function registerSubtype(key, type) {
-  Seq[key] = type;
+class SequenceNamespace extends SubtypeNamespace {
+  from(initial) {
+    return sequenceFrom(initial);
+  }
 }
 
-class Sequence {
-  constructor() {
+export const Namespace = CollectionNamespace.__register('Sequence', new SequenceNamespace());
+
+const sequenceFrom = makeFrom(CollectionNamespace, 'Sequence');
+
+class Sequence extends Collection {
+  constructor(iterable, collectionSubtype) {
+    iterable = iterable || [];
+    super(iterable, 'Sequence', collectionSubtype);
+    this.__iterable = iterable;
     this.__transforms = [];
     this._closed = false;
   }
@@ -41,14 +46,6 @@ class Sequence {
 
   _close() {
     this._closed = true;
-  }
-}
-
-class AbstractSequence extends CollectionMixin(Sequence) {
-  constructor(iterable, collectionType) {
-    iterable = iterable || [];
-    super(iterable, collectionType);
-    this.__iterable = iterable;
   }
 
   [Symbol.iterator]() {
@@ -82,7 +79,7 @@ class AbstractSequence extends CollectionMixin(Sequence) {
     const copy = new CollectionContructor(this);
     copy.__transforms.push(iterable => this.__dynamicMethods.groupBy(iterable, grouper));
     // Dodge the shape detection, essentially coercing our scratch sequence to be a Keyed sequence.
-    const keyed = new Seq.Keyed();
+    const keyed = new Namespace.Keyed();
     keyed.__iterable = copy;
     return keyed;
   }
@@ -108,23 +105,8 @@ class AbstractSequence extends CollectionMixin(Sequence) {
   static from(initial) {
     return sequenceFrom(initial);
   }
-
-  static get Indexed() {
-    return Seq.Indexed;
-  }
-
-  static get Keyed() {
-    return Seq.Keyed;
-  }
-
-  static get Set() {
-    return Seq.Set;
-  }
 }
 
-export default registerCollectionSubtype('Sequence', AbstractSequence);
+Object.defineProperty(Sequence.prototype, '@@__MUTABLE_SEQUENCE__@@', { value: true });
 
-const sequenceFrom = makeFrom(Collection, 'Sequence');
-
-Object.defineProperty(AbstractSequence.prototype, '@@__MUTABLE_ITERABLE__@@', { value: true });
-Object.defineProperty(AbstractSequence.prototype, '@@__MUTABLE_SEQUENCE__@@', { value: true });
+export default Sequence;

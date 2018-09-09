@@ -1,5 +1,5 @@
 import { range } from 'iter-tools';
-import ConcreteCollection, { registerSubtype } from '../../collection-concrete';
+import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { IndexedMixin } from '..';
 import { isKeyed } from '../../utils/shape';
 
@@ -120,4 +120,4 @@ class List extends IndexedMixin(ConcreteCollection) {
   }
 }
 
-export default registerSubtype('Indexed', List);
+export default Namespace.__register('Indexed', List);

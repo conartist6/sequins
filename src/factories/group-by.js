@@ -1,12 +1,12 @@
 import { memoizeFactory } from '../utils/memoize';
-import reflect from '../reflect';
+import reflect from '../utils/reflect';
 import makePush from './push';
 import makeReduce from './reduce';
 
-function makeGroupBy(Collection, collectionSubtype, collectionType) {
-  const TypedCollection = Collection[collectionSubtype][collectionType];
-  const concreteSubtype = collectionSubtype === 'Sequence' ? 'Concrete' : collectionSubtype;
-  const ConcreteCollection = Collection[concreteSubtype][collectionType];
+function makeGroupBy(Collection, collectionType, collectionSubtype) {
+  const concreteType = collectionType === 'Sequence' ? 'Concrete' : collectionType;
+  const CollectionConstructor = Collection[collectionType][collectionSubtype];
+  const ConcreteCollectionConstructor = Collection[concreteType][collectionSubtype];
   const Map = Collection.Concrete.Keyed;
 
   const push = makePush(...arguments);
@@ -18,7 +18,7 @@ function makeGroupBy(Collection, collectionSubtype, collectionType) {
       function(result, value, key) {
         const groupKey = grouper(value, key);
         if (!result.get(groupKey)) {
-          const concrete = new ConcreteCollection();
+          const concrete = new ConcreteCollectionConstructor();
           result.set(groupKey, concrete);
         }
         push(result.get(groupKey), key, value);
@@ -27,7 +27,7 @@ function makeGroupBy(Collection, collectionSubtype, collectionType) {
       new Map(),
     );
     for (const key of map.keys()) {
-      map.set(key, new TypedCollection(map.get(key)));
+      map.set(key, new CollectionConstructor(map.get(key)));
     }
     return map;
   };

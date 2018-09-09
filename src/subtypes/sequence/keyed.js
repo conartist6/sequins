@@ -1,7 +1,7 @@
 import { map } from 'iter-tools';
 import { isKeyed } from '../../utils/shape';
-import Sequence, { registerSubtype } from '../../sequence';
-import ConcreteCollection from '../../collection-concrete';
+import Sequence, { Namespace } from '../../collection-sequence';
+import { Namespace as ConcreteCollection } from '../../collection-concrete';
 import { KeyedMixin } from '..';
 
 export default class KeyedSeq extends KeyedMixin(Sequence) {
@@ -37,4 +37,4 @@ export default class KeyedSeq extends KeyedMixin(Sequence) {
   }
 }
 
-registerSubtype('Keyed', KeyedSeq);
+Namespace.__register('Keyed', KeyedSeq);

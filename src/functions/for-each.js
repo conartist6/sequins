@@ -1,4 +1,4 @@
-function forEach(func, iterable) {
+export default function forEach(func, iterable) {
   let c = 0;
   for (const item of iterable) {
     const ret = func(item, c++);
@@ -9,5 +9,3 @@ function forEach(func, iterable) {
   }
   return c;
 }
-
-export default func => iterable => forEach(func, iterable);

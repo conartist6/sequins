@@ -1,14 +1,12 @@
+import { IndexedSeq, KeyedSeq, SetSeq } from '../../index-test';
+import { Namespace as Collection } from '../../collection';
 import makeToJS from '../to-js';
-import IndexedSeq from '../../subtypes/sequence/indexed';
-import KeyedSeq from '../../subtypes/sequence/keyed';
-import SetSeq from '../../subtypes/sequence/set';
-import Sequence from '../../sequence';
 
 describe('toJS', function() {
   let toJS;
 
   beforeAll(function() {
-    toJS = makeToJS(Sequence);
+    toJS = makeToJS(Collection);
   });
 
   it('behaves like toJSON with flat structures', function() {
@@ -39,8 +37,7 @@ describe('toJS', function() {
     expect(toJS(seq)).toEqual([{ foo: 'bar' }, ['socks', 'shoes'], ['bork', 'bork', 'bork']]);
   });
 
-  it.only('converts structures inside objects', function() {
-    debugger;
+  it('converts structures inside objects', function() {
     const seq = new KeyedSeq([
       ['moo', { value: new SetSeq(['moar']) }],
       [

@@ -1,5 +1,5 @@
 import { range } from 'iter-tools';
-import ConcreteCollection, { registerSubtype } from '../../collection-concrete';
+import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { KeyedMixin } from '..';
 import { isKeyed } from '../../utils/shape';
 
@@ -34,4 +34,4 @@ class SequinsMap extends KeyedMixin(ConcreteCollection) {
   }
 }
 
-export default registerSubtype('Keyed', SequinsMap);
+export default Namespace.__register('Keyed', SequinsMap);

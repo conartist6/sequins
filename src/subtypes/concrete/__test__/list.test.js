@@ -1,13 +1,11 @@
-import SequinsList from '../list';
+import { List } from '../../../index-test';
 
-debugger;
-
-describe('SequinsList', function() {
+describe('List', function() {
   const array = Object.freeze([1, 2, 3]);
   let list;
 
   beforeEach(function() {
-    list = new SequinsList(array);
+    list = new List(array);
   });
 
   fit('has size', function() {
@@ -52,7 +50,7 @@ describe('SequinsList', function() {
 
   it('can concat', function() {
     list = list.concat([1, 2, 3]);
-    expect(list).toBeInstanceOf(SequinsList);
+    expect(list).toBeInstanceOf(List);
     expect(Array.from(list)).toEqual([...array, ...array]);
   });
 

@@ -1,20 +1,14 @@
-import CollectionMixin, {
-  Collection,
-  registerSubtype as registerCollectionSubtype,
-} from './collection-mixin';
+import Collection, { Namespace as CollectionNamespace } from './collection';
+import { SubtypeNamespace } from './utils/namespace';
 import makeFrom from './factories/from';
 
-const Concrete = {};
+export const Namespace = CollectionNamespace.__register('Concrete', new SubtypeNamespace());
 
-export function registerSubtype(key, type) {
-  return (Concrete[key] = type);
-}
+const concreteFrom = makeFrom(Collection, 'Concrete');
 
-class Base {}
-
-class ConcreteCollection extends CollectionMixin(Base) {
-  constructor(iterable, collectionType) {
-    super(iterable, collectionType);
+class ConcreteCollection extends Collection {
+  constructor(iterable, collectionSubtype) {
+    super(iterable, 'Concrete', collectionSubtype);
     this.__selfParam = [this];
   }
 
@@ -61,7 +55,7 @@ class ConcreteCollection extends CollectionMixin(Base) {
   }
 
   __reverse() {
-    const reversedSeq = Collection.Sequence.from(this)
+    const reversedSeq = CollectionNamespace.Sequence.from(this)
       .reverse()
       .cacheResult();
 
@@ -89,22 +83,6 @@ class ConcreteCollection extends CollectionMixin(Base) {
   static from(initial) {
     return concreteFrom(initial);
   }
-
-  static get Indexed() {
-    return Concrete.Indexed;
-  }
-  static get Keyed() {
-    return Concrete.Keyed;
-  }
-  static get Set() {
-    return Concrete.Set;
-  }
 }
 
-Object.defineProperty(ConcreteCollection.prototype, '@@__MUTABLE_ITERABLE__@@', {
-  value: true,
-});
-
-const concreteFrom = makeFrom(ConcreteCollection);
-
-export default registerCollectionSubtype('Concrete', ConcreteCollection);
+export default ConcreteCollection;

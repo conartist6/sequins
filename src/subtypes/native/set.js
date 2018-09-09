@@ -1,4 +1,4 @@
-import NativeCollectionMixin, { registerSubtype } from '../../collection-native-mixin';
+import { NativeCollectionMixin, Namespace } from '../../collection-native';
 import { SetMixin } from '..';
 import { isKeyed } from '../../utils/shape';
 
@@ -14,4 +14,4 @@ export default class SequinsSet extends SetMixin(NativeCollectionMixin(Transpile
   }
 }
 
-registerSubtype('Set', SequinsSet);
+Namespace.__register('Set', SequinsSet);

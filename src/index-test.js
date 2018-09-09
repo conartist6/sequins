@@ -1,4 +1,4 @@
-export { default as Sequence } from './sequence';
+export { default as Sequence } from './collection-sequence';
 export { default as List } from './subtypes/concrete/list';
 export { default as Map } from './subtypes/concrete/map';
 export { default as Set } from './subtypes/concrete/set';

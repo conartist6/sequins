@@ -1,4 +1,4 @@
-import Sequence from './sequence';
+import Sequence from './collection-sequence';
 import { Statics, SequenceStatics } from './statics';
 import ListConstructor from './subtypes/concrete/list';
 import MapConstructor from './subtypes/concrete/map';

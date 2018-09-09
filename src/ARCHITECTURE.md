@@ -51,3 +51,5 @@ sequins/
 ```
 
 ## Major decisions
+
+-   **Avoid circular dependencies**: Initially I tried to embrace some circular dependencies in a structured fashion. This experiment failed. In order to eliminate circular deps I created namespaces and forced subclasses to register themselves. By eliminating the need of base classes to import thier subclasses, the dependency loops were broken.

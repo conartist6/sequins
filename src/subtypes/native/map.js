@@ -1,4 +1,4 @@
-import NativeCollectionMixin, { registerSubtype } from '../../collection-native-mixin';
+import { NativeCollectionMixin, Namespace } from '../../collection-native';
 import { KeyedMixin } from '..';
 import { isSet, isIndexed } from '../../utils/shape';
 
@@ -18,4 +18,4 @@ export default class SequinsMap extends KeyedMixin(NativeCollectionMixin(Transpi
   }
 }
 
-registerSubtype('Keyed', SequinsMap);
+Namespace.__register('Keyed', SequinsMap);

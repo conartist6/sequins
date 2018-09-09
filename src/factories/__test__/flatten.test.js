@@ -1,5 +1,5 @@
 import { IndexedSeq, KeyedSeq, SetSeq } from '../../index-test';
-import { Collection } from '../../collection-mixin';
+import { Namespace as Collection } from '../../collection';
 import makeFlatten from '../flatten';
 
 describe('flatten', function() {

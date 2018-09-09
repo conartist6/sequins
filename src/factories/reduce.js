@@ -1,5 +1,5 @@
 import { reduce as reduceIterable } from 'iter-tools';
-import reflect from '../reflect';
+import reflect from '../utils/reflect';
 
 const reduceByType = {
   Indexed: function reduce(iterable, reducer, initial) {
@@ -41,8 +41,8 @@ const reduceByType = {
   },
 };
 
-function makeReduce(Collection, collectionSubtype, collectionType) {
-  return reduceByType[collectionType];
+function makeReduce(Collection, collectionType, collectionSubtype) {
+  return reduceByType[collectionSubtype];
 }
 
 export default makeReduce;

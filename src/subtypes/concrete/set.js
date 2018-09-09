@@ -1,5 +1,5 @@
 import { range } from 'iter-tools';
-import ConcreteCollection, { registerSubtype } from '../../collection-concrete';
+import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { SetMixin } from '..';
 import { isKeyed } from '../../utils/shape';
 
@@ -30,4 +30,4 @@ class SequinsSet extends SetMixin(ConcreteCollection) {
   }
 }
 
-export default registerSubtype('Set', SequinsSet);
+export default Namespace.__register('Set', SequinsSet);

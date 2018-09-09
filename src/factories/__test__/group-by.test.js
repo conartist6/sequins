@@ -1,5 +1,5 @@
-import { IndexedSeq, KeyedSeq, SetSeq, List, Map, Set } from '../../index-test';
-import { Collection } from '../../collection-mixin';
+import { SetSeq } from '../../index-test';
+import { Namespace as Collection } from '../../collection';
 import makeGroupBy from '../group-by';
 
 function makeTests(type, collectionSubtype) {

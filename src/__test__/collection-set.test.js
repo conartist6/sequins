@@ -1,10 +1,10 @@
-import { Collection } from '../collection-mixin';
+import { Namespace as Collection } from '../collection';
 import { SetSeq, Set } from '../index-test';
 import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 
-function makeTests(collectionSubtype) {
-  const SetConstructor = Collection[collectionSubtype].Set;
+function makeTests(collectionType) {
+  const SetConstructor = Collection[collectionType].Set;
 
   describe(SetConstructor.name, function() {
     const { keys, values, entries, array } = testData.Set;
@@ -13,7 +13,7 @@ function makeTests(collectionSubtype) {
     let set;
 
     function makeCalls(calls) {
-      return collectionSubtype === 'Concrete' ? calls.map(call => [...call, staticSet]) : calls;
+      return collectionType === 'Concrete' ? calls.map(call => [...call, staticSet]) : calls;
     }
 
     const testMethod = makeTestMethod(SetConstructor);
