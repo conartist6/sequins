@@ -1,6 +1,6 @@
 {
   "name": "sequins",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Mutable sequences and native data structures (Map, Set, List) following the Immutable.js API",
   "author": "conrad@burningpotato.com",
   "license": "MIT",
