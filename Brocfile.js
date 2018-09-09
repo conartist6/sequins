@@ -2,7 +2,7 @@ const mergeTrees = require('broccoli-merge-trees');
 const esTranspiler = require('broccoli-babel-transpiler');
 const resolve = require('rollup-plugin-node-resolve');
 const Rollup = require('broccoli-rollup');
-const makeRollupConfig = require('./config/rollup.configfactory');
+const makeRollupConfig = require('./rollup.configfactory');
 
 let es = 'src';
 

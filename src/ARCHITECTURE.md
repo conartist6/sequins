@@ -31,23 +31,16 @@ The purpose of this file is to give the highest level details of Sequins archite
 
 ```
 sequins/
-├── compat/
 │
-├── config/
+├── factories/      Method factories
 │
-├── dist/
+├── functions/
 │
-└── src/
-    │
-    ├── factories/      Method factories
-    │
-    ├── functions/
-    │
-    ├── subtypes/
-    │
-    ├── utils/
-    │
-    └── ARCHITECTURE.md  // YOU ARE HERE
+├── subtypes/
+│
+├── utils/
+│
+└── ARCHITECTURE.md  // YOU ARE HERE
 ```
 
 ## Major decisions

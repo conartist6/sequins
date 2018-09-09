@@ -1,6 +1,7 @@
 const resolve = require('rollup-plugin-node-resolve');
 const babel = require('rollup-plugin-babel');
 const commonjs = require('rollup-plugin-commonjs');
+// const babelConfig = require('./babel.config');
 
 function makeRollupConfig(input = 'src/index.js', output = 'dist/sequins.mjs', babelOpts = {}) {
   return {
@@ -17,6 +18,7 @@ function makeRollupConfig(input = 'src/index.js', output = 'dist/sequins.mjs', b
       babel({
         exclude: 'node_modules/**',
         runtimeHelpers: true,
+        //...babelConfig,
         ...babelOpts,
       }),
       commonjs({
