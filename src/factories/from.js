@@ -4,22 +4,24 @@ import { memoizeFactory } from '../utils/memoize';
 
 const emptyArray = [];
 
-function makeFrom(Collection, collectionType, collectionSubtype) {
+function makeFrom(Collection, collectionType) {
+  const TypedCollection = Collection[collectionType];
+
   return function from(initial) {
     if (initial == null) {
-      return new Collection[collectionType].Indexed(emptyArray);
+      return new TypedCollection.Indexed(emptyArray);
     } else if (isCollection(initial) || isNative(initial)) {
       if (isIndexed(initial)) {
-        return new Collection[collectionType].Indexed(initial);
+        return new TypedCollection.Indexed(initial);
       } else if (isKeyed(initial)) {
-        return new Collection[collectionType].Keyed(initial);
+        return new TypedCollection.Keyed(initial);
       } else {
-        return new Collection[collectionType].Set(initial);
+        return new TypedCollection.Set(initial);
       }
     } else if (typeof initial[Symbol.iterator] === 'function') {
-      return new Collection[collectionType].Indexed(initial);
+      return new TypedCollection.Indexed(initial);
     } else if (isPlainObj(initial)) {
-      return new Collection[collectionType].Keyed(entries(initial));
+      return new TypedCollection.Keyed(entries(initial));
     }
     return null;
   };

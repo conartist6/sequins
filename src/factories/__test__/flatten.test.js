@@ -26,23 +26,27 @@ describe('flatten', function() {
       a = Seq(aa);
       b = Seq(bb);
       c = Seq(cc);
-      seq = Seq([a, b, c]);
+      seq = new IndexedSeq([a, b, c]);
     });
 
-    it('does a shallow flatten if passed true', function() {
-      expect(Array.from(flatten(true, seq))).toEqual([a, b, c]);
+    it('does a shallow flatten when passed true', function() {
+      expect(Array.from(flatten(true, seq))).toEqual([aa, bb, cc]);
     });
 
-    it('does a shallow flatten if passed 0', function() {
-      expect(Array.from(flatten(0, seq))).toEqual([a, b, c]);
+    it('does a deep flatten when passed 0', function() {
+      expect(Array.from(flatten(0, seq))).toEqual([1, 2, 3]);
+    });
+
+    it('does a deep flatten when passed no params', function() {
+      expect(Array.from(flatten(seq))).toEqual([1, 2, 3]);
+    });
+
+    it('does a deep flatten when when passed false', function() {
+      expect(Array.from(flatten(false, seq))).toEqual([1, 2, 3]);
     });
 
     it('flattens n levels when passed depth n', function() {
       expect(Array.from(flatten(1, seq))).toEqual([aa, bb, cc]);
-    });
-
-    it('flattens deeply when passed false', function() {
-      expect(Array.from(flatten(false, seq))).toEqual([1, 2, 3]);
     });
   });
 });

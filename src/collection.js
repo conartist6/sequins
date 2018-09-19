@@ -32,8 +32,10 @@ export const CollectionMixin = Base => {
       this.__dynamicMethods = new MethodFactory(collectionType, collectionSubtype);
     }
 
-    flatten(shallowOrDepth) {
-      return this.__doCollectionTransform(this.__dynamicMethods.flatten(shallowOrDepth));
+    flatten(...args) {
+      return this.__doCollectionTransform(iterable =>
+        this.__dynamicMethods.flatten(...args, iterable),
+      );
     }
 
     concat(...args) {

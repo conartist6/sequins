@@ -2,32 +2,27 @@ import { memoizeFactory } from '../utils/memoize';
 import reflect from '../utils/reflect';
 
 function makeFlatten(Collection, collectionType, collectionSubtype) {
-  const { itemValue, toNative } = reflect[collectionSubtype];
+  const { itemValue, primitiveIterator } = reflect[collectionSubtype];
 
-  function* flatten(shallowOrDepth, iterable) {
-    const depth = shallowOrDepth === true ? 0 : shallowOrDepth;
+  return function* flatten(shallowOrDepth, iterable) {
+    if (arguments.length === 1) {
+      iterable = shallowOrDepth;
+      shallowOrDepth = false;
+    }
+    const depth = shallowOrDepth === true ? 1 : shallowOrDepth === false ? 0 : shallowOrDepth;
 
     for (const item of iterable) {
       const itemSeq = item == null ? item : Collection.Sequence.from(itemValue(item));
 
-      if (itemSeq && (depth === false || depth > 0)) {
-        yield* flatten(depth === false ? depth : depth - 1, toNative(itemSeq));
+      if (itemSeq && depth !== 1) {
+        yield* flatten(depth === 0 ? 0 : depth - 1, primitiveIterator(itemSeq));
       } else if (itemSeq) {
-        yield* toNative(itemSeq);
+        yield* primitiveIterator(itemSeq);
       } else {
         yield item;
       }
     }
-  }
-
-  function curriedFlatten(shallowOrDepth, iterable) {
-    if (!iterable) {
-      return iterable => flatten(shallowOrDepth, iterable);
-    }
-    return flatten(shallowOrDepth, iterable);
-  }
-
-  return curriedFlatten;
+  };
 }
 
 export default memoizeFactory(makeFlatten);
