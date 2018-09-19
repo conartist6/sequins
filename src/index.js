@@ -3,9 +3,9 @@ import { Statics, SequenceStatics } from './statics';
 import ListConstructor from './subtypes/concrete/list';
 import MapConstructor from './subtypes/concrete/map';
 import SetConstructor from './subtypes/concrete/set';
-import IndexedSeq from './subtypes/sequence/indexed';
-import KeyedSeq from './subtypes/sequence/keyed';
-import SetSeq from './subtypes/sequence/set';
+import IndexedSeqConstructor from './subtypes/sequence/indexed';
+import KeyedSeqConstructor from './subtypes/sequence/keyed';
+import SetSeqConstructor from './subtypes/sequence/set';
 
 export function Seq(initial) {
   const seq = Sequence.from(initial);
@@ -15,11 +15,25 @@ export function Seq(initial) {
   return seq;
 }
 
-Seq.Indexed = iterable => new Sequence.Indexed(iterable);
-Seq.Keyed = iterable => new Sequence.Keyed(iterable);
-Seq.Set = iterable => new Sequence.Set(iterable);
-Seq.Range = SequenceStatics.Range;
-Seq.Repeat = SequenceStatics.Repeat;
+function IndexedSeq(iterable) {
+  return new IndexedSeqConstructor(iterable);
+}
+Object.assign(IndexedSeq, Sequence.Indexed);
+
+function KeyedSeq(iterable) {
+  return new KeyedSeqConstructor(iterable);
+}
+Object.assign(KeyedSeq, Sequence.Keyed);
+
+function SetSeq(iterable) {
+  return new SetSeqConstructor(iterable);
+}
+Object.assign(SetSeq, Sequence.Set);
+
+Seq.Indexed = IndexedSeq;
+Seq.Keyed = KeyedSeq;
+Seq.Set = SetSeq;
+Object.assign(Seq, SequenceStatics);
 
 export function List(initial) {
   return new ListConstructor(initial);

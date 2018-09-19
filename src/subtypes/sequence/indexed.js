@@ -38,6 +38,10 @@ export default class IndexedSeq extends IndexedMixin(Sequence) {
   *entries() {
     yield* map((value, i) => [i, value], this);
   }
+
+  static of(...values) {
+    return new IndexedSeq(values);
+  }
 }
 
 Namespace.__register('Indexed', IndexedSeq);

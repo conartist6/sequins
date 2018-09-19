@@ -113,6 +113,14 @@ class List extends IndexedMixin(ConcreteCollection) {
       yield [i, this.__native[i]];
     }
   }
+
+  static isList(shape) {
+    return isMutableIndexed(shape);
+  }
+
+  static of(...values) {
+    return new List(values);
+  }
 }
 
 export default Namespace.__register('Indexed', List);

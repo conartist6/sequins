@@ -1,7 +1,7 @@
 import { range } from 'iter-tools';
 import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { SetMixin } from '..';
-import { isKeyed } from '../../utils/shape';
+import { isKeyed, isMutableConcreteish, isMutableAssociative } from '../../utils/shape';
 
 class SequinsSet extends SetMixin(ConcreteCollection) {
   constructor(iterable) {
@@ -27,6 +27,14 @@ class SequinsSet extends SetMixin(ConcreteCollection) {
   // Conversions
   toSet() {
     return this;
+  }
+
+  static isSet(shape) {
+    return isMutableConcreteish(shape) && !isMutableAssociative(shape);
+  }
+
+  static of(...values) {
+    return new SequinsSet(values);
   }
 }
 

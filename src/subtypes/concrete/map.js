@@ -1,7 +1,7 @@
 import { range } from 'iter-tools';
 import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { KeyedMixin } from '..';
-import { isKeyed } from '../../utils/shape';
+import { isKeyed, isMutableKeyed } from '../../utils/shape';
 
 class SequinsMap extends KeyedMixin(ConcreteCollection) {
   constructor(iterable) {
@@ -31,6 +31,10 @@ class SequinsMap extends KeyedMixin(ConcreteCollection) {
   // Conversions
   toMap() {
     return this;
+  }
+
+  static isMap(shape) {
+    return isMutableKeyed(shape);
   }
 }
 

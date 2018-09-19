@@ -57,12 +57,12 @@ export function isSeq(shape) {
   return isMutableSeq(shape) || isImmutableSequence(shape);
 }
 
-export function isMutableConcrete(shape) {
+export function isMutableConcreteish(shape) {
   return !!shape['@@__MUTABLE_ITERABLE__@@'] && !shape['@@__MUTABLE_SEQUENCE__@@'];
 }
 
-export function isConcrete(shape) {
-  return isMutableConcrete(shape) || isImmutableConcrete(shape) || isNative(shape);
+export function isConcreteish(shape) {
+  return isMutableConcreteish(shape) || isImmutableConcrete(shape) || isNative(shape);
 }
 
 export function collectionType(shape) {
@@ -109,11 +109,11 @@ export function isMutableKeyedSeq(shape) {
   return isMutableSeq(shape) && isMutableKeyed(shape);
 }
 
-export function isConcreteIndexed(shape) {
-  return isConcrete(shape) && isIndexed(shape);
+export function isConcreteishIndexed(shape) {
+  return isConcreteish(shape) && isIndexed(shape);
 }
-export function isConcreteKeyed(shape) {
-  return isConcrete(shape) && isKeyed(shape);
+export function isConcreteishKeyed(shape) {
+  return isConcreteish(shape) && isKeyed(shape);
 }
 
 export function isIndexed(shape) {

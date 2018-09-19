@@ -34,6 +34,10 @@ export default class SetSeq extends SetMixin(Sequence) {
   *entries() {
     yield* map(value => [value, value], this);
   }
+
+  static of(...values) {
+    return new SetSeq(values);
+  }
 }
 
 Namespace.__register('Set', SetSeq);

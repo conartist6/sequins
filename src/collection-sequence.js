@@ -1,5 +1,5 @@
 import { compose, map, concat } from 'iter-tools';
-import { isConcrete } from './utils/shape';
+import { isConcreteish } from './utils/shape';
 import invariant from 'invariant';
 import { reverseArrayIterator } from './utils/array';
 import { SubtypeNamespace } from './utils/namespace';
@@ -54,7 +54,7 @@ class Sequence extends Collection {
 
   cacheResult() {
     const transformedIterable = this._transform();
-    this.__iterable = isConcrete(transformedIterable)
+    this.__iterable = isConcreteish(transformedIterable)
       ? transformedIterable
       : Array.from(transformedIterable);
     this.__transforms.length = 0;
