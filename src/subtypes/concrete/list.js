@@ -3,11 +3,6 @@ import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { IndexedMixin } from '..';
 import { isKeyed } from '../../utils/shape';
 
-/**
- * List is a little extra special in that it does not have a native counterpart.
- * I feel that that would dangerously blur the line between primitives and data structures
- **/
-
 class List extends IndexedMixin(ConcreteCollection) {
   constructor(iterable) {
     super(iterable);

@@ -21,10 +21,19 @@ Seq.Set = iterable => new Sequence.Set(iterable);
 Seq.Range = SequenceStatics.Range;
 Seq.Repeat = SequenceStatics.Repeat;
 
-export const List = initial => new ListConstructor(initial);
-export const Map = initial => new MapConstructor(initial);
-export const Set = initial => new SetConstructor(initial);
+export function List(initial) {
+  return new ListConstructor(initial);
+}
+Object.assign(List, ListConstructor);
+
+export function Map(initial) {
+  return new MapConstructor(initial);
+}
+Object.assign(Map, MapConstructor);
+
+export function Set(initial) {
+  return new SetConstructor(initial);
+}
+Object.assign(Set, SetConstructor);
 
 export default { Seq, List, Map, Set, ...Statics };
-
-

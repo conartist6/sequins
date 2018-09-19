@@ -1,3 +1,5 @@
+import Sequins from './index';
+export default Sequins;
 export { default as Sequence } from './collection-sequence';
 export { default as List } from './subtypes/concrete/list';
 export { default as Map } from './subtypes/concrete/map';
