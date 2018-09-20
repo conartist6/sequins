@@ -1,4 +1,4 @@
-import { concat as concatIterables, map } from 'iter-tools';
+import { concat as concatIterables } from 'iter-tools';
 import { memoizeFactory } from '../utils/memoize';
 
 function makeConcat(Collection, collectionType, collectionSubtype) {

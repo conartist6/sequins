@@ -4,3 +4,5 @@ export { default as groupBy } from './group-by';
 export { default as reduce } from './reduce';
 export { default as sort } from './sort';
 export { default as toJS } from './to-js';
+export { default as zipAll } from './zip-all';
+export { default as zip } from './zip';

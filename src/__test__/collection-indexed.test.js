@@ -22,6 +22,20 @@ function makeTests(collectionType) {
       indexed = new IndexedConstructor(array);
     });
 
+    testMethod('zip')
+      .run(() => indexed.zip([2, 3, 4, 5]))
+      .expectCollectionYields([[1, 2], [2, 3], [3, 4]]);
+
+    testMethod('zipAll')
+      .run(() => indexed.zipAll([2, 3, 4, 5]))
+      .expectCollectionYields([[1, 2], [2, 3], [3, 4], [undefined, 5]]);
+
+    testMethod('zipWith')
+      .callback((a, b) => a + b)
+      .expectCalls([[1, 2], [2, 3], [3, 4]])
+      .run(zipperFn => indexed.zipWith(zipperFn, [2, 3, 4]))
+      .expectCollectionYields([3, 5, 7]);
+
     testMethod('tap')
       .callback(() => null, calls)
       .run(tapFn => indexed.tap(tapFn))

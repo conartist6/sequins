@@ -7,6 +7,25 @@ export default Base => {
       super(iterable, 'Indexed');
     }
 
+    // prettier-ignore
+    zip(...args) {
+      return this.__doCollectionTransform(iterable =>
+        this.__dynamicMethods.zip(iterable, ...args),
+      );
+    }
+
+    zipAll(...args) {
+      return this.__doCollectionTransform(iterable =>
+        this.__dynamicMethods.zipAll(iterable, ...args),
+      );
+    }
+
+    zipWith(zipper, ...args) {
+      return this.__doCollectionTransform(iterable =>
+        map(items => zipper(...items), this.__dynamicMethods.zip(iterable, ...args)),
+      );
+    }
+
     // Collection functions
     tap(tapFn) {
       return this.__doCollectionTransform(tap((value, i) => tapFn(value, i, ...this.__selfParam)));
