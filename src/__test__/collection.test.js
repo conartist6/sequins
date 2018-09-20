@@ -22,12 +22,6 @@ function makeTests(collectionType, collectionSubtype) {
       expect(Array.from(array)).toEqual(array);
     });
 
-    // testMethod('mapEntries')
-    //   .callback(([key, val]) => [val, key])
-    //   .expectCalls([[[9, 1], 0], [[8, 2], 1], [[7, 3], 2]])
-    //   .run(mapFn => keyed.mapEntries(mapFn))
-    //   .expectCollectionYields([[1, 9], [2, 8], [3, 7]]);
-
     it('can toJS', function() {
       expect(collection.toJS()).toEqual(js);
     });
@@ -36,18 +30,11 @@ function makeTests(collectionType, collectionSubtype) {
       expect(Array.from(collection.reverse())).toEqual([...array].reverse());
     });
 
-    // testMethod('toIndexedSeq');
-    // testMethod('toKeyedSeq');
-    // testMethod('toSetSeq');
-
-    // testMethod('keySeq');
-    // testMethod('valueSeq');
-    // testMethod('entrySeq');
-
-    // testMethod('toArray');
-    // testMethod('toObject');
-    // testMethod('toMap');
-    // testMethod('toSet');
+    it('can be converted to Seq', function() {
+      const seq = collection.toSeq();
+      expect(Array.from(seq)).toEqual(array);
+      expect(seq).toBeInstanceOf(Collection.Sequence[collectionSubtype]);
+    });
 
     it('can be converted to IndexedSeq', function() {
       const indexed = collection.toIndexedSeq();

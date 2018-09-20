@@ -80,6 +80,9 @@ export const CollectionMixin = Base => {
     }
 
     // Shallow conversions
+    toSeq() {
+      return new Collection.Sequence.from(this);
+    }
     toIndexedSeq() {
       return new Collection.Sequence.Indexed(this);
     }
