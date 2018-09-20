@@ -22,17 +22,6 @@ function makeTests(collectionType, collectionSubtype) {
       expect(Array.from(array)).toEqual(array);
     });
 
-    it('can flatten', function() {
-      // The flatten implementation has its own tests
-      const flatten = makeFlatten(Collection, collectionType, collectionSubtype);
-      const result = collection.flatten();
-      expect(result).toBeInstanceOf(CollectionConstructor);
-      const flattened = collection.flatten(true);
-      expect(flattened).toBeIterable();
-
-      expect(Array.from(flattened)).toEqual(Array.from(flatten(true, collection)));
-    });
-
     // testMethod('mapEntries')
     //   .callback(([key, val]) => [val, key])
     //   .expectCalls([[[9, 1], 0], [[8, 2], 1], [[7, 3], 2]])

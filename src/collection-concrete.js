@@ -63,6 +63,15 @@ class ConcreteCollection extends Collection {
     return reversedSeq;
   }
 
+  sort(...args) {
+    return this.sortBy(null, ...args);
+  }
+
+  sortBy(...args) {
+    this.__native = this.__dynamicMethods.sort(this.__native, ...args);
+    return this;
+  }
+
   // Iterators
   keys() {
     return this.__native.keys();

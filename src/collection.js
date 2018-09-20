@@ -32,12 +32,6 @@ export const CollectionMixin = Base => {
       this.__dynamicMethods = new MethodFactory(collectionType, collectionSubtype);
     }
 
-    flatten(...args) {
-      return this.__doCollectionTransform(iterable =>
-        this.__dynamicMethods.flatten(...args, iterable),
-      );
-    }
-
     concat(...args) {
       return this.__doCollectionTransform(iterable => concat(iterable, ...args));
     }
@@ -46,14 +40,20 @@ export const CollectionMixin = Base => {
       return this.__doCollectionTransform(iterable => slice({ start, end }, iterable));
     }
 
-    flatMap(mapFn) {
-      return this.map(mapFn).flatten(true);
+    flatten(...args) {
+      return this.__doCollectionTransform(iterable =>
+        this.__dynamicMethods.flatten(iterable, ...args),
+      );
     }
 
     groupBy(grouper) {
       return this.__doCollectionTransform(iterable =>
         this.__dynamicMethods.groupBy(iterable, grouper),
       );
+    }
+
+    flatMap(mapFn) {
+      return this.map(mapFn).flatten(true);
     }
 
     // Reductive functions

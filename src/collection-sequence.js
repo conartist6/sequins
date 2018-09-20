@@ -88,6 +88,14 @@ class Sequence extends Collection {
     return this.__doCollectionTransform(iterable => Array.from(iterable).reverse());
   }
 
+  sort(...args) {
+    return this.sortBy(null, ...args);
+  }
+
+  sortBy(...args) {
+    return this.__doCollectionTransform(iterable => this.__dynamicMethods.sort(iterable, ...args));
+  }
+
   // Shallow conversions
   toIndexedSeq() {
     this._close();
