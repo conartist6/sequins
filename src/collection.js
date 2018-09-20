@@ -1,4 +1,4 @@
-import { keys, concat, slice } from 'iter-tools';
+import { keys, slice } from 'iter-tools';
 import { RootNamespace } from './utils/namespace';
 import * as factories from './factories';
 import reflect from './utils/reflect';
@@ -32,12 +32,14 @@ export const CollectionMixin = Base => {
       this.__dynamicMethods = new MethodFactory(collectionType, collectionSubtype);
     }
 
-    concat(...args) {
-      return this.__doCollectionTransform(iterable => concat(iterable, ...args));
+    slice(start = 0, end = Infinity) {
+      return this.__doCollectionTransform(slice({ start, end }));
     }
 
-    slice(start = 0, end = Infinity) {
-      return this.__doCollectionTransform(iterable => slice({ start, end }, iterable));
+    concat(...args) {
+      return this.__doCollectionTransform(iterable =>
+        this.__dynamicMethods.concat(iterable, ...args),
+      );
     }
 
     flatten(...args) {

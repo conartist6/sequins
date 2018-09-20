@@ -1,4 +1,4 @@
-import { compose, map, concat } from 'iter-tools';
+import { compose } from 'iter-tools';
 import { isConcreteish } from './utils/shape';
 import invariant from 'invariant';
 import { reverseArrayIterator } from './utils/array';
@@ -63,6 +63,11 @@ class Sequence extends Collection {
 
   set(key, newValue) {
     return this.map((value, key) => (key === key ? newValue : value));
+  }
+
+  push(key, newValue) {
+    const CollectionContructor = this.constructor;
+    return this.concat([newValue]);
   }
 
   delete(key) {
