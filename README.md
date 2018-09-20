@@ -2,6 +2,8 @@
 
 Sequins provides a core mutable data structures for javascript using the rich and proven API developed by [Immutable.js](http://facebook.github.io/immutable-js/) (with [a few tweaks](#differences-from-immutable)).
 
+Sequins is inspired by and powered by [iter-tools](https://github.com/sithmel/iter-tools#readme)
+
 ## Install
 
 ```
