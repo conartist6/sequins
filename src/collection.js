@@ -120,7 +120,7 @@ export const CollectionMixin = Base => {
     }
   }
 
-  Object.defineProperty(CollectionMixin.prototype, '@@__MUTABLE_ITERABLE__@@', {
+  Object.defineProperty(CollectionMixin.prototype, '@@__MUTABLE_COLLECTION__@@', {
     value: true,
   });
 

@@ -19,7 +19,7 @@ export function isImmutable(shape) {
 }
 
 export function isMutableCollection(shape) {
-  return !!shape['@@__MUTABLE_ITERABLE__@@'];
+  return !!shape['@@__MUTABLE_COLLECTION__@@'];
 }
 
 export function isMutableSeq(shape) {
