@@ -1,4 +1,3 @@
-import { range } from 'iter-tools';
 import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { SetMixin } from '..';
 import { isKeyed, isMutableConcreteish, isMutableAssociative } from '../../utils/shape';

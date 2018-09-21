@@ -1,4 +1,4 @@
-import { entries } from 'iter-tools';
+import entries from 'iter-tools/es5/entries';
 import { isIndexed, isKeyed, isCollection, isNative, isPlainObj } from '../utils/shape';
 import { memoizeFactory } from '../utils/memoize';
 

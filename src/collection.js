@@ -1,4 +1,5 @@
-import { keys, slice } from 'iter-tools';
+import keys from 'iter-tools/es5/keys';
+import slice from 'iter-tools/es5/slice';
 import { RootNamespace } from './utils/namespace';
 import * as factories from './factories';
 import reflect from './utils/reflect';

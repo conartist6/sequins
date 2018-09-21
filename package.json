@@ -10,7 +10,7 @@
   "main": "dist/_sequins.js",
   "module": "dist/sequins.mjs",
   "scripts": {
-    "prepublish": "yarn build && yarn test",
+    "prepublishOnly": "yarn build && yarn test",
     "build": "broccoli build dist --overwrite",
     "test": "jest"
   },

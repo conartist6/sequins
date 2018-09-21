@@ -1,4 +1,4 @@
-import { range } from 'iter-tools';
+import range from 'iter-tools/es5/range';
 import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { IndexedMixin } from '..';
 import { isKeyed } from '../../utils/shape';

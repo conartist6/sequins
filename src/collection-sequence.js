@@ -1,4 +1,4 @@
-import { compose } from 'iter-tools';
+import compose from 'iter-tools/es5/compose';
 import { isConcreteish } from './utils/shape';
 import invariant from 'invariant';
 import { reverseArrayIterator } from './utils/array';

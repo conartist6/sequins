@@ -1,4 +1,4 @@
-import { reduce as reduceIterable } from 'iter-tools';
+import reduceIterable from 'iter-tools/es5/reduce';
 import reflect from '../utils/reflect';
 
 const reduceByType = {

@@ -1,4 +1,5 @@
-import { range, repeat } from 'iter-tools';
+import range from 'iter-tools/es5/range';
+import repeat from 'iter-tools/es5/repeat';
 import {
   isMutableCollection,
   isMutableKeyed,
