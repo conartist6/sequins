@@ -2,9 +2,13 @@ import range from 'iter-tools/es5/range';
 import repeat from 'iter-tools/es5/repeat';
 import {
   isMutableCollection,
+  isMutableSeq,
   isMutableKeyed,
   isMutableIndexed,
   isMutableAssociative,
+  isMutableList,
+  isMutableMap,
+  isMutableSet,
 } from '../utils/shape';
 import get from './get';
 import set from './set';
@@ -16,6 +20,10 @@ export const Statics = {
   isKeyed: isMutableKeyed,
   isIndexed: isMutableIndexed,
   isAssociative: isMutableAssociative,
+  isSeq: isMutableSeq,
+  isList: isMutableList,
+  isMap: isMutableMap,
+  isSet: isMutableSet,
   get,
   set,
   has,

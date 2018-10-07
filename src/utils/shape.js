@@ -61,6 +61,18 @@ export function isMutableConcreteish(shape) {
   return !!shape['@@__MUTABLE_ITERABLE__@@'] && !shape['@@__MUTABLE_SEQUENCE__@@'];
 }
 
+export function isMutableList(shape) {
+  return isMutableConcreteish(shape) && isMutableIndexed(shape);
+}
+
+export function isMutableMap(shape) {
+  return isMutableConcreteish(shape) && isMutableKeyed(shape);
+}
+
+export function isMutableSet(shape) {
+  return isMutableConcreteish(shape) && !isMutableAssociative(shape);
+}
+
 export function isConcreteish(shape) {
   return isMutableConcreteish(shape) || isImmutableConcrete(shape) || isNative(shape);
 }

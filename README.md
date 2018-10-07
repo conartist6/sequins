@@ -34,7 +34,7 @@ This project is in alpha. It is not ready for production usage and should be exp
 
 ## API Documentation
 
-This does not exist yet. Want to help me build it? For now you can look at [the immutable docs](http://facebook.github.io/immutable-js/docs/#/) and Sequins' [differences from immutable](#differences-from-immutable). Undocumented parity failures should be considered bugs.
+This does not exist yet. Want to help me build it? For now you can look at [the Immutable docs](http://facebook.github.io/immutable-js/docs/#/) and Sequins' [differences from Immutable](#differences-from-immutable). Undocumented parity failures should be considered bugs.
 
 ## Why Sequins? A.K.A. A Brief History of (javascript) Time
 
@@ -52,16 +52,18 @@ Enter: Sequins. Sequins, by way of the Immutable.js API, offers the benefits of 
 
 ## Differences from Immutable
 
--   **Unordered types**: All sequins types are ordered because the native data structures which underly them preserve ordering without additional work.
+-   **new** `List`, `Map` and `Set` are classes in Sequins, not factory functions as in Immutable. Thes means that you must use the `new` keyword to construct them. It also means that `instanceof` checks are possible, **however** using instanceof is not considered idiomatic, and it is preferred to use the static methods such as `Sequins.isMap(shape)`.
+
+-   **Unordered types**: All Sequins types are ordered because the native data structures which underly them preserve ordering without additional work.
 
 -   **No getIn/setIn/updateIn**: These helpers existed to work around immutability for easily updating deep inside nested structures. Sequins does not have this need.
 
--   **Sequence get**: In immutable you can still use get on sequences. In Sequins, you cannot.
+-   **Sequence get**: In Immutable you can still use get on sequences. In Sequins, you cannot.
 
--   **Eager operations on sequences**: In immmutable, Sequences are lazy, except when certain operations like `sort` or `groupBy` are performed, which immediately evaluate the sequence and cache all the data. These operations in Sequins are still forced to cache data, but they don't force evaluation of the sequence, and the cache must be rebuilt each time the sequence is evaluated.
+-   **Eager operations on sequences**: In Immutable, Sequences are lazy, except when certain operations like `sort` or `groupBy` are performed, which immediately evaluate the sequence and cache all the data. These operations in Sequins are still forced to cache data, but they don't force evaluation of the sequence, and the cache must be rebuilt each time the sequence is evaluated.
 
 -   **Sequence locking**: Sequences in Sequins are mutable like Sequins data structures, meaning that transforms on them generally return the same sequence object to be used for further chaining. Sequence transforms which return a sequence of a different type, however, obviously cannot return the same object. In order to avoid confusion these operations "lock" the former sequence to further transformation. This ensures that any operations designed to derive multiple sequences from a single base sequence must be explicit.
 
 -   **delete**: In Sequins the delete operation does not return the collection. It follows the es6 spec, which indicates that the method should return whether or not the key whose deletion was requested existed.
 
--   **Sequence transforms**: In immutable transform callbacks generally receive three arguments. `map`, for example, receives `(value, key, collection)`. In Sequins, the `collection` argument is omitted if the transform is done on a sequence.
+-   **Sequence transforms**: In Immutable transform callbacks generally receive three arguments. `map`, for example, receives `(value, key, collection)`. In Sequins, the `collection` argument is omitted if the transform is done on a sequence.
