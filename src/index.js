@@ -1,8 +1,8 @@
 import Sequence from './collection-sequence';
 import { Statics, SequenceStatics } from './statics';
-import ListConstructor from './subtypes/concrete/list';
-import MapConstructor from './subtypes/concrete/map';
-import SetConstructor from './subtypes/concrete/set';
+import List from './subtypes/concrete/list';
+import Map from './subtypes/concrete/map';
+import Set from './subtypes/concrete/set';
 import IndexedSeqConstructor from './subtypes/sequence/indexed';
 import KeyedSeqConstructor from './subtypes/sequence/keyed';
 import SetSeqConstructor from './subtypes/sequence/set';
@@ -35,19 +35,4 @@ Seq.Keyed = KeyedSeq;
 Seq.Set = SetSeq;
 Object.assign(Seq, SequenceStatics);
 
-export function List(initial) {
-  return new ListConstructor(initial);
-}
-Object.assign(List, ListConstructor);
-
-export function Map(initial) {
-  return new MapConstructor(initial);
-}
-Object.assign(Map, MapConstructor);
-
-export function Set(initial) {
-  return new SetConstructor(initial);
-}
-Object.assign(Set, SetConstructor);
-
-export default { Seq, List, Map, Set, ...Statics };
+export default { Seq, IndexedSeq, KeyedSeq, SetSeq, List, Map, Set, ...Statics };

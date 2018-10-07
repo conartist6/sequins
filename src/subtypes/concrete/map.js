@@ -1,6 +1,7 @@
+import entries from 'iter-tools/es5/entries';
 import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { KeyedMixin } from '..';
-import { isKeyed, isMutableKeyed } from '../../utils/shape';
+import { isKeyed, isMutableKeyed, isPlainObj } from '../../utils/shape';
 
 class SequinsMap extends KeyedMixin(ConcreteCollection) {
   constructor(iterable) {
@@ -9,7 +10,9 @@ class SequinsMap extends KeyedMixin(ConcreteCollection) {
       iterable == null
         ? []
         : !isKeyed(iterable) && !Array.isArray(iterable)
-          ? iterable.entries()
+          ? isPlainObj
+            ? entries(iterable)
+            : iterable.entries()
           : iterable,
     );
   }

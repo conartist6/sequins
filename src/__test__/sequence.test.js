@@ -13,14 +13,16 @@ function makeTests(collectionSubtype) {
 
     const testMethod = makeTestMethod(CollectionConstructor);
 
-    beforeEach(() => {
-      collection = new CollectionConstructor(testData.array);
-    });
+    describe('instance methods', function() {
+      beforeEach(() => {
+        collection = new CollectionConstructor(testData.array);
+      });
 
-    // This creates duplicate keys/values, which is expected even for Keyed and Set Seqs
-    testMethod('concat')
-      .run(() => collection.concat(testData.array))
-      .expectCollectionYields([...testData.array, ...testData.array]);
+      // This creates duplicate keys/values, which is expected even for Keyed and Set Seqs
+      testMethod('concat')
+        .run(() => collection.concat(testData.array))
+        .expectCollectionYields([...testData.array, ...testData.array]);
+    });
   });
 }
 
