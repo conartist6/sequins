@@ -70,13 +70,6 @@ export const CollectionMixin = Base => {
       );
     }
 
-    reduceRight(...args) {
-      return this.toSeq()
-        .reverse()
-        .reduce(...args)
-        .reverse();
-    }
-
     // Deep conversions
     toJS() {
       return this.__dynamicMethods.toJS(this);
