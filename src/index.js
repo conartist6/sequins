@@ -29,9 +29,24 @@ function Seq(initial) {
   return seq;
 }
 
-Seq.Indexed = IndexedSeq;
-Seq.Keyed = KeyedSeq;
-Seq.Set = SetSeq;
+function IndexedSeqFactory(iterable) {
+  return new IndexedSeq(iterable);
+}
+Object.assign(IndexedSeqFactory, IndexedSeq);
+
+function KeyedSeqFactory(iterable) {
+  return new KeyedSeq(iterable);
+}
+Object.assign(KeyedSeqFactory, KeyedSeq);
+
+function SetSeqFactory(iterable) {
+  return new SetSeq(iterable);
+}
+Object.assign(SetSeqFactory, SetSeq);
+
+Seq.Indexed = IndexedSeqFactory;
+Seq.Keyed = KeyedSeqFactory;
+Seq.Set = SetSeqFactory;
 
 export default {
   Seq,
