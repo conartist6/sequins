@@ -1,7 +1,7 @@
-import { Namespace as Collection } from '../collection';
-import { SetSeq, Set } from '../index-test';
-import makeTestMethod from './helpers/make-test-method';
-import testData from './data';
+import { Namespace as Collection } from "../collection";
+import { SetSeq, Set } from "../index";
+import makeTestMethod from "./helpers/make-test-method";
+import testData from "./data";
 
 function makeTests(collectionType) {
   const SetConstructor = Collection[collectionType].Set;
@@ -13,55 +13,57 @@ function makeTests(collectionType) {
     let set;
 
     function makeCalls(calls) {
-      return collectionType === 'Concrete' ? calls.map(call => [...call, staticSet]) : calls;
+      return collectionType === "Concrete"
+        ? calls.map(call => [...call, staticSet])
+        : calls;
     }
 
     const testMethod = makeTestMethod(SetConstructor);
 
-    describe('instance methods', function() {
+    describe("instance methods", function() {
       beforeEach(function() {
         set = new SetConstructor(array);
       });
 
-      testMethod('tap')
+      testMethod("tap")
         .callback(() => null, calls)
         .run(tapFn => set.tap(tapFn))
         .expectCollectionYields(array);
 
-      testMethod('map')
+      testMethod("map")
         .callback(val => val + 1, calls)
         .run(mapFn => set.map(mapFn))
         .expectCollectionYields([2, 3, 4]);
 
-      testMethod('flatMap (SetSeqs)')
+      testMethod("flatMap (SetSeqs)")
         .callback(val => new SetSeq([val + 1, val + 1.5]))
         .expectCalls(calls)
         .run(mapFn => set.flatMap(mapFn))
         .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
 
-      testMethod('flatMap (Sets)')
+      testMethod("flatMap (Sets)")
         .callback(val => new Set([val + 1, val + 1.5]))
         .expectCalls(calls)
         .run(mapFn => set.flatMap(mapFn))
         .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
 
-      testMethod('filter')
+      testMethod("filter")
         .callback(val => val > 1, calls)
         .run(filterFn => set.filter(filterFn))
         .expectCollectionYields([2, 3]);
 
-      testMethod('filterNot')
+      testMethod("filterNot")
         .callback(val => val > 1, calls)
         .run(filterFn => set.filterNot(filterFn))
         .expectCollectionYields([1]);
 
-      testMethod('reduce')
+      testMethod("reduce")
         .callback((acc, val, key) => acc + val)
         .expectCalls(makeCalls([[1, 2, 2], [3, 3, 3]]))
         .run(reducerFn => set.reduce(reducerFn))
         .expectReturns(6);
 
-      testMethod('forEach')
+      testMethod("forEach")
         .callback(() => true, calls)
         .run(eachFn => set.forEach(eachFn))
         .expectReturns(3);
@@ -69,5 +71,5 @@ function makeTests(collectionType) {
   });
 }
 
-makeTests('Sequence');
-makeTests('Concrete');
+makeTests("Sequence");
+makeTests("Concrete");

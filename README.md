@@ -52,7 +52,7 @@ Enter: Sequins. Sequins, by way of the Immutable.js API, offers the benefits of 
 
 ## Differences from Immutable
 
--   **new** `List`, `Map` and `Set` are classes in Sequins, not factory functions as in Immutable. Thes means that you must use the `new` keyword to construct them. It also means that `instanceof` checks are possible, **however** using instanceof is not considered idiomatic, and it is preferred to use the static methods such as `Sequins.isMap(shape)`.
+-   **Classes not Factory functions** The only factory function in Sequins is `Seq`. The rest of Sequins' types are classes, which means they must that you must use the `new` keyword to construct them. It also means that `instanceof` checks are possible, **however** using instanceof is not considered idiomatic, and it is preferred to use the static methods such as `isMap(shape)`.
 
 -   **Unordered types**: All Sequins types are ordered because the native data structures which underly them preserve ordering without additional work.
 
