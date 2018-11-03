@@ -33,7 +33,7 @@ class ConcreteCollection extends Collection {
   }
 
   get size() {
-    return this.__native.length;
+    return this.__native.size;
   }
 
   get(key, defaultValue) {

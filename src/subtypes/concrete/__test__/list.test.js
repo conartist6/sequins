@@ -8,7 +8,7 @@ describe("List", function() {
     list = new List(array);
   });
 
-  fit("has size", function() {
+  it("has size", function() {
     expect(list.size).toBe(3);
   });
 

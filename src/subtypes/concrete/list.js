@@ -10,6 +10,10 @@ class List extends IndexedMixin(ConcreteCollection) {
       iterable == null ? [] : Array.from(isKeyed(iterable) ? iterable.values() : iterable);
   }
 
+  get size() {
+    return this.__native.length;
+  }
+
   get(idx) {
     return this.__native[idx];
   }
