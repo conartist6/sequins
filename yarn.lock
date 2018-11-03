@@ -552,10 +552,6 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@runkit/value-viewer@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@runkit/value-viewer/-/value-viewer-1.0.0.tgz#ff0f243f44ac44450cc9cdf29fb78572a9e3582f"
-
 "@types/acorn@^4.0.3":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@types/acorn/-/acorn-4.0.3.tgz#d1f3e738dde52536f9aad3d3380d14e448820afd"

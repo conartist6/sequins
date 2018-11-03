@@ -1,4 +1,3 @@
-const { ValueViewerSymbol } = require('@runkit/value-viewer');
 import Collection, { Namespace as CollectionNamespace } from './collection';
 import { SubtypeNamespace } from './utils/namespace';
 import makeFrom from './factories/from';
@@ -8,9 +7,8 @@ export const Namespace = CollectionNamespace.__register('Concrete', new SubtypeN
 const concreteFrom = makeFrom(Collection, 'Concrete');
 
 class ConcreteCollection extends Collection {
-  constructor(native, collectionSubtype) {
-    super(native, 'Concrete', collectionSubtype);
-    this[ValueViewerSymbol] = native;
+  constructor(iterable, collectionSubtype) {
+    super(iterable, 'Concrete', collectionSubtype);
     this.__selfParam = [this];
   }
 
@@ -22,7 +20,6 @@ class ConcreteCollection extends Collection {
     } else {
       const coll = new CollectionConstructor();
       coll.__native = transformed;
-      this[ValueViewerSymbol] = transformed;
       return coll;
     }
   }
@@ -54,7 +51,6 @@ class ConcreteCollection extends Collection {
   clear() {
     const NativeConstructor = this.__native.constructor;
     this.__native = new NativeConstructor();
-    this[ValueViewerSymbol] = this.__native;
     return this;
   }
 
