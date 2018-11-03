@@ -5,8 +5,7 @@ import { isKeyed, isMutableKeyed, isPlainObj } from '../../utils/shape';
 
 class SequinsMap extends KeyedMixin(ConcreteCollection) {
   constructor(iterable) {
-    super(iterable);
-    this.__native = new Map(
+    const native = new Map(
       iterable == null
         ? []
         : !isKeyed(iterable) && !Array.isArray(iterable)
@@ -15,6 +14,8 @@ class SequinsMap extends KeyedMixin(ConcreteCollection) {
             : iterable.entries()
           : iterable,
     );
+    super(native);
+    this.__native = native;
   }
 
   set(key, value) {

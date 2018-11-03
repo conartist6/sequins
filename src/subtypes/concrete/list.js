@@ -5,9 +5,10 @@ import { isKeyed } from '../../utils/shape';
 
 class List extends IndexedMixin(ConcreteCollection) {
   constructor(iterable) {
-    super(iterable);
-    this.__native =
+    const native =
       iterable == null ? [] : Array.from(isKeyed(iterable) ? iterable.values() : iterable);
+    super(native);
+    this.__native = native;
   }
 
   get(idx) {

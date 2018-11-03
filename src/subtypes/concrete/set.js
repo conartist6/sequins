@@ -4,10 +4,11 @@ import { isKeyed, isMutableConcreteish, isMutableAssociative } from '../../utils
 
 class SequinsSet extends SetMixin(ConcreteCollection) {
   constructor(iterable) {
-    super(iterable);
-    this.__native = new Set(
+    const native = new Set(
       iterable == null ? [] : isKeyed(iterable) ? iterable.values() : iterable,
     );
+    super(native);
+    this.__native = native;
   }
 
   add(key, value) {
