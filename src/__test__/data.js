@@ -36,4 +36,8 @@ for (const sequenceType of Object.keys(testData)) {
 }
 Object.freeze(testData);
 
+export function makeCalls(calls, collection) {
+  return collection ? calls.map(call => [...call, collection]) : calls;
+}
+
 export default testData;

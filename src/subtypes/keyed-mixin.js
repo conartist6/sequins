@@ -2,6 +2,7 @@ import tap from 'iter-tools/es5/tap';
 import map from 'iter-tools/es5/map';
 import filter from 'iter-tools/es5/filter';
 import forEach from '../functions/for-each';
+import forSome from '../functions/for-some';
 
 export default Base => {
   class KeyedCollection extends Base {
@@ -47,6 +48,10 @@ export default Base => {
     // Reductive functions
     forEach(eachFn) {
       return forEach(([key, value]) => eachFn(value, key, ...this.__selfParam), this);
+    }
+
+    forSome(eachFn) {
+      return forSome(([key, value]) => eachFn(value, key, ...this.__selfParam), this);
     }
 
     // Conversions

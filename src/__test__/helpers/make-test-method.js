@@ -71,21 +71,19 @@ class MethodTest {
 // about a method's behavior both when it is being called on a Concrete type
 // and when it is being called on a Sequence.
 export default ConstructorType => {
-  function testMethod(methodName, it = global.it) {
+  const makeTestMethod = (it = global.it) => (methodName, fn) => {
     const methodTest = new MethodTest(ConstructorType, methodName);
 
     it('can ' + methodName, function() {
+      fn(methodTest);
       methodTest.__exec();
     });
 
     return methodTest;
-  }
+  };
 
-  testMethod.skip = function(methodName) {
-    return testMethod(methodName, it.skip);
-  };
-  testMethod.only = function(methodName) {
-    return testMethod(methodName, it.only);
-  };
+  const testMethod = makeTestMethod();
+  testMethod.skip = makeTestMethod(it.skip);
+  testMethod.only = makeTestMethod(it.only);
   return testMethod;
 };

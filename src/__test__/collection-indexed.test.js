@@ -1,7 +1,7 @@
-import { Namespace as Collection } from "../collection";
-import { IndexedSeq, List } from "../index";
-import makeTestMethod from "./helpers/make-test-method";
-import testData from "./data";
+import { Namespace as Collection } from '../collection';
+import { IndexedSeq, List } from '../index';
+import makeTestMethod from './helpers/make-test-method';
+import testData from './data';
 
 function makeTests(collectionType) {
   const IndexedConstructor = Collection[collectionType].Indexed;
@@ -13,77 +13,80 @@ function makeTests(collectionType) {
     let indexed;
 
     function makeCalls(calls) {
-      return collectionType === "Concrete"
-        ? calls.map(call => [...call, staticIndexed])
-        : calls;
+      return collectionType === 'Concrete' ? calls.map(call => [...call, staticIndexed]) : calls;
     }
 
     const testMethod = makeTestMethod(IndexedConstructor);
 
-    describe("instance methods", function() {
+    describe('instance methods', function() {
       beforeEach(function() {
         indexed = new IndexedConstructor(array);
       });
 
-      testMethod("zip")
-        .run(() => indexed.zip([2, 3, 4, 5]))
-        .expectCollectionYields([[1, 2], [2, 3], [3, 4]]);
+      testMethod('zip', t => {
+        t.run(() => indexed.zip([2, 3, 4, 5]));
+        t.expectCollectionYields([[1, 2], [2, 3], [3, 4]]);
+      });
 
-      testMethod("zipAll")
-        .run(() => indexed.zipAll([2, 3, 4, 5]))
-        .expectCollectionYields([[1, 2], [2, 3], [3, 4], [undefined, 5]]);
+      testMethod('zipAll', t => {
+        t.run(() => indexed.zipAll([2, 3, 4, 5]));
+        t.expectCollectionYields([[1, 2], [2, 3], [3, 4], [undefined, 5]]);
+      });
 
-      testMethod("zipWith")
-        .callback((a, b) => a + b)
-        .expectCalls([[1, 2], [2, 3], [3, 4]])
-        .run(zipperFn => indexed.zipWith(zipperFn, [2, 3, 4]))
-        .expectCollectionYields([3, 5, 7]);
+      testMethod('zipWith', t => {
+        t.callback((a, b) => a + b);
+        t.expectCalls([[1, 2], [2, 3], [3, 4]]);
+        t.run(zipperFn => indexed.zipWith(zipperFn, [2, 3, 4]));
+        t.expectCollectionYields([3, 5, 7]);
+      });
 
-      testMethod("tap")
-        .callback(() => null, calls)
-        .run(tapFn => indexed.tap(tapFn))
-        .expectCollectionYields(array);
+      testMethod('tap', t => {
+        t.callback(() => null, calls);
+        t.run(tapFn => indexed.tap(tapFn));
+        t.expectCollectionYields(array);
+      });
 
-      testMethod("map")
-        .callback(val => val + 1, calls)
-        .run(mapFn => indexed.map(mapFn))
-        .expectCollectionYields([2, 3, 4]);
+      testMethod('map', t => {
+        t.callback(val => val + 1, calls);
+        t.run(mapFn => indexed.map(mapFn));
+        t.expectCollectionYields([2, 3, 4]);
+      });
 
-      testMethod("flatMap (IndexedSequences)")
-        .callback(val => new IndexedSeq([val + 1, val + 1.5]))
-        .expectCalls(calls)
-        .run(mapFn => indexed.flatMap(mapFn))
-        .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
+      testMethod('flatMap (IndexedSequences)', t => {
+        t.callback(val => new IndexedSeq([val + 1, val + 1.5]));
+        t.expectCalls(calls);
+        t.run(mapFn => indexed.flatMap(mapFn));
+        t.expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
+      });
 
-      testMethod("flatMap (Lists)")
-        .callback(val => new List([val + 1, val + 1.5]))
-        .expectCalls(calls)
-        .run(mapFn => indexed.flatMap(mapFn))
-        .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
+      testMethod('flatMap (Lists)', t => {
+        t.callback(val => new List([val + 1, val + 1.5]));
+        t.expectCalls(calls);
+        t.run(mapFn => indexed.flatMap(mapFn));
+        t.expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
+      });
 
-      testMethod("filter")
-        .callback(val => val > 1, calls)
-        .run(filterFn => indexed.filter(filterFn))
-        .expectCollectionYields([2, 3]);
+      testMethod('filter', t => {
+        t.callback(val => val > 1, calls);
+        t.run(filterFn => indexed.filter(filterFn));
+        t.expectCollectionYields([2, 3]);
+      });
 
-      testMethod("filterNot")
-        .callback(val => val > 1, calls)
-        .run(filterFn => indexed.filterNot(filterFn))
-        .expectCollectionYields([1]);
+      testMethod('filterNot', t => {
+        t.callback(val => val > 1, calls);
+        t.run(filterFn => indexed.filterNot(filterFn));
+        t.expectCollectionYields([1]);
+      });
 
-      testMethod("reduce")
-        .callback((acc, val) => acc + val)
-        .expectCalls(makeCalls([[1, 2, 1], [3, 3, 2]]))
-        .run(reducerFn => indexed.reduce(reducerFn))
-        .expectReturns(6);
-
-      testMethod("forEach")
-        .callback(() => true, calls)
-        .run(eachFn => indexed.forEach(eachFn))
-        .expectReturns(3);
+      testMethod('reduce', t => {
+        t.callback((acc, val) => acc + val);
+        t.expectCalls(makeCalls([[1, 2, 1], [3, 3, 2]]));
+        t.run(reducerFn => indexed.reduce(reducerFn));
+        t.expectReturns(6);
+      });
     });
   });
 }
 
-makeTests("Sequence");
-makeTests("Concrete");
+makeTests('Sequence');
+makeTests('Concrete');

@@ -2,6 +2,7 @@ import tap from 'iter-tools/es5/tap';
 import map from 'iter-tools/es5/map';
 import filter from 'iter-tools/es5/filter';
 import forEach from '../functions/for-each';
+import forSome from '../functions/for-some';
 
 export default Base =>
   class SetCollection extends Base {
@@ -33,6 +34,10 @@ export default Base =>
     // Reductive functions
     forEach(eachFn) {
       return forEach(item => eachFn(item, item, ...this.__selfParam), this);
+    }
+
+    forSome(eachFn) {
+      return forSome(item => eachFn(item, item, ...this.__selfParam), this);
     }
 
     // Conversions
