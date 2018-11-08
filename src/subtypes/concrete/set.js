@@ -15,6 +15,11 @@ class SequinsSet extends SetMixin(ConcreteCollection) {
     return this;
   }
 
+  sortBy(...args) {
+    this.__native = new Set(this.__dynamicMethods.sort(true, Array.from(this.__native), ...args));
+    return this;
+  }
+
   reverse() {
     const reversedSeq = this.__reverse();
     for (const value of reversedSeq) {

@@ -10,6 +10,10 @@ class List extends IndexedMixin(ConcreteCollection) {
       iterable == null ? [] : Array.from(isKeyed(iterable) ? iterable.values() : iterable);
   }
 
+  __constructNative(iterable) {
+    return Array.from(iterable);
+  }
+
   get size() {
     return this.__native.length;
   }
@@ -43,6 +47,11 @@ class List extends IndexedMixin(ConcreteCollection) {
   }
   last() {
     return this.__native[this.__native.length];
+  }
+
+  sortBy(...args) {
+    this.__dynamicMethods.sort(true, this.__native, ...args);
+    return this;
   }
 
   fill(...args) {

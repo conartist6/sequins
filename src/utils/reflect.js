@@ -1,5 +1,3 @@
-export function keyFromInst() {}
-
 export default Object.freeze({
   Indexed: {
     NativeConstructor: Array,

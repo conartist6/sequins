@@ -142,6 +142,11 @@ function makeTests(collectionType, collectionSubtype) {
         t.expectCollectionYields(array);
       });
 
+      testMethod('sort with comparator', t => {
+        t.run(() => collection.sort((a, b) => a < b));
+        t.expectCollectionYields([...array].reverse());
+      });
+
       testMethod('sortBy', t => {
         t.run(() =>
           collection
@@ -150,6 +155,16 @@ function makeTests(collectionType, collectionSubtype) {
             .sortBy(x => x.x),
         );
         t.expectCollectionYields(collection.map(x => ({ x })));
+      });
+
+      testMethod('sortBy with comparator', t => {
+        t.run(() =>
+          collection
+            .reverse()
+            .map(x => ({ x }))
+            .sortBy(x => x.x, (a, b) => a < b),
+        );
+        t.expectCollectionYields(collection.map(x => ({ x })).reverse());
       });
     });
   });

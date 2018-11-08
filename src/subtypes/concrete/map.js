@@ -18,7 +18,18 @@ class SequinsMap extends KeyedMixin(ConcreteCollection) {
   }
 
   set(key, value) {
+    if (typeof this.__native.set != 'function') {
+      console.log(this.__native.set);
+      console.log(this.__native);
+      console.log(this);
+    }
     this.__native.set(key, value);
+    return this;
+  }
+
+  sortBy(...args) {
+    this.__native = new Map(this.__dynamicMethods.sort(true, Array.from(this.__native), ...args));
+    console.log(this.__native);
     return this;
   }
 

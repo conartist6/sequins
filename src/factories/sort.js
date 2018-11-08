@@ -8,14 +8,18 @@ const defaultComparator = (a, b) => (a > b ? 1 : a < b ? -1 : 0);
 function makeSort(Collection, collectionType, collectionSubtype) {
   const { itemValue, NativeConstructor } = reflect[collectionSubtype];
 
-  return function sort(iterable, selector, comparator = defaultComparator) {
-    const array = ensureArray(iterable);
+  return function sort(inPlace, iterable, selector, comparator = defaultComparator) {
+    let array = ensureArray(iterable);
 
     const wrappedComparator = selector
       ? (a, b) => comparator(selector(itemValue(a)), selector(itemValue(b)))
       : (a, b) => comparator(itemValue(a), itemValue(b));
 
-    stable.inplace(array, wrappedComparator);
+    if (inPlace) {
+      stable.inplace(array, wrappedComparator);
+    } else {
+      array = stable(array, wrappedComparator);
+    }
 
     if (collectionType === 'Sequence' || collectionSubtype === 'Indexed') {
       return array;

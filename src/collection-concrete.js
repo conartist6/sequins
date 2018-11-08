@@ -1,5 +1,6 @@
 import Collection, { Namespace as CollectionNamespace } from './collection';
 import { SubtypeNamespace } from './utils/namespace';
+import reflect from './utils/reflect';
 import makeFrom from './factories/from';
 
 export const Namespace = CollectionNamespace.__register('Concrete', new SubtypeNamespace());
@@ -19,13 +20,14 @@ class ConcreteCollection extends Collection {
       return transformed;
     } else {
       const coll = new CollectionConstructor();
-      coll.__native = transformed;
+      coll.__native = this.__constructNative(transformed);
       return coll;
     }
   }
 
-  concat(...args) {
-    return this.__doCollectionTransform(iterable => concat(iterable, ...args));
+  __constructNative(iterable) {
+    const NativeConstructor = this.__native.constructor;
+    return new NativeConstructor(iterable);
   }
 
   __doReductiveTransform(transform) {
@@ -54,6 +56,10 @@ class ConcreteCollection extends Collection {
     return this;
   }
 
+  concat(...args) {
+    return this.__doCollectionTransform(iterable => concat(iterable, ...args));
+  }
+
   __reverse() {
     const reversedSeq = CollectionNamespace.Sequence.from(this)
       .reverse()
@@ -61,15 +67,6 @@ class ConcreteCollection extends Collection {
 
     this.clear();
     return reversedSeq;
-  }
-
-  sort(...args) {
-    return this.sortBy(null, ...args);
-  }
-
-  sortBy(...args) {
-    this.__native = this.__dynamicMethods.sort(this.__native, ...args);
-    return this;
   }
 
   // Iterators

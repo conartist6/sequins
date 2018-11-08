@@ -59,6 +59,10 @@ export const CollectionMixin = Base => {
       return this.map(mapFn).flatten(true);
     }
 
+    sort(...args) {
+      return this.sortBy(null, ...args);
+    }
+
     // Reductive functions
     reduce(reducer, ...args) {
       return this.__doReductiveTransform(iterable =>
