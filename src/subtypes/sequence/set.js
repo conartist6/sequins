@@ -12,6 +12,11 @@ export default class SetSeq extends SetMixin(Sequence) {
     }
   }
 
+  // Collection functions
+  tap(tapFn) {
+    return this.__doCollectionTransform(tap(item => tapFn(item, item, ...this.__selfParam)));
+  }
+
   // Conversions
   toSetSeq() {
     return this;

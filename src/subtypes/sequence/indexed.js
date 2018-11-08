@@ -12,6 +12,11 @@ export default class IndexedSeq extends IndexedMixin(Sequence) {
     }
   }
 
+  // Collection functions
+  tap(tapFn) {
+    return this.__doCollectionTransform(tap((value, i) => tapFn(value, i, ...this.__selfParam)));
+  }
+
   // Conversions
   toIndexedSeq() {
     return this;

@@ -16,6 +16,13 @@ export default class KeyedSeq extends KeyedMixin(Sequence) {
     }
   }
 
+  // Collection functions
+  tap(tapFn) {
+    return this.__doCollectionTransform(
+      tap(([key, value]) => tapFn(value, key, ...this.__selfParam)),
+    );
+  }
+
   // Conversions
   toKeyedSeq() {
     return this;

@@ -30,10 +30,6 @@ export default Base => {
     }
 
     // Collection functions
-    tap(tapFn) {
-      return this.__doCollectionTransform(tap((value, i) => tapFn(value, i, ...this.__selfParam)));
-    }
-
     map(mapFn) {
       return this.__doCollectionTransform(map((value, i) => mapFn(value, i, ...this.__selfParam)));
     }
