@@ -66,18 +66,6 @@ function makeTests(collectionType) {
         t.expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
       });
 
-      testMethod('filter', t => {
-        t.callback(val => val > 1, calls);
-        t.run(filterFn => indexed.filter(filterFn));
-        t.expectCollectionYields([2, 3]);
-      });
-
-      testMethod('filterNot', t => {
-        t.callback(val => val > 1, calls);
-        t.run(filterFn => indexed.filterNot(filterFn));
-        t.expectCollectionYields([1]);
-      });
-
       testMethod('reduce', t => {
         t.callback((acc, val) => acc + val);
         t.expectCalls(makeCalls([[1, 2, 1], [3, 3, 2]]));

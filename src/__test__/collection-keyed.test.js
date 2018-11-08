@@ -28,12 +28,6 @@ function makeTests(collectionType) {
         keyed = new KeyedConstructor(entries);
       });
 
-      testMethod('tap', t => {
-        t.callback(() => null, calls);
-        t.run(tapFn => keyed.tap(tapFn));
-        t.expectCollectionYields(entries);
-      });
-
       testMethod('map', t => {
         t.callback(val => val + 1, calls);
         t.run(mapFn => keyed.map(mapFn));
@@ -66,18 +60,6 @@ function makeTests(collectionType) {
         t.expectCalls(calls);
         t.run(mapFn => keyed.flatMap(mapFn));
         t.expectCollectionYields([[2, 3], [3, 4], [4, 5]]);
-      });
-
-      testMethod('filter', t => {
-        t.callback(val => val > 1, calls);
-        t.run(filterFn => keyed.filter(filterFn));
-        t.expectCollectionYields(entries.slice(1));
-      });
-
-      testMethod('filterNot', t => {
-        t.callback(val => val > 1, calls);
-        t.run(filterFn => keyed.filterNot(filterFn));
-        t.expectCollectionYields(entries.slice(0, 1));
       });
 
       testMethod('reduce', t => {

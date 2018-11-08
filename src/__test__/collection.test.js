@@ -123,6 +123,18 @@ function makeTests(collectionType, collectionSubtype) {
         t.run(eachFn => collection.forSome(eachFn));
         t.expectReturns(2);
       });
+
+      testMethod('filter', t => {
+        t.callback(val => val > 1, calls);
+        t.run(filterFn => collection.filter(filterFn));
+        t.expectCollectionYields(array.slice(1));
+      });
+
+      testMethod('filterNot', t => {
+        t.callback(val => val > 1, calls);
+        t.run(filterFn => collection.filterNot(filterFn));
+        t.expectCollectionYields(array.slice(0, 1));
+      });
     });
   });
 }
