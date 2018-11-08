@@ -19,12 +19,6 @@ function makeTests(collectionType) {
         set = new SetConstructor(array);
       });
 
-      testMethod('tap', t => {
-        t.callback(() => null, calls);
-        t.run(tapFn => set.tap(tapFn));
-        t.expectCollectionYields(array);
-      });
-
       testMethod('map', t => {
         t.callback(val => val + 1, calls);
         t.run(mapFn => set.map(mapFn));

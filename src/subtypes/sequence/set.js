@@ -1,4 +1,5 @@
 import map from 'iter-tools/es5/map';
+import tap from 'iter-tools/es5/tap';
 import { isKeyed } from '../../utils/shape';
 import Sequence, { Namespace } from '../../collection-sequence';
 import { Namespace as ConcreteCollection } from '../../collection-concrete';

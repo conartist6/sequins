@@ -40,12 +40,6 @@ function makeTests(collectionType) {
         t.expectCollectionYields([3, 5, 7]);
       });
 
-      testMethod('tap', t => {
-        t.callback(() => null, calls);
-        t.run(tapFn => indexed.tap(tapFn));
-        t.expectCollectionYields(array);
-      });
-
       testMethod('map', t => {
         t.callback(val => val + 1, calls);
         t.run(mapFn => indexed.map(mapFn));

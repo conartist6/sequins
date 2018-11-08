@@ -33,10 +33,6 @@ function makeTests(collectionType, collectionSubtype) {
         expect(collection.toJS()).toEqual(js);
       });
 
-      it('can reverse', function() {
-        expect(Array.from(collection.reverse())).toEqual([...array].reverse());
-      });
-
       it('can be converted to Seq', function() {
         const seq = collection.toSeq();
         expect(Array.from(seq)).toEqual(array);
@@ -134,6 +130,26 @@ function makeTests(collectionType, collectionSubtype) {
         t.callback(val => val > 1, calls);
         t.run(filterFn => collection.filterNot(filterFn));
         t.expectCollectionYields(array.slice(0, 1));
+      });
+
+      testMethod('reverse', t => {
+        t.run(() => collection.reverse());
+        t.expectCollectionYields([...array].reverse());
+      });
+
+      testMethod('sort', t => {
+        t.run(() => collection.reverse().sort());
+        t.expectCollectionYields(array);
+      });
+
+      testMethod('sortBy', t => {
+        t.run(() =>
+          collection
+            .reverse()
+            .map(x => ({ x }))
+            .sortBy(x => x.x),
+        );
+        t.expectCollectionYields(collection.map(x => ({ x })));
       });
     });
   });

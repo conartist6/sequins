@@ -4,24 +4,30 @@ import makeTestMethod from './helpers/make-test-method';
 import testDataBySubtype from './data';
 
 function makeTests(collectionSubtype) {
-  const CollectionConstructor = Collection.Sequence[collectionSubtype];
+  const Sequence = Collection.Sequence[collectionSubtype];
 
-  const testData = testDataBySubtype[collectionSubtype];
+  const { array, calls } = testDataBySubtype[collectionSubtype];
 
   describe(`Sequence.${collectionSubtype}`, function() {
-    let collection;
+    let sequence;
 
-    const testMethod = makeTestMethod(CollectionConstructor);
+    const testMethod = makeTestMethod(Sequence);
 
     describe('instance methods', function() {
       beforeEach(() => {
-        collection = new CollectionConstructor(testData.array);
+        sequence = new Sequence(array);
       });
 
       // This creates duplicate keys/values, which is expected even for Keyed and Set Seqs
       testMethod('concat', t => {
-        t.run(() => collection.concat(testData.array));
-        t.expectCollectionYields([...testData.array, ...testData.array]);
+        t.run(() => sequence.concat(array));
+        t.expectCollectionYields([...array, ...array]);
+      });
+
+      testMethod('tap', t => {
+        t.callback(() => null, calls);
+        t.run(tapFn => sequence.tap(tapFn));
+        t.expectCollectionYields(array);
       });
     });
   });
