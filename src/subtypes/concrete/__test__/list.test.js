@@ -1,4 +1,4 @@
-import { List, Map, IndexedSeq } from '../../../index';
+import { List, Map, IndexedSequence } from '../../../index';
 
 const array = Object.freeze([1, 2, 3]);
 
@@ -57,6 +57,6 @@ describe('List statics', function() {
     expect(List.isList([])).toBe(false);
     expect(List.isList(List)).toBe(false);
     expect(List.isList(new Map())).toBe(false);
-    expect(List.isList(new IndexedSeq(array))).toBe(false);
+    expect(List.isList(new IndexedSequence(array))).toBe(false);
   });
 });

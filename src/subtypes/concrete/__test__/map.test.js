@@ -1,4 +1,4 @@
-import { List, Map, KeyedSeq } from '../../../index';
+import { List, Map, KeyedSequence } from '../../../index';
 
 const array = Object.freeze([[1, 1], [2, 2], [3, 3]]);
 
@@ -31,6 +31,6 @@ describe('Map statics', function() {
     expect(Map.isMap([])).toBe(false);
     expect(Map.isMap(Map)).toBe(false);
     expect(Map.isMap(new List())).toBe(false);
-    expect(Map.isMap(new KeyedSeq(array))).toBe(false);
+    expect(Map.isMap(new KeyedSequence(array))).toBe(false);
   });
 });

@@ -1,11 +1,11 @@
-import { SetSeq } from '../../../index';
+import { SetSequence } from '../../../index';
 
 const array = Object.freeze([1, 2, 3]);
 
-describe('SetSeq statics', function() {
-  it('can create an setSequence with SetSeq.of', function() {
-    const setSequence = SetSeq.of(...array);
-    expect(setSequence).toBeInstanceOf(SetSeq);
+describe('SetSequence statics', function() {
+  it('can create an setSequence with SetSequence.of', function() {
+    const setSequence = SetSequence.of(...array);
+    expect(setSequence).toBeInstanceOf(SetSequence);
     expect(Array.from(setSequence)).toEqual(array);
   });
 });

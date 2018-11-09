@@ -1,5 +1,5 @@
 import { Namespace as Collection } from '../collection';
-import { KeyedSeq, Map } from '../index';
+import { KeyedSequence, Map } from '../index';
 import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 
@@ -49,7 +49,7 @@ function makeTests(collectionType) {
       });
 
       testMethod('flatMap (KeyedSeqs)', t => {
-        t.callback(val => new KeyedSeq([[val + 1, val + 2]]));
+        t.callback(val => new KeyedSequence([[val + 1, val + 2]]));
         t.expectCalls(calls);
         t.run(mapFn => keyed.flatMap(mapFn));
         t.expectCollectionYields([[2, 3], [3, 4], [4, 5]]);

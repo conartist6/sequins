@@ -28,13 +28,17 @@ const testData = {
   },
 };
 
-for (const sequenceType of Object.keys(testData)) {
-  for (const dataset of Object.values(testData[sequenceType])) {
-    Object.freeze(dataset);
+export function freezeTestData(testData) {
+  for (const sequenceType of Object.keys(testData)) {
+    for (const dataset of Object.values(testData[sequenceType])) {
+      Object.freeze(dataset);
+    }
+    Object.freeze(testData[sequenceType]);
   }
-  Object.freeze(testData[sequenceType]);
+  Object.freeze(testData);
 }
-Object.freeze(testData);
+
+freezeTestData(testData);
 
 export function makeCalls(calls, collection) {
   return collection ? calls.map(call => [...call, collection]) : calls;

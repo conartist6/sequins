@@ -1,5 +1,5 @@
 import makeTestMethod from './helpers/make-test-method';
-import { IndexedSeq, KeyedSeq, SetSeq, List, Map, Set } from '../index';
+import '../index';
 import { Namespace as Collection } from '../collection';
 import makeFlatten from '../factories/flatten';
 import testData from './data';

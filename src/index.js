@@ -1,10 +1,10 @@
-import Sequence from "./collection-sequence";
-import List from "./subtypes/concrete/list";
-import Map from "./subtypes/concrete/map";
-import Set from "./subtypes/concrete/set";
-import IndexedSeq from "./subtypes/sequence/indexed";
-import KeyedSeq from "./subtypes/sequence/keyed";
-import SetSeq from "./subtypes/sequence/set";
+import Sequence from './collection-sequence';
+import List from './subtypes/concrete/list';
+import Map from './subtypes/concrete/map';
+import Set from './subtypes/concrete/set';
+import IndexedSequence from './subtypes/sequence/indexed';
+import KeyedSequence from './subtypes/sequence/keyed';
+import SetSequence from './subtypes/sequence/set';
 import {
   isMutableCollection as isCollection,
   isMutableSeq as isSeq,
@@ -13,13 +13,13 @@ import {
   isMutableAssociative as isAssociative,
   isMutableList as isList,
   isMutableMap as isMap,
-  isMutableSet as isSet
-} from "./utils/shape";
-import get from "./statics/get";
-import set from "./statics/set";
-import has from "./statics/has";
-import Range from "./statics/range";
-import Repeat from "./statics/repeat";
+  isMutableSet as isSet,
+} from './utils/shape';
+import get from './statics/get';
+import set from './statics/set';
+import has from './statics/has';
+import Range from './statics/range';
+import Repeat from './statics/repeat';
 
 function Seq(initial) {
   const seq = Sequence.from(initial);
@@ -29,30 +29,30 @@ function Seq(initial) {
   return seq;
 }
 
-function IndexedSeqFactory(iterable) {
-  return new IndexedSeq(iterable);
+function IndexedSequenceFactory(iterable) {
+  return new IndexedSequence(iterable);
 }
-Object.assign(IndexedSeqFactory, IndexedSeq);
+Object.assign(IndexedSequenceFactory, IndexedSequence);
 
-function KeyedSeqFactory(iterable) {
-  return new KeyedSeq(iterable);
+function KeyedSequenceFactory(iterable) {
+  return new KeyedSequenceFactory(iterable);
 }
-Object.assign(KeyedSeqFactory, KeyedSeq);
+Object.assign(KeyedSequenceFactory, KeyedSequenceFactory);
 
-function SetSeqFactory(iterable) {
-  return new SetSeq(iterable);
+function SetSequenceFactory(iterable) {
+  return new SetSequence(iterable);
 }
-Object.assign(SetSeqFactory, SetSeq);
+Object.assign(SetSequenceFactory, SetSequence);
 
-Seq.Indexed = IndexedSeqFactory;
-Seq.Keyed = KeyedSeqFactory;
-Seq.Set = SetSeqFactory;
+Seq.Indexed = IndexedSequenceFactory;
+Seq.Keyed = KeyedSequenceFactory;
+Seq.Set = SetSequenceFactory;
 
 export default {
   Seq,
-  IndexedSeq,
-  KeyedSeq,
-  SetSeq,
+  IndexedSequence,
+  KeyedSequence,
+  SetSequence,
   List,
   Map,
   Set,
@@ -68,14 +68,14 @@ export default {
   Repeat,
   get,
   set,
-  has
+  has,
 };
 
 export {
   Seq,
-  IndexedSeq,
-  KeyedSeq,
-  SetSeq,
+  IndexedSequence,
+  KeyedSequence,
+  SetSequence,
   List,
   Map,
   Set,
@@ -91,5 +91,5 @@ export {
   Repeat,
   get,
   set,
-  has
+  has,
 };

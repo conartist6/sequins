@@ -1,5 +1,5 @@
 import { Namespace as Collection } from '../collection';
-import { IndexedSeq, List } from '../index';
+import { IndexedSequence, List } from '../index';
 import makeTestMethod from './helpers/make-test-method';
 import testData from './data';
 
@@ -47,7 +47,7 @@ function makeTests(collectionType) {
       });
 
       testMethod('flatMap (IndexedSequences)', t => {
-        t.callback(val => new IndexedSeq([val + 1, val + 1.5]));
+        t.callback(val => new IndexedSequence([val + 1, val + 1.5]));
         t.expectCalls(calls);
         t.run(mapFn => indexed.flatMap(mapFn));
         t.expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);

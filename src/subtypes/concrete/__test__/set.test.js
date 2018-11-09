@@ -1,4 +1,4 @@
-import { List, Set, SetSeq } from '../../../index';
+import { List, Set, SetSequence } from '../../../index';
 
 const array = Object.freeze([1, 2, 3]);
 
@@ -37,6 +37,6 @@ describe('Set statics', function() {
     expect(Set.isSet([])).toBe(false);
     expect(Set.isSet(Set)).toBe(false);
     expect(Set.isSet(new Map())).toBe(false);
-    expect(Set.isSet(new SetSeq(array))).toBe(false);
+    expect(Set.isSet(new SetSequence(array))).toBe(false);
   });
 });
