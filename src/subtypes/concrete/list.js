@@ -1,7 +1,7 @@
 import range from 'iter-tools/es5/range';
 import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { IndexedMixin } from '..';
-import { isKeyed } from '../../utils/shape';
+import { isKeyed, isMutableList } from '../../utils/shape';
 
 class List extends IndexedMixin(ConcreteCollection) {
   constructor(iterable) {
@@ -128,7 +128,7 @@ class List extends IndexedMixin(ConcreteCollection) {
   }
 
   static isList(shape) {
-    return isMutableIndexed(shape);
+    return isMutableList(shape);
   }
 
   static of(...values) {

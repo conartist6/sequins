@@ -58,7 +58,7 @@ export function isSeq(shape) {
 }
 
 export function isMutableConcreteish(shape) {
-  return !!shape['@@__MUTABLE_ITERABLE__@@'] && !shape['@@__MUTABLE_SEQUENCE__@@'];
+  return !!shape['@@__MUTABLE_COLLECTION__@@'] && !shape['@@__MUTABLE_SEQUENCE__@@'];
 }
 
 export function isMutableList(shape) {

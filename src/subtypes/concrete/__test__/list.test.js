@@ -1,64 +1,62 @@
-import { List } from "../../../index";
+import { List, Map, IndexedSeq } from '../../../index';
 
-describe("List", function() {
-  const array = Object.freeze([1, 2, 3]);
+const array = Object.freeze([1, 2, 3]);
+
+describe('List', function() {
   let list;
 
   beforeEach(function() {
     list = new List(array);
   });
 
-  it("has size", function() {
-    expect(list.size).toBe(3);
-  });
-
-  it("can get", function() {
+  it('can get', function() {
     expect(list.get(0)).toBe(1);
     expect(list.get(2)).toBe(3);
     expect(list.get(3)).toBeUndefined();
   });
 
-  it("can set", function() {
+  it('can set', function() {
     expect(list.set(1, 22)).toBe(list);
+    expect(list.get(1)).toBe(22);
     expect(Array.from(list)).toEqual([1, 22, 3]);
   });
 
-  it("can push", function() {
+  it('can push', function() {
     expect(list.push(4)).toBe(list);
     expect(Array.from(list)).toEqual([1, 2, 3, 4]);
   });
 
-  it("can pop", function() {
+  it('can pop', function() {
     expect(list.pop()).toBe(3);
     expect(Array.from(list)).toEqual([1, 2]);
   });
 
-  it("can shift", function() {
+  it('can shift', function() {
     expect(list.shift()).toBe(1);
     expect(Array.from(list)).toEqual([2, 3]);
   });
 
-  it("can unshift", function() {
+  it('can unshift', function() {
     expect(list.unshift(0)).toBe(list);
     expect(Array.from(list)).toEqual([0, 1, 2, 3]);
   });
+});
 
-  it("can clear", function() {
-    expect(list.clear()).toBe(list);
-    expect(Array.from(list)).toEqual([]);
-  });
-
-  it("can concat", function() {
-    list = list.concat([1, 2, 3]);
+describe('List statics', function() {
+  it('can create a list with List.of', function() {
+    const list = List.of(...array);
     expect(list).toBeInstanceOf(List);
-    expect(Array.from(list)).toEqual([...array, ...array]);
+    expect(Array.from(list)).toEqual(array);
   });
 
-  it("has keys iterator", function() {
-    expect(Array.from(list.keys())).toEqual([0, 1, 2]);
+  it('can detect a list with List.isList', function() {
+    expect(List.isList(new List())).toBe(true);
   });
 
-  it("has values iterator", function() {
-    expect(Array.from(list.values())).toEqual(array);
+  it('List.isList returns false for non-lists', function() {
+    expect(List.isList([])).toBe(false);
+    expect(List.isList(List)).toBe(false);
+    expect(List.isList(new Map())).toBe(false);
+    expect(List.isList(new IndexedSeq(array))).toBe(false);
   });
 });
