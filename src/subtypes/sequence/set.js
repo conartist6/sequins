@@ -3,9 +3,9 @@ import tap from 'iter-tools/es5/tap';
 import { isKeyed } from '../../utils/shape';
 import Sequence, { Namespace } from '../../collection-sequence';
 import { Namespace as ConcreteCollection } from '../../collection-concrete';
-import { SetMixin } from '..';
+import { IdentityMixin } from '..';
 
-export default class SetSeq extends SetMixin(Sequence) {
+export default class SetSeq extends IdentityMixin(Sequence) {
   constructor(iterable) {
     super(iterable);
     if (isKeyed(this.__iterable)) {
@@ -24,7 +24,7 @@ export default class SetSeq extends SetMixin(Sequence) {
   }
 
   toSet() {
-    const Set = ConcreteCollection.Set;
+    const Set = ConcreteCollection.Identity;
     return new Set(this);
   }
 
@@ -46,4 +46,4 @@ export default class SetSeq extends SetMixin(Sequence) {
   }
 }
 
-Namespace.__register('Set', SetSeq);
+Namespace.__register('Identity', SetSeq);

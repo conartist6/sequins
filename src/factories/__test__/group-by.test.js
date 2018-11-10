@@ -20,10 +20,10 @@ function makeTests(type, collectionSubtype) {
 }
 
 describe('groupBy', function() {
+  makeTests('Identity', 'Sequence');
   makeTests('Indexed', 'Sequence');
   makeTests('Keyed', 'Sequence');
-  makeTests('Set', 'Sequence');
+  makeTests('Identity', 'Concrete');
   makeTests('Indexed', 'Concrete');
   makeTests('Keyed', 'Concrete');
-  makeTests('Set', 'Concrete');
 });

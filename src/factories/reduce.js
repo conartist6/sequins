@@ -2,6 +2,16 @@ import reduceIterable from 'iter-tools/es5/reduce';
 import reflect from '../utils/reflect';
 
 const reduceByType = {
+  Identity: function reduce(iterable, reducer, initial) {
+    const setReducer = (acc, item) => reducer(acc, item, item);
+    let reduced;
+    if (arguments.length > 2) {
+      reduced = reduceIterable(initial, setReducer, iterable);
+    } else {
+      reduced = reduceIterable(setReducer, iterable);
+    }
+    return reduced;
+  },
   Indexed: function reduce(iterable, reducer, initial) {
     let reduced;
     if (arguments.length > 2) {
@@ -26,16 +36,6 @@ const reduceByType = {
       reduced = reduceIterable(initial, keyedReducer, iterable);
     } else {
       reduced = reduceIterable(keyedReducer, iterable);
-    }
-    return reduced;
-  },
-  Set: function reduce(iterable, reducer, initial) {
-    const setReducer = (acc, item) => reducer(acc, item, item);
-    let reduced;
-    if (arguments.length > 2) {
-      reduced = reduceIterable(initial, setReducer, iterable);
-    } else {
-      reduced = reduceIterable(setReducer, iterable);
     }
     return reduced;
   },

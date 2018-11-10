@@ -6,7 +6,7 @@ import forSome from '../functions/for-some';
 export default Base =>
   class SetCollection extends Base {
     constructor(iterable) {
-      super(iterable, 'Set');
+      super(iterable, 'Identity');
     }
 
     // Collection functions

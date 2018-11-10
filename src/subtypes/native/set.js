@@ -1,10 +1,10 @@
 import { NativeCollectionMixin, Namespace } from '../../collection-native';
-import { SetMixin } from '..';
+import { IdentityMixin } from '..';
 import { isKeyed } from '../../utils/shape';
 
 export class TranspiledSet extends Set {}
 
-export default class SequinsSet extends SetMixin(NativeCollectionMixin(TranspiledSet)) {
+export default class SequinsSet extends IdentityMixin(NativeCollectionMixin(TranspiledSet)) {
   constructor(iterable) {
     super(iterable && isKeyed(iterable) ? iterable.values() : iterable);
   }

@@ -8,7 +8,7 @@ function makeTests(collectionSubtype) {
 
   const { array, calls } = testDataBySubtype[collectionSubtype];
 
-  describe(`Sequence.${collectionSubtype}`, function() {
+  describe(Sequence.name, function() {
     let sequence;
 
     const testMethod = makeTestMethod(Sequence);
@@ -33,6 +33,6 @@ function makeTests(collectionSubtype) {
   });
 }
 
+makeTests('Identity');
 makeTests('Indexed');
 makeTests('Keyed');
-makeTests('Set');

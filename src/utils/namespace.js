@@ -40,13 +40,13 @@ export class SubtypeNamespace extends Namespace {
     return (this[`_${collectionSubtype}`] = CollectionConstructor);
   }
 
+  get Identity() {
+    return this.__get('Identity');
+  }
   get Indexed() {
     return this.__get('Indexed');
   }
   get Keyed() {
     return this.__get('Keyed');
-  }
-  get Set() {
-    return this.__get('Set');
   }
 }

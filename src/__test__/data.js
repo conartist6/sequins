@@ -17,7 +17,7 @@ const testData = {
     object: { 9: 1, 8: 2, 7: 3 },
     js: { 9: 1, 8: 2, 7: 3 },
   },
-  Set: {
+  Identity: {
     keys: [1, 2, 3],
     values: [1, 2, 3],
     entries: [[1, 1], [2, 2], [3, 3]],

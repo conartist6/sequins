@@ -31,6 +31,6 @@ function makeTests(collectionSubtype) {
   });
 }
 
+makeTests('Identity');
 makeTests('Indexed');
 makeTests('Keyed');
-makeTests('Set');

@@ -1,4 +1,12 @@
 export default Object.freeze({
+  Identity: {
+    NativeConstructor: Set,
+    nativeSet: (set, key, value) => set.set(key, value),
+    nativeSize: set => set.size,
+    itemKey: item => item,
+    itemValue: item => item,
+    primitiveIterator: collection => collection.values(),
+  },
   Indexed: {
     NativeConstructor: Array,
     nativeSet: (array, key, value) => (array[key] = value),
@@ -14,13 +22,5 @@ export default Object.freeze({
     itemKey: item => item[0],
     itemValue: item => item[1],
     primitiveIterator: collection => collection.entries(),
-  },
-  Set: {
-    NativeConstructor: Set,
-    nativeSet: (set, key, value) => set.set(key, value),
-    nativeSize: set => set.size,
-    itemKey: item => item,
-    itemValue: item => item,
-    primitiveIterator: collection => collection.values(),
   },
 });
