@@ -153,9 +153,9 @@ function makeTests(collectionType, collectionSubtype) {
   });
 }
 
-// makeTests('Sequence', 'Indexed');
-// makeTests('Sequence', 'Keyed');
-// makeTests('Sequence', 'Set');
+makeTests('Sequence', 'Indexed');
+makeTests('Sequence', 'Keyed');
+makeTests('Sequence', 'Set');
 makeTests('Concrete', 'Indexed');
-// makeTests('Concrete', 'Keyed');
-// makeTests('Concrete', 'Set');
+makeTests('Concrete', 'Keyed');
+makeTests('Concrete', 'Set');
