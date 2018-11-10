@@ -90,7 +90,7 @@ export const CollectionMixin = Base => {
       return new Collection.Sequence.Keyed(this);
     }
     toSetSeq() {
-      return new Collection.Sequence.Identity(this);
+      return new Collection.Sequence.Duplicated(this);
     }
 
     keySeq() {

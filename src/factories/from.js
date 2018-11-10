@@ -16,7 +16,7 @@ function makeFrom(Collection, collectionType) {
       } else if (isKeyed(initial)) {
         return new TypedCollection.Keyed(initial);
       } else {
-        return new TypedCollection.Identity(initial);
+        return new TypedCollection.Duplicated(initial);
       }
     } else if (typeof initial[Symbol.iterator] === 'function') {
       return new TypedCollection.Indexed(initial);

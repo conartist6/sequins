@@ -2,7 +2,7 @@ import reduceIterable from 'iter-tools/es5/reduce';
 import reflect from '../utils/reflect';
 
 const reduceByType = {
-  Identity: function reduce(iterable, reducer, initial) {
+  Duplicated: function reduce(iterable, reducer, initial) {
     const setReducer = (acc, item) => reducer(acc, item, item);
     let reduced;
     if (arguments.length > 2) {

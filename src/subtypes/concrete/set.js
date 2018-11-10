@@ -1,8 +1,8 @@
 import ConcreteCollection, { Namespace } from '../../collection-concrete';
-import { IdentityMixin } from '..';
+import { DuplicatedMixin } from '..';
 import { isKeyed, isMutableSet } from '../../utils/shape';
 
-class SequinsSet extends IdentityMixin(ConcreteCollection) {
+class SequinsSet extends DuplicatedMixin(ConcreteCollection) {
   constructor(iterable) {
     super(iterable);
     this.__native = new Set(
@@ -42,4 +42,4 @@ class SequinsSet extends IdentityMixin(ConcreteCollection) {
   }
 }
 
-export default Namespace.__register('Identity', SequinsSet);
+export default Namespace.__register('Duplicated', SequinsSet);

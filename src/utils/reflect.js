@@ -1,5 +1,5 @@
 export default Object.freeze({
-  Identity: {
+  Duplicated: {
     NativeConstructor: Set,
     nativeSet: (set, key, value) => set.set(key, value),
     nativeSize: set => set.size,

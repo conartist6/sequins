@@ -4,10 +4,10 @@ import makeTestMethod from './helpers/make-test-method';
 import testData, { makeCalls } from './data';
 
 function makeTests(collectionType) {
-  const SetConstructor = Collection[collectionType].Identity;
+  const SetConstructor = Collection[collectionType].Duplicated;
 
   describe(SetConstructor.name, function() {
-    const { keys, values, entries, calls: rawCalls, array } = testData.Identity;
+    const { keys, values, entries, calls: rawCalls, array } = testData.Duplicated;
     const callbackSet = collectionType == 'Concrete' ? new SetConstructor(array) : null;
     const calls = makeCalls(rawCalls, callbackSet);
     let set;

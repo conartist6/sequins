@@ -15,7 +15,7 @@ const dataByType = {
     sortedArray: [[1, 1], [2, 2], [3, 3], [4, 4]],
     objectValue: ([key, value]) => [key, { value }],
   },
-  Identity: {
+  Duplicated: {
     array: [3, 2, 4, 1],
     sortedArray: [1, 2, 3, 4],
     objectValue: value => ({ value }),
@@ -58,10 +58,10 @@ function makeTests(type, collectionSubtype) {
 }
 
 describe('sort', function() {
-  makeTests('Identity', 'Sequence');
+  makeTests('Duplicated', 'Sequence');
   makeTests('Indexed', 'Sequence');
   makeTests('Keyed', 'Sequence');
-  makeTests('Identity', 'Concrete');
+  makeTests('Duplicated', 'Concrete');
   makeTests('Indexed', 'Concrete');
   makeTests('Keyed', 'Concrete');
 });
