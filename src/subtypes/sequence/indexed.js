@@ -33,16 +33,16 @@ export default class IndexedSeq extends IndexedMixin(Sequence) {
   }
 
   // Iterators
-  *keys() {
-    yield* map((_, i) => i, this);
+  keys() {
+    return new Namespace.Duplicated(map((_, i) => i, this));
   }
 
-  *values() {
-    yield* this;
+  values() {
+    return new Namespace.Duplicated(this);
   }
 
-  *entries() {
-    yield* map((value, i) => [i, value], this);
+  entries() {
+    return new Namespace.Keyed(map((value, i) => [i, value], this));
   }
 
   static of(...values) {

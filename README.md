@@ -56,6 +56,8 @@ Enter: Sequins. Sequins, by way of the Immutable.js API, offers the benefits of 
 
 -   **Unordered types**: All Sequins types are ordered because the native data structures which underly them preserve ordering without additional work.
 
+-   **Iterator methods return sequences** The `keys` `values` and `entries` methods of Sequins structures return sequences! This is possible because those methods are meant to return iterables, which Sequences are. This means that Sequins does not need separate `keySeq`, `valueSeq` or `entrySeq` methods. Note that in immutable `keySeq`, `valueSeq` and `entrySeq` all return IndexedSeq. Sequins `keys` and `values` return SetSequences, and `entries` returns a `KeyedSequence`.
+
 -   **No reverse iteration**: Sequins `Map` and `Set` lack `last`, `findLast`, `takeLast`, and `reduceRight`. This is because Sequins uses native data structures, and native data structure ordering is only accessible as an iterator. In other words to get or find the last item requires iterating through every other item, which is not what the programmer expects from a performance perspective.
 
 -   **No records**: I see no reason to support Records, which were mostly an attempt to fill in for the convenience of using objects. Just use objects.

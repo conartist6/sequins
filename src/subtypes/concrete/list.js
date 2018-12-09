@@ -1,7 +1,14 @@
 import range from 'iter-tools/es5/range';
+import { Namespace as Collection } from '../../collection';
 import ConcreteCollection, { Namespace } from '../../collection-concrete';
 import { IndexedMixin } from '..';
 import { isKeyed, isMutableList } from '../../utils/shape';
+
+function* arrayEntries(array) {
+  for (let i = 0; i < array.length; i++) {
+    yield [i, array[i]];
+  }
+}
 
 class List extends IndexedMixin(ConcreteCollection) {
   constructor(iterable) {
@@ -114,17 +121,15 @@ class List extends IndexedMixin(ConcreteCollection) {
 
   // Iterators
   keys() {
-    return range(this.__native.length);
+    return new Collection.Sequence.Duplicated(range(this.__native.length));
   }
 
   values() {
-    return this[Symbol.iterator]();
+    return new Collection.Sequence.Duplicated(this);
   }
 
-  *entries() {
-    for (let i = 0; i < this.__native.length; i++) {
-      yield [i, this.__native[i]];
-    }
+  entries() {
+    return new Collection.Sequence.Keyed(arrayEntries(this.__native));
   }
 
   static isList(shape) {

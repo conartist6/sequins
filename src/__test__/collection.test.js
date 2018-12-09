@@ -90,33 +90,21 @@ function makeTests(collectionType, collectionSubtype) {
         expect(collection.toSet()).toEqual(new Set(values));
       });
 
-      it('has keys iterator', function() {
-        expect(Array.from(collection.keys())).toEqual(keys);
-      });
-
-      it('has values iterator', function() {
-        expect(Array.from(collection.values())).toEqual(values);
-      });
-
-      it('has entries iterator', function() {
-        expect(Array.from(collection.entries())).toEqual(entries);
-      });
-
       it('can be converted to a key sequence', function() {
-        const keySeq = collection.keySeq();
-        expect(keySeq).toBeInstanceOf(IndexedSequence);
+        const keySeq = collection.keys();
+        expect(keySeq).toBeInstanceOf(SetSequence);
         expect(Array.from(keySeq)).toEqual(keys);
       });
 
       it('can be converted to a value sequence', function() {
-        const valueSeq = collection.valueSeq();
-        expect(valueSeq).toBeInstanceOf(IndexedSequence);
+        const valueSeq = collection.values();
+        expect(valueSeq).toBeInstanceOf(SetSequence);
         expect(Array.from(valueSeq)).toEqual(values);
       });
 
       it('can be converted to an entries sequence', function() {
-        const entriesSeq = collection.entrySeq();
-        expect(entriesSeq).toBeInstanceOf(IndexedSequence);
+        const entriesSeq = collection.entries();
+        expect(entriesSeq).toBeInstanceOf(KeyedSequence);
         expect(Array.from(entriesSeq)).toEqual(entries);
       });
 

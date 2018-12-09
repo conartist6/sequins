@@ -35,16 +35,16 @@ export default class KeyedSeq extends KeyedMixin(Sequence) {
   }
 
   // Iterators
-  *keys() {
-    yield* map(([key, _]) => key, this);
+  keys() {
+    return new Namespace.Duplicated(map(([key, _]) => key, this));
   }
 
-  *values() {
-    yield* map(([_, value]) => value, this);
+  values() {
+    return new Namespace.Duplicated(map(([_, value]) => value, this));
   }
 
-  *entries() {
-    yield* this;
+  entries() {
+    return this;
   }
 }
 

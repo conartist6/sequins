@@ -71,15 +71,15 @@ class ConcreteCollection extends Collection {
 
   // Iterators
   keys() {
-    return this.__native.keys();
+    return new CollectionNamespace.Sequence.Duplicated(this.__native.keys());
   }
 
   values() {
-    return this.__native.values();
+    return new CollectionNamespace.Sequence.Duplicated(this.__native.values());
   }
 
   entries() {
-    return this.__native.entries();
+    return new CollectionNamespace.Sequence.Keyed(this.__native.entries());
   }
 
   [Symbol.iterator]() {

@@ -36,7 +36,9 @@ export function isNative(shape) {
 
 // Impl. borrowed from immutable, Copyright (c) 2014-present, Facebook, Inc.
 export function isPlainObj(shape) {
-  return shape.constructor === Object || shape.constructor === undefined;
+  return (
+    (!shape[Symbol.iterator] && shape.constructor === Object) || shape.constructor === undefined
+  );
 }
 
 export function isDataStructure(shape) {

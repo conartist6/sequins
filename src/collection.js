@@ -93,16 +93,6 @@ export const CollectionMixin = Base => {
       return new Collection.Sequence.Duplicated(this);
     }
 
-    keySeq() {
-      return new Collection.Sequence.Indexed(this.keys());
-    }
-    valueSeq() {
-      return new Collection.Sequence.Indexed(this.values());
-    }
-    entrySeq() {
-      return new Collection.Sequence.Indexed(this.entries());
-    }
-
     toList() {
       return this.toIndexedSeq().toList();
     }

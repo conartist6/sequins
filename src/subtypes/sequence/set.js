@@ -29,16 +29,16 @@ export default class SetSeq extends DuplicatedMixin(Sequence) {
   }
 
   // Iterators
-  *keys() {
-    yield* this;
+  keys() {
+    return this;
   }
 
-  *values() {
-    yield* this;
+  values() {
+    return this;
   }
 
-  *entries() {
-    yield* map(value => [value, value], this);
+  entries() {
+    return new Namespace.Keyed(map(value => [value, value], this));
   }
 
   static of(...values) {
