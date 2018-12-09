@@ -1,0 +1,14 @@
+{
+  "overrides": [
+    {
+      "files": "pages/**/*.js",
+      "options": {
+        "trailingComma": "none",
+        "singleQuote": false
+      }
+    }
+  ],
+  "printWidth": 100,
+  "singleQuote": true,
+  "trailingComma": "all"
+}
