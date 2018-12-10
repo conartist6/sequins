@@ -1,0 +1,313 @@
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@import (less) "../../src/base.less";
+
+.pageBody {
+  padding: 0 36px;
+  position: relative;
+}
+
+.contents {
+  margin: 0 auto;
+  max-width: 880px;
+  padding: 64px 0;
+  position: relative;
+}
+
+.disclaimer {
+  margin: 60px 0 0 0;
+  border: solid 1px #eecccc;
+  background: #fefafa;
+  padding: 1em;
+  text-align: center;
+  font-size: 0.8em;
+  position: relative;
+}
+
+@media only screen and (max-width: 680px) {
+  .disclaimer {
+    margin: 60px 0 0;
+  }
+}
+
+.miniHeader {
+  position: fixed;
+  width: 100%;
+  height: 50px;
+  z-index: 1;
+}
+
+.miniHeaderBody {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 0;
+}
+
+.miniHeaderMask {
+  height: 100%;
+  background: #f44262;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+@media only screen and (max-width: 680px) {
+  .miniHeader {
+    position: relative;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .miniHeaderContents {
+    text-align: left;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .miniLogo {
+    display: none;
+  }
+}
+
+.miniHeaderContents {
+  margin: 0 auto;
+  max-width: 880px;
+  height: 100%;
+  padding: 20px 36px 0 0;
+  position: relative;
+  text-align: right;
+  box-sizing: border-box;
+
+  a,
+  .miniLogo {
+    color: #fff;
+    font-weight: bold;
+    margin-right: 1em;
+    text-decoration: none;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+
+    &.inverted {
+      color: #f44262;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .miniLogo {
+    position: absolute;
+    left: 0;
+    top: 12px;
+
+    font-family: Arvo;
+    font-size: 46px;
+    line-height: 43px;
+
+    .hidden {
+      color: transparent;
+      text-shadow: none;
+    }
+  }
+}
+
+.toolBar {
+  .select-none();
+  position: absolute;
+  right: 0;
+  top: 66px;
+  width: 220px;
+  color: #888;
+  cursor: pointer;
+}
+
+.toolBar .selected {
+  color: #141420;
+}
+
+@media only screen and (max-width: 680px) {
+  .toolBar {
+    display: none;
+  }
+}
+
+.sideBar {
+  .select-none();
+  font-size: 0.825em;
+  height: 100%;
+  overflow: hidden;
+  float: right;
+  width: 220px;
+  z-index: 0;
+
+  @media only screen and (max-width: 680px) {
+    display: none;
+  }
+
+  .scrollContent {
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+    padding: 18px 0 100px;
+    width: 240px;
+
+    > section > .groupTitle {
+      font-weight: 500;
+    }
+  }
+  h2 {
+    font-size: 1em;
+    margin: 0.2em 0.6em;
+
+    position: relative;
+  }
+
+  h2 a {
+    font-weight: normal;
+  }
+
+  .members {
+    margin: 0 0 2.5em 2em;
+  }
+
+  .groupTitle {
+    color: @body-color;
+    font-size: 1em;
+    margin: 1em 0 0;
+  }
+}
+
+.docContents {
+  margin-right: 240px;
+}
+
+@media only screen and (max-width: 680px) {
+  .docContents {
+    margin-right: 0;
+  }
+}
+
+.t a {
+  .transition(background-color 0.15s);
+  background-color: rgba(0, 0, 0, 0.01);
+  border-radius: 4px;
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.08);
+  margin: -2px -4px;
+  padding: 2px 4px;
+
+  &:hover {
+    background-color: rgba(112, 170, 220, 0.2);
+  }
+}
+
+.t.interfaceDef .t.callSig {
+  margin-left: 16px;
+}
+
+.typeHeader {
+  color: #555;
+  font-size: 1.5em;
+  font-weight: normal;
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+.interfaceMember {
+  margin: 1.3rem 0;
+}
+
+.infoHeader {
+  color: #555;
+  font-size: 10px;
+  letter-spacing: 0.25ch;
+  line-height: 16px;
+  margin: 1rem 0 0.125rem;
+  text-transform: uppercase;
+}
+
+.synopsis {
+  margin: -0.5em 0 1em;
+}
+
+.discussion p:first-child {
+  margin-top: 0.5em;
+}
+
+.memberSignature {
+  border-left-color: #9cdae9;
+  background: #f8f9fa;
+}
+
+.codeBlock {
+  padding-right: 2px;
+}
+
+.t.over {
+  border-bottom: solid 2px rgba(0, 0, 0, 0.05);
+  padding-bottom: 3px;
+}
+
+.memberLabel {
+  font-size: 1em;
+  margin: 0;
+}
+
+@media only screen and (max-width: 680px) {
+  .memberLabel {
+    .select-none();
+    cursor: pointer;
+  }
+}
+
+.detail {
+  box-sizing: border-box;
+  margin-bottom: 2.6rem;
+  overflow: hidden;
+}
+
+.groupTitle {
+  color: #9a9c9e;
+  font-size: 1.5em;
+  font-weight: 300;
+  margin: 3rem 0 2rem;
+}
+
+@media only screen and (max-width: 680px) {
+  .groupTitle {
+    margin: 2em 0 1em;
+  }
+}
+
+.doc {
+  margin: 2em 0 3em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+// macros
+
+.transition(@transition) {
+  -webkit-transition: @transition;
+  -moz-transition: @transition;
+  -ms-transition: @transition;
+  -o-transition: @transition;
+}
+
+.select-none() {
+  cursor: default;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

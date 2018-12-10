@@ -1,8 +1,9 @@
 {
   "overrides": [
     {
-      "files": "pages/**/*.js",
+      "files": ["pages/**/*.js", "type-definitions/**.d.ts"],
       "options": {
+        "printWidth": 80,
         "trailingComma": "none",
         "singleQuote": false
       }
