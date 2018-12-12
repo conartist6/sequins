@@ -22,19 +22,20 @@ Sequins does not yet support being included outside of a module system.
 
 ## Status
 
-This project is in alpha. It is not ready for production usage and should be expected to contain (many) omissions and bugs.
+This project is in alpha. It is not ready for production usage and should be expected to contain omissions and bugs.
 
 ### Project milestones:
 
     Name chosen and registered on npm: 6/14/18
     First npm version that isn't broken: 9/9/18
+    Documentation website go-live: ---
     First production usage: ---
     Immutable recognizes Sequins data types: ---
     1.0: ---
 
 ## API Documentation
 
-This does not exist yet. Want to help me build it? For now you can look at [the Immutable docs](http://facebook.github.io/immutable-js/docs/#/) and Sequins' [differences from Immutable](#differences-from-immutable). Undocumented parity failures should be considered bugs.
+API documentation is imminent.
 
 ## Why Sequins? A.K.A. A Brief History of (javascript) Time
 
