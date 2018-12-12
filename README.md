@@ -4,6 +4,9 @@ Sequins provides a core mutable data structures for javascript using the rich an
 
 Sequins is inspired by and powered by [iter-tools](https://github.com/sithmel/iter-tools#readme)
 
+[![Build Status](https://travis-ci.org/conartist6/sequins.svg?branch=master)](https://travis-ci.org/conartist6/sequins)
+[![npm version](https://img.shields.io/npm/v/sequins.svg)](https://www.npmjs.com/package/sequins)
+
 ## Install
 
 ```
