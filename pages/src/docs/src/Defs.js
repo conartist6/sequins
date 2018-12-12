@@ -199,29 +199,12 @@ var TypeDef = React.createClass({
           this.wrap("typeParam", type.param)
         );
       case TypeKind.Type:
-        var qualifiedType = (type.qualifier || []).concat([type.name]);
-        var qualifiedTypeName = qualifiedType.join(".");
-        var def = qualifiedTypeName
-          .split(".")
-          .reduce(
-            (def, name) => def && def.module && def.module[name],
-            defs.Sequins
-          );
-        var typeNameElement = [
-          type.qualifier && [
-            Seq(type.qualifier)
-              .map(q => <span className="t typeQualifier">{q}</span>)
-              .interpose(".")
-              .toArray(),
-            "."
-          ],
-          <span className="t typeName">{type.name}</span>
-        ];
+        var def = defs[type.name];
+
+        var typeNameElement = <span className="t typeName">{type.name}</span>;
         if (def) {
           typeNameElement = (
-            <Router.Link to={"/" + qualifiedTypeName}>
-              {typeNameElement}
-            </Router.Link>
+            <Router.Link to={"/" + type.name}>{typeNameElement}</Router.Link>
           );
         }
         return this.wrap("type", [

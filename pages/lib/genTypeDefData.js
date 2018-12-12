@@ -27,7 +27,7 @@ function DocVisitor(source) {
   var stack = [];
   var data = {};
   var typeParams = [];
-  var aliases = [];
+  var aliases = [{}];
   var isStatic = false;
 
   visit(source);

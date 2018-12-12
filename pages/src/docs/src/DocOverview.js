@@ -23,7 +23,7 @@ var DocOverview = React.createClass({
             {doc.description && <Markdown contents={doc.description} />}
           </section>
         )}
-        {Seq(def.module.groups)
+        {Seq(def.groups)
           .map(group => {
             return (
               <section>

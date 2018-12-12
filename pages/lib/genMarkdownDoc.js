@@ -13,7 +13,7 @@ function genMarkdownDoc(typeDefSource) {
     typeDefSource.replace(/\n[^\n]+?travis-ci.org[^\n]+?\n/, "\n"),
     {
       defs,
-      typePath: ["Sequins"],
+      typePath: [],
       relPath: "docs/"
     }
   );

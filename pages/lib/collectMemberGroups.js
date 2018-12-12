@@ -6,8 +6,7 @@
  */
 
 var { Seq } = require("../../");
-// Note: intentionally using raw defs, not getTypeDefs to avoid circular ref.
-var defs = require("../generated/sequins.d.json");
+var getDefByPath = require("./getDefByPath");
 
 function collectMemberGroups(interfaceDef, options = {}) {
   var members = {};
@@ -33,14 +32,7 @@ function collectMemberGroups(interfaceDef, options = {}) {
   function collectFromDef(def, name) {
     def.extends &&
       def.extends.forEach(e => {
-        var superModule = defs.Sequins;
-        e.name.split(".").forEach(part => {
-          superModule =
-            superModule &&
-            superModule.module &&
-            superModule.module.groups.find(group => group.members[part])
-              .members[part];
-        });
+        var superModule = getDefByPath(e.name);
         var superInterface = superModule && superModule.interface;
         if (superInterface) {
           collectFromDef(superInterface, e.name);

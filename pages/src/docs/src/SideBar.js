@@ -13,7 +13,7 @@ var { flattenDef, getDisplayTypeName } = require("./utils");
 
 var SideBar = React.createClass({
   render() {
-    var type = defs.Sequins;
+    var type = defs;
 
     return (
       <div className="sideBar">
@@ -32,7 +32,7 @@ var SideBar = React.createClass({
           </div>
         </div>
         <div className="scrollContent">
-          {Seq(type.module.groups)
+          {Seq(type.groups)
             .map(group => {
               return (
                 <section>

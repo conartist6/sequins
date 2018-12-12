@@ -10,7 +10,7 @@ var assign = require("react/lib/Object.assign");
 var Router = require("react-router");
 var DocHeader = require("./DocHeader");
 var TypeDocumentation = require("./TypeDocumentation");
-var defs = require("../../../lib/getTypeDefs");
+var getDefByPath = require("../../../lib/getDefByPath");
 
 var { Route, DefaultRoute, RouteHandler } = Router;
 
@@ -43,14 +43,7 @@ var DocDeterminer = React.createClass({
 function determineDoc(path) {
   var [, name, memberName] = path.split("/");
 
-  var namePath = name ? name.split(".") : [];
-  var def = namePath.reduce(
-    (def, subName) =>
-      def &&
-      def.module &&
-      def.module.groups.find(group => group.members[subName]).members[subName],
-    defs.Sequins
-  );
+  var def = getDefByPath(name);
 
   return { def, name, memberName };
 }

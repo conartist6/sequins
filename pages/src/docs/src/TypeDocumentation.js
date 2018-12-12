@@ -16,7 +16,7 @@ var MarkDown = require("./MarkDown");
 var DocOverview = require("./DocOverview");
 var collectMemberGroups = require("../../../lib/collectMemberGroups");
 var TypeKind = require("../../../lib/TypeKind");
-var defs = require("../../../lib/getTypeDefs");
+var getDefByPath = require("../../../lib/getDefByPath");
 var { flattenDef } = require("./utils");
 
 var typeDefURL =
@@ -312,15 +312,7 @@ function getTypePropMap(def) {
   def &&
     def.extends &&
     def.extends.forEach(e => {
-      var superModule = defs.Sequins;
-      e.name.split(".").forEach(part => {
-        superModule =
-          superModule &&
-          superModule.module &&
-          superModule.module.groups.find(group => group.members[part]).members[
-            part
-          ];
-      });
+      var superModule = getDefByPath(e.name);
       var superInterface =
         (superModule && superModule.class) || superModule.interface;
       if (superInterface) {
