@@ -475,9 +475,6 @@ function DocVisitor(source) {
           name: getNameText(node.expression),
           args: node.typeArguments && node.typeArguments.map(parseType)
         };
-      case ts.SyntaxKind.QualifiedName:
-        var type = parseType(node.right);
-        type.qualifier = [node.left.text].concat(type.qualifier || []);
         return type;
       case ts.SyntaxKind.TypePredicate:
         return {

@@ -371,7 +371,6 @@ function typeLength(info, type) {
         : type.param.length;
     case TypeKind.Type:
       return (
-        (type.qualifier ? 1 + type.qualifier.join(".").length : 0) +
         type.name.length +
         (!type.args
           ? 0

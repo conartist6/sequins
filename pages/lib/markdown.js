@@ -45,10 +45,6 @@ prism.languages.insertBefore("javascript", "keyword", {
   function: prism.languages.function
 });
 
-prism.languages.insertBefore("javascript", {
-  qualifier: /\b[A-Z][a-z0-9_]+/g
-});
-
 marked.setOptions({
   xhtml: true,
   highlight: code => prism.highlight(code, prism.languages.javascript)
