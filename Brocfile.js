@@ -27,4 +27,4 @@ bundledCJS = esTranspiler(bundledCJS, {
   plugins: ['@babel/plugin-transform-modules-commonjs'],
 });
 
-module.exports = mergeTrees([bundledModule, bundledCJS, 'compat']);
+module.exports = mergeTrees([bundledModule, bundledCJS, 'compat', 'type-definitions']);

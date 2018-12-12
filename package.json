@@ -4,18 +4,20 @@
   "description": "Mutable sequences and native data structures (Map, Set, List) following the Immutable.js API",
   "author": "conrad@burningpotato.com",
   "license": "MIT",
-  "files": [
-    "dist/**"
-  ],
+  "files": ["dist/**"],
   "main": "dist/_sequins.js",
   "module": "dist/sequins.mjs",
   "typings": "dist/sequins.d.ts",
   "scripts": {
-    "prepublishOnly": "yarn build && yarn test",
-    "build": "broccoli build dist --overwrite && npm run copy:dist",
+    "prepublishOnly": "run-s build test",
+    "build": "run-s build:*",
+    "build:dist": "broccoli build dist --overwrite",
     "build:pages": "gulp --gulpfile ./resources/gulpfile.js default",
-    "copy:dist": "node ./resources/copy-dist-typedefs.js",
-    "test": "jest"
+    "start:pages": "gulp --gulpfile ./resources/gulpfile.js dev",
+    "format": "prettier --write \"{src,pages/src,pages/lib,resources}/**/*.js\"",
+    "test": "jest",
+    "verify": "run-s format verify:formatting build test",
+    "verify:formatting": "./resources/check-changes.sh"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -43,6 +45,8 @@
     "immutable": "^4.0.0-rc.10",
     "jest": "^23.6.0",
     "marked": "0.3.19",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.15.3",
     "react": "^0.12.0",
     "react-router": "^0.11.2",
     "react-tools": "0.13.3",
@@ -64,9 +68,7 @@
     "babel-core": "7.0.0-bridge.0"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "js"
-    ],
+    "moduleFileExtensions": ["js"],
     "setupTestFrameworkScriptFile": "<rootDir>/jest_setup.js"
   },
   "repository": {
