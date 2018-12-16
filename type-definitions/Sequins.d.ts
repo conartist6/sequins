@@ -1219,6 +1219,16 @@ export interface Concrete<K, V> extends Collection<K, V> {
    * value if provided, if no default value is provided returns undefined.
    */
   first<NSV>(notSetValue?: NSV): V | NSV;
+
+  // Reducing a value
+
+  /**
+   * Returns true if this Collection includes no values.
+   *
+   * For some lazy `Seq`, `isEmpty` might need to iterate to determine
+   * emptiness. At most one iteration will occur.
+   */
+  isEmpty(): boolean;
 }
 
 /**
@@ -1582,6 +1592,22 @@ export interface Collection<K, V> {
    * True if `predicate` returns true for any entry in the Collection.
    */
   some(predicate: (value: V, key: K, iter: this) => boolean): boolean;
+
+  /**
+   * Returns the size of this Collection by iterating through it.
+   *
+   * If a `predicate` is provided, returns the count of entries in the
+   * Sequence for which the `predicate` returns true.
+   *
+   * NOTE: For concrete collections, this returns size when no args
+   * are passed. For sequences it must always iterate over the whole
+   * collection.
+   */
+  count(): number;
+  count(
+    predicate: (value: V, key: K, iter: this) => boolean,
+    context?: any
+  ): number;
 
   // Search for value
 

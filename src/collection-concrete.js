@@ -38,6 +38,10 @@ class ConcreteCollection extends Collection {
     return this.__native.size;
   }
 
+  count(predicate) {
+    return predicate ? super.count(predicate) : this.size;
+  }
+
   get(key, defaultValue) {
     return this.has(key) ? this.__native.get(key) : defaultValue;
   }
@@ -54,6 +58,10 @@ class ConcreteCollection extends Collection {
     const NativeConstructor = this.__native.constructor;
     this.__native = new NativeConstructor();
     return this;
+  }
+
+  isEmpty() {
+    return this.size === 0;
   }
 
   concat(...args) {

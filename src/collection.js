@@ -1,3 +1,5 @@
+import size from 'iter-tools/es5/size';
+import filter from 'iter-tools/es5/filter';
 import keys from 'iter-tools/es5/keys';
 import slice from 'iter-tools/es5/slice';
 import { RootNamespace } from './utils/namespace';
@@ -61,6 +63,10 @@ export const CollectionMixin = Base => {
 
     sort(...args) {
       return this.sortBy(null, ...args);
+    }
+
+    count(predicate) {
+      return size(predicate ? this.filter(predicate) : this);
     }
 
     // Reductive functions
