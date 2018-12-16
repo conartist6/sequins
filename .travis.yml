@@ -4,3 +4,29 @@ node_js: 8
 
 cache: yarn
 script: yarn test
+
+before_deploy:
+  provider: script
+  script: npm run build
+  skip_cleanup: true
+  on:
+    branch: master
+    tags: true
+
+deploy:
+  - provider: npm
+    skip-cleanup: true
+    email: conartist6@gmail.com
+    api_key: $NPM_TOKEN
+    on:
+      branch: master
+      tags: true
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GH_TOKEN
+    committer-from-gh: true
+    keep-history: false
+    local-dir: pages/out/docs
+    on:
+      branch: master
+      tags: true
