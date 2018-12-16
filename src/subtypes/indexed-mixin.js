@@ -1,5 +1,6 @@
 import map from 'iter-tools/es5/map';
 import filter from 'iter-tools/es5/filter';
+import interpose from 'iter-tools/es5/interpose';
 import forEach from '../functions/for-each';
 import forSome from '../functions/for-some';
 
@@ -26,6 +27,10 @@ export default Base => {
       return this.__doCollectionTransform(iterable =>
         map(items => zipper(...items), this.__dynamicMethods.zip(iterable, ...args)),
       );
+    }
+
+    interpose(separator) {
+      return this.__doCollectionTransform(interpose(separator));
     }
 
     // Collection functions

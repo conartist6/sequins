@@ -62,7 +62,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "invariant": "^2.2.4",
-    "iter-tools": "^6.1.1",
+    "iter-tools": "^6.1.8-next.3",
     "stable": "^0.1.8"
   },
   "resolutions": {

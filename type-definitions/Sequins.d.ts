@@ -354,6 +354,21 @@ interface List<T> extends Concrete<number, T>, Indexed<T> {
     ...collections: Array<Collection<any, any>>
   ): List<Z>;
 
+  // Combination
+
+  /**
+   * Returns a List with `separator` between each item.
+   *
+   * <!-- runkit:activate
+   *      { "preamble": "const { List } = require('sequins');" }
+   * -->
+   * ```js
+   * new List([ 1, 2, 3 ]).interpose(null);
+   * // List [ 1, null, 2, null, 3]
+   * ```
+   */
+  interpose<S>(separator: S): List<S | T>;
+
   // Conversions
 
   /**
@@ -790,6 +805,19 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
   concat<C>(
     ...valuesOrCollections: Array<Iterable<C> | C>
   ): IndexedSequence<T | C>;
+
+  /**
+   * Returns an IndexedSequence with `separator` between each item.
+   *
+   * <!-- runkit:activate
+   *      { "preamble": "const { List } = require('sequins');" }
+   * -->
+   * ```js
+   * new IndexedSequence([ 1, 2, 3 ]).interpose(null);
+   * // IndexedSequence [ 1, null, 2, null, 3]
+   * ```
+   */
+  interpose<S>(separator: S): IndexedSequence<S | T>;
 
   // Sequence algorithms
 

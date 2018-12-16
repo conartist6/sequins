@@ -510,6 +510,14 @@
     js-levenshtein "^1.1.3"
     semver "^5.3.0"
 
+"@babel/runtime-corejs2@^7.1.5":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs2/-/runtime-corejs2-7.2.0.tgz#5ccd722b72d2c18c6a7224b5751f4b9816b60ada"
+  integrity sha512-kPfmKoRI8Hpo5ZJGACWyrc9Eq1j3ZIUpUAQT2yH045OuYpccFJ9kYA/eErwzOM2jeBG1sC8XX1nl1EArtuM8tg==
+  dependencies:
+    core-js "^2.5.7"
+    regenerator-runtime "^0.12.0"
+
 "@babel/runtime@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0.tgz#adeb78fedfc855aa05bc041640f3f6f98e85424c"
@@ -1726,12 +1734,6 @@ clone-buffer@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/clone-buffer/-/clone-buffer-1.0.0.tgz#e3e25b207ac4e701af721e2cb5a16792cac3dc58"
 
-clone-regexp@^2.0.1:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/clone-regexp/-/clone-regexp-2.1.0.tgz#d17b9ff55840b2cb2d84eab618bc4f8d2af4b631"
-  dependencies:
-    is-regexp "^2.0.0"
-
 clone-stats@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/clone-stats/-/clone-stats-0.0.1.tgz#b88f94a82cf38b8791d58046ea4029ad88ca99d1"
@@ -1928,6 +1930,11 @@ copy-descriptor@^0.1.0:
 core-js@^2.4.0:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
+
+core-js@^2.5.7:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.0.tgz#1e30793e9ee5782b307e37ffa22da0eacddd84d4"
+  integrity sha512-kLRC6ncVpuEW/1kwrOXYX6KQASCVtrh1gQr/UiaVgFlf9WE5Vp+lNe5+h3LuMr5PAucWnnEXwH0nQHRH/gpGtw==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -3752,10 +3759,6 @@ is-regex@^1.0.4:
   dependencies:
     has "^1.0.1"
 
-is-regexp@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/is-regexp/-/is-regexp-2.0.0.tgz#d669511d64a620c7a8dffa9a1e00710f9275ace0"
-
 is-relative@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-relative/-/is-relative-1.0.0.tgz#a1bb6935ce8c5dba1e8b9754b9b2dcc020e2260d"
@@ -3894,14 +3897,17 @@ istextorbinary@2.1.0:
     editions "^1.1.1"
     textextensions "1 || 2"
 
-iter-tools@^6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/iter-tools/-/iter-tools-6.1.1.tgz#33470ab2938f4bc2cf72345e71a21691a62894fc"
+iter-tools@^6.1.8-next.3:
+  version "6.1.8-next.3"
+  resolved "https://registry.yarnpkg.com/iter-tools/-/iter-tools-6.1.8-next.3.tgz#c65b8d5b567c9b3707253c26b3e2dbd29a7e4f01"
+  integrity sha512-c6/d7FrNsZvuYg4avi52eITzZmPmgAz+p3up9Ekg0ewJ268DZ+KMnFrc0PZh6ztXwO6JXZKyN3UjN5Bet46MbQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
-    clone-regexp "^2.0.1"
+    "@babel/runtime-corejs2" "^7.1.5"
     dequeue "^1.0.5"
     little-ds-toolkit "^1.1.0"
+    typescript-tuple "^1.4.0"
+    typescript-union "0.0.0"
 
 jest-changed-files@^23.4.2:
   version "23.4.2"
@@ -6895,6 +6901,19 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
+typescript-tuple@^1.4.0, typescript-tuple@^1.5.0:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/typescript-tuple/-/typescript-tuple-1.7.3.tgz#6afa5cd4a461a7d011b2572a26f05b32112fb156"
+  integrity sha512-ygCTfD6CX5ul+J0sZhq2MSouMNAeJpRXAFkYPUZomv457KWg15DuS7n+ubv15LtbX27iVo6DkuiX/5yyNdBvVg==
+
+typescript-union@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/typescript-union/-/typescript-union-0.0.0.tgz#1d4b334e111c75506bf11eea816bd9352df7875c"
+  integrity sha512-sWOTNcTOXw27cJhfvjSbxrKggb4XD+fPIFkjIqqnycdVqStj/3IR3QVEMZOheWY5ELGS3PCwuHFDVWAbK9UHvA==
+  dependencies:
+    typescript-tuple "^1.5.0"
+    utility-types "^2.0.0"
+
 typescript@3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.0.3.tgz#4853b3e275ecdaa27f78fda46dc273a7eb7fc1c8"
@@ -7040,6 +7059,11 @@ util@~0.10.1:
   resolved "https://registry.yarnpkg.com/util/-/util-0.10.4.tgz#3aa0125bfe668a4672de58857d3ace27ecb76901"
   dependencies:
     inherits "2.0.3"
+
+utility-types@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/utility-types/-/utility-types-2.1.0.tgz#0c78fc9f7eb424d14302222b4ddd13fdb17f44ab"
+  integrity sha512-/nP2gqavggo6l38rtQI/CdeV+2fmBGXVvHgj9kV2MAnms3TIi77Mz9BtapPFI0+GZQCqqom0vACQ+VlTTaCovw==
 
 utils-merge@1.0.0:
   version "1.0.0"
