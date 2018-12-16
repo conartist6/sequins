@@ -9,6 +9,10 @@ export default Base => {
       super(iterable, 'Keyed');
     }
 
+    flip() {
+      return this.__doCollectionTransform(map(([key, value]) => [value, key]));
+    }
+
     // Collection functions
     map(mapFn) {
       return this.__doCollectionTransform(
