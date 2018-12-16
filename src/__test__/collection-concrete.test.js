@@ -14,6 +14,22 @@ function makeTests(collectionSubtype) {
 
     const testMethod = makeTestMethod(CollectionConstructor);
 
+    describe('empty', function() {
+      describe('instance methods', function() {
+        beforeEach(() => {
+          collection = new CollectionConstructor();
+        });
+
+        it('has 0 size', function() {
+          expect(collection.size).toBe(0);
+        });
+
+        it('isEmpty', function() {
+          expect(collection.isEmpty()).toBe(true);
+        });
+      });
+    });
+
     describe('instance methods', function() {
       beforeEach(() => {
         collection = new CollectionConstructor(array);
@@ -21,6 +37,10 @@ function makeTests(collectionSubtype) {
 
       it('has size', function() {
         expect(collection.size).toBe(array.length);
+      });
+
+      it('has isEmpty', function() {
+        expect(collection.isEmpty()).toBe(false);
       });
 
       it('can clear', function() {

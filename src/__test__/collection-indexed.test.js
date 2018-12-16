@@ -40,6 +40,11 @@ function makeTests(collectionType) {
         t.expectCollectionYields([3, 5, 7]);
       });
 
+      testMethod('interpose', t => {
+        t.run(() => indexed.interpose(null));
+        t.expectCollectionYields([1, null, 2, null, 3]);
+      });
+
       testMethod('map', t => {
         t.callback(val => val + 1, calls);
         t.run(mapFn => indexed.map(mapFn));

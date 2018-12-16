@@ -42,9 +42,14 @@ function makeTests(collectionType) {
       });
 
       testMethod('mapEntries', t => {
-        t.callback(([key, val]) => [val, key]);
+        t.callback(([key, val]) => [--val, ++key]);
         t.expectCalls(makeCalls([[[9, 1], 0], [[8, 2], 1], [[7, 3], 2]]));
         t.run(mapFn => keyed.mapEntries(mapFn));
+        t.expectCollectionYields([[0, 10], [1, 9], [2, 8]]);
+      });
+
+      testMethod('flip', t => {
+        t.run(() => keyed.flip());
         t.expectCollectionYields([[1, 9], [2, 8], [3, 7]]);
       });
 

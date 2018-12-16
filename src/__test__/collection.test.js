@@ -137,6 +137,17 @@ function makeTests(collectionType, collectionSubtype) {
         t.run(() => collection.reverse());
         t.expectCollectionYields([...array].reverse());
       });
+
+      testMethod('count', t => {
+        t.run(() => collection.count());
+        t.expectReturns(3);
+      });
+
+      testMethod('count with predicate', t => {
+        t.callback(val => val > 1, calls);
+        t.run(filterFn => collection.count(filterFn));
+        t.expectReturns(2);
+      });
     });
   });
 }
