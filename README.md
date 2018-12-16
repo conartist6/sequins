@@ -38,7 +38,7 @@ This project is in alpha. It is not ready for production usage and should be exp
 
 ## API Documentation
 
-API documentation is imminent.
+https://conartist6.github.io/sequins/
 
 ## Why Sequins? A.K.A. A Brief History of (javascript) Time
 
