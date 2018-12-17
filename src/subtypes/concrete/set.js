@@ -3,6 +3,14 @@ import { DuplicatedMixin } from '..';
 import { isKeyed, isMutableSet } from '../../utils/shape';
 
 class SequinsSet extends DuplicatedMixin(ConcreteCollection) {
+  static isSet(shape) {
+    return isMutableSet(shape);
+  }
+
+  static of(...values) {
+    return new SequinsSet(values);
+  }
+
   constructor(iterable) {
     super(iterable);
     this.__native = new Set(
@@ -33,12 +41,8 @@ class SequinsSet extends DuplicatedMixin(ConcreteCollection) {
     return this;
   }
 
-  static isSet(shape) {
-    return isMutableSet(shape);
-  }
-
-  static of(...values) {
-    return new SequinsSet(values);
+  [Symbol.species]() {
+    return SequinsSet;
   }
 }
 

@@ -5,12 +5,16 @@ import Sequence, { Namespace } from '../../collection-sequence';
 import { Namespace as ConcreteCollection } from '../../collection-concrete';
 import { DuplicatedMixin } from '..';
 
-export default class SetSeq extends DuplicatedMixin(Sequence) {
+export default class SetSequence extends DuplicatedMixin(Sequence) {
+  static of(...values) {
+    return new SetSequence(values);
+  }
+
   constructor(iterable) {
-    super(iterable);
-    if (isKeyed(this.__iterable)) {
-      this.__transforms.push(iterable => iterable.values());
+    if (isKeyed(iterable)) {
+      iterable = iterable.values();
     }
+    super(iterable);
   }
 
   // Collection functions
@@ -41,9 +45,9 @@ export default class SetSeq extends DuplicatedMixin(Sequence) {
     return new Namespace.Keyed(map(value => [value, value], this));
   }
 
-  static of(...values) {
-    return new SetSeq(values);
+  [Symbol.species]() {
+    return SetSequence;
   }
 }
 
-Namespace.__register('Duplicated', SetSeq);
+Namespace.__register('Duplicated', SetSequence);

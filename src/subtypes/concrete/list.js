@@ -11,6 +11,14 @@ function* arrayEntries(array) {
 }
 
 class List extends IndexedMixin(ConcreteCollection) {
+  static isList(shape) {
+    return isMutableList(shape);
+  }
+
+  static of(...values) {
+    return new List(values);
+  }
+
   constructor(iterable) {
     super(iterable);
     this.__native =
@@ -132,12 +140,8 @@ class List extends IndexedMixin(ConcreteCollection) {
     return new Collection.Sequence.Keyed(arrayEntries(this.__native));
   }
 
-  static isList(shape) {
-    return isMutableList(shape);
-  }
-
-  static of(...values) {
-    return new List(values);
+  [Symbol.species]() {
+    return List;
   }
 }
 

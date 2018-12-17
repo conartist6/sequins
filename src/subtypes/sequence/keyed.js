@@ -6,15 +6,16 @@ import Sequence, { Namespace } from '../../collection-sequence';
 import { Namespace as ConcreteCollection } from '../../collection-concrete';
 import { KeyedMixin } from '..';
 
-export default class KeyedSeq extends KeyedMixin(Sequence) {
+export default class KeyedSequence extends KeyedMixin(Sequence) {
   constructor(iterable) {
-    super(iterable);
-    iterable = this.__iterable;
-    if (isMutableCollection(iterable) && !isKeyed(iterable)) {
-      this.__transforms.push(iterable => iterable.entries());
-    } else if (isPlainObj(iterable)) {
-      this.__transforms.push(iterable => entries(iterable));
+    if (iterable) {
+      if (isMutableCollection(iterable) && !isKeyed(iterable)) {
+        iterable = iterable.entries();
+      } else if (isPlainObj(iterable)) {
+        iterable = entries(iterable);
+      }
     }
+    super(iterable);
   }
 
   // Collection functions
@@ -46,6 +47,10 @@ export default class KeyedSeq extends KeyedMixin(Sequence) {
   entries() {
     return this;
   }
+
+  [Symbol.species]() {
+    return KeyedSequence;
+  }
 }
 
-Namespace.__register('Keyed', KeyedSeq);
+Namespace.__register('Keyed', KeyedSequence);

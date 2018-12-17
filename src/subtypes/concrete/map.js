@@ -4,16 +4,20 @@ import { KeyedMixin } from '..';
 import { isNative, isCollection, isMutableMap, isPlainObj } from '../../utils/shape';
 
 class SequinsMap extends KeyedMixin(ConcreteCollection) {
+  static isMap(shape) {
+    return isMutableMap(shape);
+  }
+
   constructor(iterable) {
     super(iterable);
     this.__native = new Map(
       iterable == null
         ? []
         : isNative(iterable) || isCollection(iterable)
-          ? iterable.entries()
-          : isPlainObj(iterable)
-            ? entries(iterable)
-            : iterable,
+        ? iterable.entries()
+        : isPlainObj(iterable)
+        ? entries(iterable)
+        : iterable,
     );
   }
 
@@ -40,8 +44,8 @@ class SequinsMap extends KeyedMixin(ConcreteCollection) {
     return this;
   }
 
-  static isMap(shape) {
-    return isMutableMap(shape);
+  [Symbol.species]() {
+    return SequinsMap;
   }
 }
 

@@ -5,12 +5,16 @@ import Sequence, { Namespace } from '../../collection-sequence';
 import { Namespace as ConcreteCollection } from '../../collection-concrete';
 import { IndexedMixin } from '..';
 
-export default class IndexedSeq extends IndexedMixin(Sequence) {
+export default class IndexedSequence extends IndexedMixin(Sequence) {
+  static of(...values) {
+    return new IndexedSequence(values);
+  }
+
   constructor(iterable) {
-    super(iterable);
-    if (isKeyed(this.__iterable)) {
-      this.__transforms.push(iterable => iterable.values());
+    if (isKeyed(iterable)) {
+      iterable = iterable.values();
     }
+    super(iterable);
   }
 
   // Collection functions
@@ -45,9 +49,9 @@ export default class IndexedSeq extends IndexedMixin(Sequence) {
     return new Namespace.Keyed(map((value, i) => [i, value], this));
   }
 
-  static of(...values) {
-    return new IndexedSeq(values);
+  [Symbol.species]() {
+    return IndexedSequence;
   }
 }
 
-Namespace.__register('Indexed', IndexedSeq);
+Namespace.__register('Indexed', IndexedSequence);

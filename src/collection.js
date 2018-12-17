@@ -102,17 +102,21 @@ export const CollectionMixin = Base => {
     toList() {
       return this.toIndexedSeq().toList();
     }
-    toArray() {
-      return this.toIndexedSeq().toArray();
-    }
-    toObject() {
-      return this.toKeyedSeq().toObject();
-    }
     toMap() {
       return this.toKeyedSeq().toMap();
     }
     toSet() {
       return this.toSetSeq().toSet();
+    }
+    toConcrete() {
+      return this.__dynamicMethods.toConcrete(this);
+    }
+
+    toArray() {
+      return this.toIndexedSeq().toArray();
+    }
+    toObject() {
+      return this.toKeyedSeq().toObject();
     }
   }
 
