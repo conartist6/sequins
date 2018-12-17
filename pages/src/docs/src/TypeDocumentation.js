@@ -7,7 +7,7 @@
 
 var React = require("react");
 var Router = require("react-router");
-var { Seq } = require("immutable");
+var { Seq } = require("../../../..");
 var { InterfaceDef, CallSigDef } = require("./Defs");
 var MemberDoc = require("./MemberDoc");
 var isMobile = require("./isMobile");
@@ -26,8 +26,8 @@ var issuesURL = "https://github.com/conartist6/sequins/issues";
 var Disclaimer = function() {
   return (
     <section className="disclaimer">
-      This documentation is generated from <a href={typeDefURL}>Sequins.d.ts</a>.
-      Pull requests and <a href={issuesURL}>Issues</a> welcome.
+      This documentation is generated from <a href={typeDefURL}>Sequins.d.ts</a>
+      . Pull requests and <a href={issuesURL}>Issues</a> welcome.
     </section>
   );
 };
@@ -203,12 +203,12 @@ var TypeDoc = React.createClass({
                   </Router.Link>
                 </div>
               ))
-              .valueSeq()
+              .values()
               .toArray()}
           </section>
         )}
 
-        {!calls.isEmpty() && (
+        {calls.count() > 0 && (
           <section>
             {calls
               .map((call, callName) => (
@@ -223,7 +223,7 @@ var TypeDoc = React.createClass({
                   }}
                 />
               ))
-              .valueSeq()
+              .values()
               .toArray()}
           </section>
         )}
@@ -244,34 +244,33 @@ var TypeDoc = React.createClass({
                   }}
                 />
               ))
-              .valueSeq()
+              .values()
               .toArray()}
           </section>
         )}
 
         <section>
           {Seq(memberGroups)
-            .map(
-              (members, title) =>
-                members.length === 0
-                  ? null
-                  : Seq([
-                      <h4 key={title || "Members"} className="groupTitle">
-                        {title || "Members"}
-                      </h4>,
-                      Seq(members).map(member => (
-                        <MemberDoc
-                          typePropMap={typePropMap}
-                          key={member.memberName}
-                          showDetail={member.memberName === memberName}
-                          parentName={name}
-                          member={member}
-                        />
-                      ))
-                    ])
+            .map((members, title) =>
+              members.length === 0
+                ? null
+                : Seq([
+                    <h4 key={title || "Members"} className="groupTitle">
+                      {title || "Members"}
+                    </h4>,
+                    Seq(members).map(member => (
+                      <MemberDoc
+                        typePropMap={typePropMap}
+                        key={member.memberName}
+                        showDetail={member.memberName === memberName}
+                        parentName={name}
+                        member={member}
+                      />
+                    ))
+                  ])
             )
             .flatten()
-            .valueSeq()
+            .values()
             .toArray()}
         </section>
 

@@ -11,6 +11,11 @@ var Router = require("react-router");
 var DocHeader = require("./DocHeader");
 var TypeDocumentation = require("./TypeDocumentation");
 var getDefByPath = require("../../../lib/getDefByPath");
+var Sequins = require("../../../..");
+
+window.Sequins = Sequins;
+console.log("Feel free to try Sequins!");
+console.log(Sequins);
 
 var { Route, DefaultRoute, RouteHandler } = Router;
 

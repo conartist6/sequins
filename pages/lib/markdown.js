@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-var { Seq } = require("immutable");
+var { Seq } = require("../..");
 var marked = require("marked");
 var prism = require("./prism");
 var collectMemberGroups = require("./collectMemberGroups");

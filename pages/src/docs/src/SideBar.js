@@ -7,7 +7,7 @@
 
 var React = require("react");
 var Router = require("react-router");
-var { Map, Seq } = require("immutable");
+var { Seq } = require("../../../..");
 var defs = require("../../../lib/getTypeDefs");
 var { flattenDef, getDisplayTypeName } = require("./utils");
 
@@ -39,7 +39,7 @@ var SideBar = React.createClass({
                   <h4 className="groupTitle">{group.title}</h4>
                   {Seq(group.members)
                     .map((t, name) => this.renderSideBarType(name, t))
-                    .valueSeq()
+                    .values()
                     .toArray()}
                 </section>
               );
@@ -65,10 +65,32 @@ var SideBar = React.createClass({
 
     var memberGroups = this.props.memberGroups;
 
+    const flat = Seq(memberGroups)
+      .map((members, title) =>
+        members.length === 0
+          ? null
+          : Seq([
+              <h4 key={title || "Members"} className="groupTitle">
+                {title || "Members"}
+              </h4>,
+              Seq(members).map(member => (
+                <div key={member.memberName}>
+                  <Router.Link to={"/" + typeName + "/" + member.memberName}>
+                    {member.memberName +
+                      (member.memberDef.signatures ? "()" : "")}
+                  </Router.Link>
+                </div>
+              ))
+            ])
+      )
+      .flatten()
+      .values()
+      .toArray();
+
     var members =
       !isFocus || isFunction ? null : (
         <div className="members">
-          {!calls.isEmpty() && (
+          {calls.count() > 0 && (
             <section>
               {calls
                 .map((call, name) => (
@@ -78,12 +100,12 @@ var SideBar = React.createClass({
                     </Router.Link>
                   </div>
                 ))
-                .valueSeq()
+                .values()
                 .toArray()}
             </section>
           )}
 
-          {!functions.isEmpty() && (
+          {functions.count() > 0 && (
             <section>
               <h4 className="groupTitle">Static Methods</h4>
               {functions
@@ -94,35 +116,34 @@ var SideBar = React.createClass({
                     </Router.Link>
                   </div>
                 ))
-                .valueSeq()
+                .values()
                 .toArray()}
             </section>
           )}
 
           <section>
             {Seq(memberGroups)
-              .map(
-                (members, title) =>
-                  members.length === 0
-                    ? null
-                    : Seq([
-                        <h4 key={title || "Members"} className="groupTitle">
-                          {title || "Members"}
-                        </h4>,
-                        Seq(members).map(member => (
-                          <div key={member.memberName}>
-                            <Router.Link
-                              to={"/" + typeName + "/" + member.memberName}
-                            >
-                              {member.memberName +
-                                (member.memberDef.signatures ? "()" : "")}
-                            </Router.Link>
-                          </div>
-                        ))
-                      ])
+              .map((members, title) =>
+                members.length === 0
+                  ? null
+                  : Seq([
+                      <h4 key={title || "Members"} className="groupTitle">
+                        {title || "Members"}
+                      </h4>,
+                      Seq(members).map(member => (
+                        <div key={member.memberName}>
+                          <Router.Link
+                            to={"/" + typeName + "/" + member.memberName}
+                          >
+                            {member.memberName +
+                              (member.memberDef.signatures ? "()" : "")}
+                          </Router.Link>
+                        </div>
+                      ))
+                    ])
               )
               .flatten()
-              .valueSeq()
+              .values()
               .toArray()}
           </section>
         </div>

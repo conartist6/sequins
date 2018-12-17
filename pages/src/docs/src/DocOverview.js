@@ -7,7 +7,7 @@
 
 var React = require("react");
 var Router = require("react-router");
-var { Seq } = require("immutable");
+var { Seq } = require("../../../..");
 var Markdown = require("./MarkDown");
 
 var DocOverview = React.createClass({
@@ -56,7 +56,7 @@ var DocOverview = React.createClass({
                       </section>
                     );
                   })
-                  .valueSeq()
+                  .values()
                   .toArray()}
               </section>
             );

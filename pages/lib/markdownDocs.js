@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-var { Seq } = require("../../");
+var { Seq } = require("../..");
 var markdown = require("./markdown");
 
 var noteTypesToPreserve = ["alias", "memberof"];
