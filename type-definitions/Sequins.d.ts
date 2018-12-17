@@ -15,9 +15,10 @@ interface ListConstructor {
   /**
    * True if the provided value is a List
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { List } = require('sequins');" }
+   * -->
    * ```js
-   * const { List } = require('sequins');
    * List.isList([]); // false
    * List.isList(new List()); // true
    * ```
@@ -27,18 +28,20 @@ interface ListConstructor {
   /**
    * Creates a new List containing `values`.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { List } = require('sequins');" }
+   * -->
    * ```js
-   * const { List } = require('sequins');
    * List.of(1, 2, 3, 4)
    * // List [ 1, 2, 3, 4 ]
    * ```
    *
    * Note: Values are not altered or converted in any way.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { List } = require('sequins');" }
+   * -->
    * ```js
-   * const { List } = require('sequins');
    * List.of({x:1}, 2, [3], 4)
    * // List [ { x: 1 }, 2, [ 3 ], 4 ]
    * ```
@@ -63,10 +66,10 @@ interface List<T> extends Concrete<number, T>, Indexed<T> {
    * Note: `List` is a factory function and not a class, and does not use the
    * `new` keyword during construction.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { List, Set } = require('sequins');" }
+   * -->
    * ```js
-   * const { List, Set } = require('sequins')
-   *
    * const emptyList = new List()
    * // List []
    *
@@ -386,6 +389,8 @@ interface List<T> extends Concrete<number, T>, Indexed<T> {
    */
   toArray(): Array<T>;
 
+  toConcrete(): this;
+
   /**
    * Returns an `IndexedSequence` of the values from the List.
    */
@@ -404,9 +409,10 @@ interface MapConstructor {
    * Note: `Map` is a factory function and not a class, and does not use the
    * `new` keyword during construction.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
    * new Map({ key: "value" })
    * new Map([ [ "key", "value" ] ])
    * ```
@@ -438,9 +444,10 @@ interface MapConstructor {
   /**
    * True if the provided value is a Map
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
    * Map.isMap({}) // false
    * Map.isMap(new Map()) // true
    * ```
@@ -472,9 +479,10 @@ interface Map<K, V> extends Concrete<K, V>, Keyed<K, V> {
    * Sets `key` to `value`. If an equivalent the key already exists in
    * the map, it will be replaced.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
    * const originalMap = Map()
    * const newerMap = originalMap.set('key', 'value')
    * const newestMap = newerMap.set('key', 'newer value')
@@ -495,9 +503,10 @@ interface Map<K, V> extends Concrete<K, V>, Keyed<K, V> {
    * Note: `delete` cannot be safely used in IE8, but is provided to mirror
    * the ES6 collection API.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
    * const originalMap = Map({
    *   key: 'value',
    *   otherKey: 'other value'
@@ -515,9 +524,10 @@ interface Map<K, V> extends Concrete<K, V>, Keyed<K, V> {
   /**
    * Removes all keys and values from the map.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
    * new Map({ key: 'value' }).clear()
    * // Map {}
    * ```
@@ -532,9 +542,10 @@ interface Map<K, V> extends Concrete<K, V>, Keyed<K, V> {
    * Note: Values provided to `merge` are shallowly converted before being
    * merged. No nested values are altered.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
    * const one = new Map({ a: 10, b: 20, c: 30 })
    * const two = new Map({ b: 40, a: 50, d: 60 })
    * one.merge(two) // Map { "a": 50, "b": 40, "c": 30, "d": 60 }
@@ -615,6 +626,8 @@ interface Map<K, V> extends Concrete<K, V>, Keyed<K, V> {
    */
   toArray(): Array<[K, V]>;
 
+  toConcrete(): this;
+
   /**
    * Returns an `KeyedSequence` of the entries from the List.
    */
@@ -663,11 +676,6 @@ interface SetConstructor {
  * and NaN.
  */
 interface Set<T> extends Concrete<T, T>, Duplicated<T> {
-  toArray(): Array<T>;
-  toJS(): Array<any>;
-  toJSON(): Array<T>;
-  toSeq(): SetSequence<T>;
-
   /**
    * The number of items in this Set.
    */
@@ -715,9 +723,10 @@ interface Set<T> extends Concrete<T, T>, Duplicated<T> {
   /**
    * Returns a Set excluding any values contained within `collections`.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Set } = require('sequins');" }
+   * -->
    * ```js
-   * const { Set } = require('sequins')
    * new Set([ 1, 2, 3 ]).subtract([1, 3])
    * // Set [2]
    * ```
@@ -750,6 +759,30 @@ interface Set<T> extends Concrete<T, T>, Duplicated<T> {
     predicate: (value: T, key: T, iter: this) => value is F
   ): Set<F>;
   filter(predicate: (value: T, key: T, iter: this) => any): this;
+
+  // Conversions
+
+  /**
+   * Deeply converts all nested structures to Objects and Arrays.
+   */
+  toJS(): Array<any>;
+
+  /**
+   * Returns an Array with the values from the Set.
+   */
+  toJSON(): Array<T>;
+
+  /**
+   * Returns an Array with the values from the Set.
+   */
+  toArray(): Array<T>;
+
+  toConcrete(): this;
+
+  /**
+   * Returns a `SetSequence` of the values from the Set.
+   */
+  toSeq(): SetSequence<T>;
 }
 
 export var Set: SetConstructor;
@@ -772,30 +805,6 @@ interface IndexedSequenceConstructor {
  * discarded.
  */
 interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
-  // Conversions
-
-  /**
-   * Returns itself
-   */
-  toSeq(): this;
-
-  /**
-   * Shallowly converts this collection to an Array.
-   */
-  toArray(): Array<T>;
-
-  /**
-   * Deeply converts this IndexedSequence to equivalent native JavaScript
-   * Array.
-   */
-  toJS(): Array<any>;
-
-  /**
-   * Shallowly converts this IndexedSequence to equivalent native JavaScript
-   * Array.
-   */
-  toJSON(): Array<T>;
-
   // Combination
 
   /**
@@ -825,8 +834,10 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
    * Returns a new IndexedSequence with values passed through a
    * `mapper` function.
    *
+   * <!-- runkit:activate
+   *   { "preamble": "const { Seq } = require('sequins');" }
+   * -->
    * ```js
-   * const { Seq } = require('sequins')
    * IndexedSequence([ 1, 2 ]).map(x => 10 * x)
    * // Seq [ 10, 20 ]
    * ```
@@ -912,6 +923,35 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
     zipper: (...any: Array<any>) => Z,
     ...collections: Array<Collection<any, any>>
   ): IndexedSequence<Z>;
+
+  // Conversions
+
+  /**
+   * Returns a `List` of the sequence's values
+   */
+  toConcrete(): List<T>;
+
+  /**
+   * Returns itself
+   */
+  toSeq(): this;
+
+  /**
+   * Shallowly converts this collection to an Array.
+   */
+  toArray(): Array<T>;
+
+  /**
+   * Deeply converts this IndexedSequence to equivalent native JavaScript
+   * Array.
+   */
+  toJS(): Array<any>;
+
+  /**
+   * Shallowly converts this IndexedSequence to equivalent native JavaScript
+   * Array.
+   */
+  toJSON(): Array<T>;
 }
 
 export var IndexedSequence: IndexedSequenceConstructor;
@@ -935,30 +975,6 @@ interface KeyedSequenceConstructor {
  */
 interface KeyedSequence<K, V> extends Sequence<K, V>, Keyed<K, V> {
   /**
-   * Deeply converts this KeyedSequence to equivalent native JavaScript Object.
-   *
-   * Converts keys to Strings.
-   */
-  toJS(): Object;
-
-  /**
-   * Shallowly converts this KeyedSequence to equivalent native JavaScript Object.
-   *
-   * Converts keys to Strings.
-   */
-  toJSON(): { [key: string]: V };
-
-  /**
-   * Shallowly converts this collection to an Array.
-   */
-  toArray(): Array<[K, V]>;
-
-  /**
-   * Returns itself
-   */
-  toSeq(): this;
-
-  /**
    * Returns a new KeyedSequence with other collections concatenated to this one.
    *
    * All entries will be present in the resulting KeyedSequence, even if they
@@ -975,8 +991,10 @@ interface KeyedSequence<K, V> extends Sequence<K, V>, Keyed<K, V> {
    * Returns a new KeyedSequence with values passed through a
    * `mapper` function.
    *
+   * <!-- runkit:activate
+   *   { "preamble": "const { KeyedSequence } = require('sequins');" }
+   * -->
    * ```js
-   * const { Seq } = require('sequins')
    * KeyedSequence({ a: 1, b: 2 }).map(x => 10 * x)
    * // Seq { "a": 10, "b": 20 }
    * ```
@@ -1017,6 +1035,37 @@ interface KeyedSequence<K, V> extends Sequence<K, V>, Keyed<K, V> {
    * @see Keyed.flip
    */
   flip(): KeyedSequence<V, K>;
+
+  // Conversions
+
+  /**
+   * Deeply converts this KeyedSequence to equivalent native JavaScript Object.
+   *
+   * Converts keys to Strings.
+   */
+  toJS(): Object;
+
+  /**
+   * Shallowly converts this KeyedSequence to equivalent native JavaScript Object.
+   *
+   * Converts keys to Strings.
+   */
+  toJSON(): { [key: string]: V };
+
+  /**
+   * Shallowly converts this collection to an Array.
+   */
+  toArray(): Array<[K, V]>;
+
+  /**
+   * Returns a `Map` of the entries from this sequence.
+   */
+  toConcrete(): Map<K, V>;
+
+  /**
+   * Returns itself
+   */
+  toSeq(): this;
 }
 
 export var KeyedSequence: KeyedSequenceConstructor;
@@ -1039,26 +1088,6 @@ interface SetSequenceConstructor {
  * indices or keys are discareded.
  */
 interface SetSequence<T> extends Sequence<T, T>, Duplicated<T> {
-  /**
-   * Deeply converts this SetSequence to equivalent native JavaScript Array.
-   */
-  toJS(): Array<any>;
-
-  /**
-   * Shallowly converts this SetSequence to equivalent native JavaScript Array.
-   */
-  toJSON(): Array<T>;
-
-  /**
-   * Shallowly converts this collection to an Array.
-   */
-  toArray(): Array<T>;
-
-  /**
-   * Returns itself
-   */
-  toSeq(): this;
-
   /**
    * Returns a new SetSequence with other collections concatenated to this one.
    *
@@ -1095,6 +1124,32 @@ interface SetSequence<T> extends Sequence<T, T>, Duplicated<T> {
     predicate: (value: T, key: T, iter: this) => value is F
   ): SetSequence<F>;
   filter(predicate: (value: T, key: T, iter: this) => any): this;
+
+  // Conversion
+  /**
+   * Deeply converts this SetSequence to equivalent native JavaScript Array.
+   */
+  toJS(): Array<any>;
+
+  /**
+   * Shallowly converts this SetSequence to equivalent native JavaScript Array.
+   */
+  toJSON(): Array<T>;
+
+  /**
+   * Shallowly converts this collection to an Array.
+   */
+  toArray(): Array<T>;
+
+  /**
+   * Returns a `Set` of the values from this sequence.
+   */
+  toConcrete(): Set<T>;
+
+  /**
+   * Returns itself
+   */
+  toSeq(): this;
 }
 
 export var SetSequence: SetSequenceConstructor;
@@ -1253,9 +1308,10 @@ export interface Concrete<K, V> extends Collection<K, V> {
  * that Sequences can even have infintely many items. Take for example this way
  * of expressing the concept of "the first n natural numbers:"
  *
- * <!-- runkit:activate -->
+ * <!-- runkit:activate
+ *   { "preamble": "const { Range } = require('sequins');" }
+ * -->
  * ```js
- * const { Range } = require('sequins')
  * function naturals(n) {
  *   return Range(1, Infinity).slice(0, n).toArray()
  * }
@@ -1284,8 +1340,10 @@ export interface Sequence<K, V> extends Collection<K, V> {
    * Returns a new Sequence with values passed through a
    * `mapper` function.
    *
+   * <!-- runkit:activate
+   *   { "preamble": "const { Seq } = require('sequins');" }
+   * -->
    * ```js
-   * const { Seq } = require('sequins')
    * Seq([ 1, 2 ]).map(x => 10 * x)
    * // Seq [ 10, 20 ]
    * ```
@@ -1296,8 +1354,10 @@ export interface Sequence<K, V> extends Collection<K, V> {
    * Returns a new Sequence with values passed through a
    * `mapper` function.
    *
+   * <!-- runkit:activate
+   *   { "preamble": "const { Seq } = require('sequins');" }
+   * -->
    * ```js
-   * const { Seq } = require('sequins')
    * Seq([ 1, 2 ]).map(x => 10 * x)
    * // Seq [ 10, 20 ]
    * ```
@@ -1345,9 +1405,10 @@ export interface Collection<K, V> {
    * Returns a new Collection of the same type with values passed through a
    * `mapper` function.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Collection } = require('sequins');" }
+   * -->
    * ```js
-   * const { Collection } = require('sequins')
    * Collection({ a: 1, b: 2 }).map(x => 10 * x)
    * // Sequence { "a": 10, "b": 20 }
    * ```
@@ -1366,9 +1427,10 @@ export interface Collection<K, V> {
    * Returns a new Collection of the same type with only the entries for which
    * the `predicate` function returns true.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
    * new Map({ a: 1, b: 2, c: 3, d: 4}).filter(x => x % 2 === 0)
    * // Map { "b": 2, "d": 4 }
    * ```
@@ -1382,9 +1444,10 @@ export interface Collection<K, V> {
    * Returns a new Collection of the same type with only the entries for which
    * the `predicate` function returns false.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
    * new Map({ a: 1, b: 2, c: 3, d: 4}).filterNot(x => x % 2 === 0)
    * // Map { "a": 1, "c": 3 }
    * ```
@@ -1412,15 +1475,16 @@ export interface Collection<K, V> {
    * When sorting collections which have no defined order, their ordered
    * equivalents will be returned. e.g. `map.sort()` returns OrderedMap.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
    * new Map({ "c": 3, "a": 1, "b": 2 }).sort((a, b) => {
    *   if (a < b) { return -1; }
    *   if (a > b) { return 1; }
    *   if (a === b) { return 0; }
    * });
-   * // OrderedMap { "a": 1, "b": 2, "c": 3 }
+   * // Map { "a": 1, "b": 2, "c": 3 }
    * ```
    */
   sort(comparator?: (valueA: V, valueB: V) => number): this;
@@ -1440,9 +1504,10 @@ export interface Collection<K, V> {
    * Returns a `Keyed` of `Keyeds`, grouped by the return
    * value of the `grouper` function.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { List, Map } = require('sequins');" }
+   * -->
    * ```js
-   * const { List, Map } = require('sequins')
    * const listOfMaps = new List([
    *   new Map({ v: 0 }),
    *   new Map({ v: 1 }),
@@ -1607,9 +1672,10 @@ export interface Collection<K, V> {
    * `collection.toList()` discards the keys and creates a list of only the
    * values, whereas `List(collection)` creates a list of entry tuples.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Map, List } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map, List } = require('sequins')
    * var myMap = new Map({ a: 'Apple', b: 'Banana' })
    * new List(myMap) // List [ [ "a", "Apple" ], [ "b", "Banana" ] ]
    * myMap.toList() // List [ "Apple", "Banana" ]
@@ -1650,9 +1716,10 @@ export interface Collection<K, V> {
    * The returned Sequence will have identical iteration order as
    * this Collection.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { Seq } = require('sequins');" }
+   * -->
    * ```js
-   * const { Seq } = require('sequins')
    * const indexedSeq = Seq([ 'A', 'B', 'C' ])
    * // Sequence [ "A", "B", "C" ]
    * indexedSeq.filter(v => v === 'B')
@@ -1779,11 +1846,12 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * Returns a new Keyed of the same type where the keys and values
    * have been flipped.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { KeyedSequence } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
-   * new Map({ a: 'z', b: 'y' }).flip()
-   * // Map { "z": "a", "y": "b" }
+   * new KeyedSequence({ a: 'z', b: 'y' }).flip()
+   * // KeyedSequence { "z": "a", "y": "b" }
    * ```
    */
   flip(): Keyed<V, K>;
@@ -1802,10 +1870,12 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * Returns a new Keyed with values passed through a
    * `mapper` function.
    *
+   * <!-- runkit:activate
+   *   { "preamble": "const { KeyedSequence } = require('sequins');" }
+   * -->
    * ```js
-   * const { Collection } = require('sequins')
-   * Keyed({ a: 1, b: 2 }).map(x => 10 * x)
-   * // Sequence { "a": 10, "b": 20 }
+   * new KeyedSequence({ a: 1, b: 2 }).map(x => 10 * x)
+   * // KeyedSequence { "a": 10, "b": 20 }
    * ```
    */
   map<M>(mapper: (value: V, key: K, iter: this) => M): Keyed<K, M>;
@@ -1814,11 +1884,13 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * Returns a new Keyed of the same type with keys passed through
    * a `mapper` function.
    *
+   * <!-- runkit:activate
+   *   { "preamble": "const { KeyedSequence } = require('sequins');" }
+   * -->
    * <!-- runkit:activate -->
    * ```js
-   * const { Map } = require('sequins')
-   * new Map({ a: 1, b: 2 }).mapKeys(x => x.toUpperCase())
-   * // Map { "A": 1, "B": 2 }
+   * new KeyedSequence({ a: 1, b: 2 }).mapKeys(x => x.toUpperCase())
+   * // KeyedSequence { "A": 1, "B": 2 }
    * ```
    */
   mapKeys<M>(mapper: (key: K, value: V, iter: this) => M): Keyed<M, V>;
@@ -1827,12 +1899,13 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * Returns a new Keyed of the same type with entries
    * ([key, value] tuples) passed through a `mapper` function.
    *
-   * <!-- runkit:activate -->
+   * <!-- runkit:activate
+   *   { "preamble": "const { KeyedSequence } = require('sequins');" }
+   * -->
    * ```js
-   * const { Map } = require('sequins')
-   * new Map({ a: 1, b: 2 })
+   * new KeyedSequence({ a: 1, b: 2 })
    *   .mapEntries(([ k, v ]) => [ k.toUpperCase(), v * 2 ])
-   * // Map { "A": 2, "B": 4 }
+   * // KeyedSequence { "A": 2, "B": 4 }
    * ```
    */
   mapEntries<KM, VM>(
@@ -1923,12 +1996,12 @@ export interface Indexed<T> extends Collection<number, T> {
    *
    *
    * <!-- runkit:activate
-   *      { "preamble": "const { List } = require('sequins')" }
+   *   { "preamble": "const { IndexedSequence } = require('sequins');" }
    * -->
    * ```js
-   * const a = new List([ 1, 2, 3 ]);
-   * const b = new List([ 4, 5, 6 ]);
-   * const c = a.zip(b); // List [ [ 1, 4 ], [ 2, 5 ], [ 3, 6 ] ]
+   * const a = new IndexedSequence([ 1, 2, 3 ]);
+   * const b = new IndexedSequence([ 4, 5, 6 ]);
+   * const c = a.zip(b); // IndexedSequence [ [ 1, 4 ], [ 2, 5 ], [ 3, 6 ] ]
    * ```
    */
   zip<U>(other: Collection<any, U>): Indexed<[T, U]>;
@@ -1944,10 +2017,14 @@ export interface Indexed<T> extends Collection<number, T> {
    * Unlike `zip`, `zipAll` continues zipping until the longest collection is
    * exhausted. Missing values from shorter collections are filled with `undefined`.
    *
+   * <!-- runkit:activate
+   *   { "preamble": "const { IndexedSequence } = require('sequins');" }
+   * -->
    * ```js
-   * const a = new List([ 1, 2 ]);
-   * const b = new List([ 3, 4, 5 ]);
-   * const c = a.zipAll(b); // List [ [ 1, 3 ], [ 2, 4 ], [ undefined, 5 ] ]
+   * const a = new IndexedSequence([ 1, 2 ]);
+   * const b = new IndexedSequence([ 3, 4, 5 ]);
+   * const c = a.zipAll(b);
+   * // IndexedSequence [ [ 1, 3 ], [ 2, 4 ], [ undefined, 5 ] ]
    * ```
    */
   zipAll<U>(other: Collection<any, U>): Indexed<[T, U]>;
@@ -1962,13 +2039,13 @@ export interface Indexed<T> extends Collection<number, T> {
    * collections by using a custom `zipper` function.
    *
    * <!-- runkit:activate
-   *      { "preamble": "const { List } = require('sequins')" }
+   *      { "preamble": "const { IndexedSequence } = require('sequins')" }
    * -->
    * ```js
-   * const a = new List([ 1, 2, 3 ]);
-   * const b = new List([ 4, 5, 6 ]);
+   * const a = new IndexedSequence([ 1, 2, 3 ]);
+   * const b = new IndexedSequence([ 4, 5, 6 ]);
    * const c = a.zipWith((a, b) => a + b, b);
-   * // List [ 5, 7, 9 ]
+   * // IndexedSequence [ 5, 7, 9 ]
    * ```
    */
   zipWith<U, Z>(
@@ -1996,10 +2073,12 @@ export interface Indexed<T> extends Collection<number, T> {
    * Returns a new Indexed with values passed through a
    * `mapper` function.
    *
+   * <!-- runkit:activate
+   *      { "preamble": "const { IndexedSequence } = require('sequins')" }
+   * -->
    * ```js
-   * const { Collection } = require('sequins')
-   * Indexed([1,2]).map(x => 10 * x)
-   * // Sequence [ 1, 2 ]
+   * new IndexedSequence([1,2]).map(x => 10 * x)
+   * // IndexedSequence [ 1, 2 ]
    * ```
    */
   map<M>(mapper: (value: T, key: number, iter: this) => M): Indexed<M>;
@@ -2107,7 +2186,6 @@ export interface Duplicated<T> extends Collection<T, T> {
  * infinity. When `start` is equal to `end`, returns empty range.
  *
  * ```js
- * const { Range } = require('sequins')
  * Range() // [ 0, 1, 2, 3, ... ]
  * Range(10) // [ 10, 11, 12, 13, ... ]
  * Range(10, 15) // [ 10, 11, 12, 13, 14 ]
@@ -2127,7 +2205,6 @@ export function Range(
  * not defined, returns an infinite `Sequence` of `value`.
  *
  * ```js
- * const { Repeat } = require('sequins')
  * Repeat('foo') // [ 'foo', 'foo', 'foo', ... ]
  * Repeat('bar', 4) // [ 'bar', 'bar', 'bar', 'bar' ]
  * ```
@@ -2139,9 +2216,10 @@ export function Repeat<T>(value: T, times?: number): IndexedSequence<T>;
 /**
  * True if `maybeCollection` is a Collection, or any of its subclasses.
  *
- * <!-- runkit:activate -->
+ * <!-- runkit:activate
+ *      { "preamble": "const { isCollection, Map, List } = require('sequins')" }
+ * -->
  * ```js
- * const { isCollection, Map, List } = require('sequins');
  * isCollection([]); // false
  * isCollection({}); // false
  * isCollection(new Map()); // true
@@ -2155,9 +2233,10 @@ export function isCollection(
 /**
  * True if `maybeKeyed` is a Keyed, or any of its subclasses.
  *
- * <!-- runkit:activate -->
+ * <!-- runkit:activate
+ *      { "preamble": "const { isKeyed, Map, List } = require('sequins')" }
+ * -->
  * ```js
- * const { isKeyed, Map, List } = require('sequins');
  * isKeyed([]); // false
  * isKeyed({}); // false
  * isKeyed(new Map()); // true
@@ -2169,9 +2248,10 @@ export function isKeyed(maybeKeyed: any): maybeKeyed is Keyed<any, any>;
 /**
  * True if `maybeIndexed` is an Indexed, or any of its subclasses.
  *
- * <!-- runkit:activate -->
+ * <!-- runkit:activate
+ *      { "preamble": "const { isIndexed, Map, List } = require('sequins')" }
+ * -->
  * ```js
- * const { isIndexed, Map, List, Set } = require('sequins');
  * isIndexed([]); // false
  * isIndexed({}); // false
  * isIndexed(new Map()); // false
@@ -2184,9 +2264,10 @@ export function isIndexed(maybeIndexed: any): maybeIndexed is Indexed<any>;
 /**
  * True if `maybeAssociative` is either a Keyed or Indexed Collection.
  *
- * <!-- runkit:activate -->
+ * <!-- runkit:activate
+ *      { "preamble": "const { isAssociative, Map, List } = require('sequins')" }
+ * -->
  * ```js
- * const { isAssociative, Map, List, Set } = require('sequins');
  * isAssociative([]); // false
  * isAssociative({}); // false
  * isAssociative(new Map()); // true
@@ -2234,9 +2315,10 @@ export function isSet(maybeSet: any): maybeSet is Set<any>;
  * A functional alternative to `collection.get(key)` which will also work on
  * plain Objects and Arrays as an alternative for `collection[key]`.
  *
- * <!-- runkit:activate -->
+ * <!-- runkit:activate
+ *      { "preamble": "const { get } = require('sequins')" }
+ * -->
  * ```js
- * const { get } = require('sequins')
  * get([ 'dog', 'frog', 'cat' ], 2) // 'frog'
  * get({ x: 123, y: 456 }, 'x') // 123
  * get({ x: 123, y: 456 }, 'z', 'ifNotSet') // 'ifNotSet'
@@ -2276,9 +2358,10 @@ export function get<V, NSV>(
  * plain Objects and Arrays as an alternative for
  * `collection.hasOwnProperty(key)`.
  *
- * <!-- runkit:activate -->
+ * <!-- runkit:activate
+ *      { "preamble": "const { has } = require('sequins')" }
+ * -->
  * ```js
- * const { has } = require('sequins')
  * has([ 'dog', 'frog', 'cat' ], 2) // true
  * has([ 'dog', 'frog', 'cat' ], 5) // false
  * has({ x: 123, y: 456 }, 'x') // true
@@ -2294,9 +2377,10 @@ export function has(collection: Object, key: any): boolean;
  * with plain Objects and Arrays as an alternative for
  * `delete collectionCopy[key]`.
  *
- * <!-- runkit:activate -->
+ * <!-- runkit:activate
+ *      { "preamble": "const { remove } = require('sequins')" }
+ * -->
  * ```js
- * const { remove } = require('sequins')
  * const array = [ 'dog', 'frog', 'cat' ]
  * remove(array, 1)
  * console.log(array) // [ 'dog', 'cat' ]
@@ -2324,9 +2408,10 @@ export function remove<C extends { [key: string]: any }, K extends keyof C>(
  * work with plain Objects and Arrays as an alternative for
  * `collectionCopy[key] = value`.
  *
- * <!-- runkit:activate -->
+ * <!-- runkit:activate
+ *      { "preamble": "const { set } = require('sequins')" }
+ * -->
  * ```js
- * const { set } = require('sequins')
  * const array = [ 'dog', 'frog', 'cat' ]
  * set(array, 1, 'cow')
  * console.log(array) // [ 'dog', 'cow', 'cat' ]
