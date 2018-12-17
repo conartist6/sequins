@@ -16,6 +16,8 @@ export const Namespace = CollectionNamespace.__register('Sequence', new Sequence
 
 const sequenceFrom = makeFrom(CollectionNamespace, 'Sequence');
 
+const identityFn = _ => _;
+
 class Sequence extends Collection {
   static from(initial) {
     return sequenceFrom(initial);
@@ -26,6 +28,7 @@ class Sequence extends Collection {
     super(iterable, 'Sequence', collectionSubtype);
     this.__iterable = iterable;
     this.__transform = null;
+    this.__constructorTransform = null;
   }
 
   __doCollectionTransform(transform) {
@@ -41,7 +44,10 @@ class Sequence extends Collection {
   }
 
   _transform() {
-    return this.__transform ? this.__transform(this.__iterable) : this.__iterable;
+    const constructorTransform = this.__constructorTransform || identityFn;
+    const transform = this.__transform || identityFn;
+
+    return transform(constructorTransform(this.__iterable));
   }
 
   [Symbol.iterator]() {

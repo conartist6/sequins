@@ -1,4 +1,3 @@
-import entries from 'iter-tools/es5/entries';
 import { isIndexed, isKeyed, isCollection, isNative, isPlainObj } from '../utils/shape';
 import { memoizeFactory } from '../utils/memoize';
 
@@ -21,7 +20,7 @@ function makeFrom(Collection, collectionType) {
     } else if (typeof initial[Symbol.iterator] === 'function') {
       return new TypedCollection.Indexed(initial);
     } else if (isPlainObj(initial)) {
-      return new TypedCollection.Keyed(entries(initial));
+      return new TypedCollection.Keyed(initial);
     }
     return null;
   };

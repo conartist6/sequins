@@ -8,14 +8,12 @@ import { KeyedMixin } from '..';
 
 export default class KeyedSequence extends KeyedMixin(Sequence) {
   constructor(iterable) {
-    if (iterable) {
-      if (isMutableCollection(iterable) && !isKeyed(iterable)) {
-        iterable = iterable.entries();
-      } else if (isPlainObj(iterable)) {
-        iterable = entries(iterable);
-      }
-    }
     super(iterable);
+    if (isMutableCollection(this.__iterable) && !isKeyed(this.__iterable)) {
+      this.__constructorTransform = iterable => iterable.entries();
+    } else if (isPlainObj(this.__iterable)) {
+      this.__constructorTransform = obj => entries(obj);
+    }
   }
 
   // Collection functions

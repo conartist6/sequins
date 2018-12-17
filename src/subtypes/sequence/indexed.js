@@ -11,10 +11,10 @@ export default class IndexedSequence extends IndexedMixin(Sequence) {
   }
 
   constructor(iterable) {
-    if (isKeyed(iterable)) {
-      iterable = iterable.values();
-    }
     super(iterable);
+    if (isKeyed(this.__iterable)) {
+      this.__constructorTransform = iterable => iterable.values();
+    }
   }
 
   // Collection functions

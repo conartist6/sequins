@@ -13,6 +13,12 @@ function makeTests(collectionSubtype) {
 
     const testMethod = makeTestMethod(Sequence);
 
+    it('can be consumed multiple times', function() {
+      sequence = new Sequence(array).map(_ => _);
+      expect(Array.from(sequence)).toEqual(array);
+      expect(Array.from(sequence)).toEqual(array);
+    });
+
     describe('instance methods', function() {
       beforeEach(() => {
         sequence = new Sequence(array);
