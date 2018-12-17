@@ -1647,10 +1647,7 @@ export interface Collection<K, V> {
    * collection.
    */
   count(): number;
-  count(
-    predicate: (value: V, key: K, iter: this) => boolean,
-    context?: any
-  ): number;
+  count(predicate: (value: V, key: K, iter: this) => boolean): number;
 
   // Search for value
 
