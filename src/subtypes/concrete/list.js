@@ -137,7 +137,7 @@ class List extends IndexedMixin(ConcreteCollection) {
   }
 
   entries() {
-    return new Collection.Sequence.Keyed(arrayEntries(this.__native));
+    return new Collection.Sequence.Duplicated(arrayEntries(this.__native));
   }
 
   [Symbol.species]() {

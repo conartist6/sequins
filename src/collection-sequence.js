@@ -48,12 +48,6 @@ class Sequence extends Collection {
     return this._transform()[Symbol.iterator]();
   }
 
-  cacheResult() {
-    const Constructor = this.constructor;
-
-    return new Constructor(this.toConcrete());
-  }
-
   set(key, newValue) {
     return this.map((value, key) => (key === key ? newValue : value));
   }

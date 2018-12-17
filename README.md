@@ -60,7 +60,7 @@ Enter: Sequins. Sequins, by way of the Immutable.js API, offers the benefits of 
 
 -   **Unordered types**: All Sequins types are ordered because the native data structures which underly them preserve ordering without additional work.
 
--   **Iterator methods return sequences** The `keys` `values` and `entries` methods of Sequins structures return sequences! This is possible because those methods are meant to return iterables, which Sequences are. This means that Sequins does not need separate `keySeq`, `valueSeq` or `entrySeq` methods. Note that in immutable `keySeq`, `valueSeq` and `entrySeq` all return IndexedSeq. Sequins `keys` and `values` return SetSequences, and `entries` returns a `KeyedSequence`.
+-   **Iterator methods return sequences:** The `keys` `values` and `entries` methods of Sequins structures return sequences! This is possible because those methods are meant to return iterables, which Sequences are. This means that Sequins does not need separate `keySeq`, `valueSeq` or `entrySeq` methods. Note that in immutable those methose return IndexedSeq, while Seqins `keys`, `values`, and `entries` return `SetSequence`.
 
 -   **No reverse iteration**: Sequins `Map` and `Set` lack `last`, `findLast`, `takeLast`, and `reduceRight`. This is because Sequins uses native data structures, and native data structure ordering is only accessible as an iterator. In other words to get or find the last item requires iterating through every other item, which is not what the programmer expects from a performance perspective.
 
@@ -71,8 +71,6 @@ Enter: Sequins. Sequins, by way of the Immutable.js API, offers the benefits of 
 -   **Sequence get**: In Immutable you can use `get` on sequences. In Sequins, you cannot.
 
 -   **Eager operations on sequences**: In Immutable, Sequences are lazy, except when certain operations like `sort` or `groupBy` are performed, which immediately evaluate the sequence and cache all the data. These operations in Sequins are still forced to cache data, but they don't force evaluation of the sequence, and the cache must be rebuilt each time the sequence is evaluated.
-
--   **Sequence locking**: Sequences in Sequins are mutable like Sequins data structures, meaning that transforms on them generally return the same sequence object to be used for further chaining. Sequence transforms which return a sequence of a different type, however, obviously cannot return the same object. In order to avoid confusion these operations "lock" the former sequence to further transformation. This ensures that any operations designed to derive multiple sequences from a single base sequence must be explicit.
 
 -   **delete**: In Sequins the delete operation does not return the collection. It follows the es6 spec, which indicates that the method should return whether or not the key whose deletion was requested existed.
 

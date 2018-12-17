@@ -7,6 +7,7 @@ import { map } from 'iter-tools';
 
 function makeTests(collectionType, collectionSubtype) {
   const CollectionConstructor = Collection[collectionType][collectionSubtype];
+  const ConcreteConstructor = Collection.Concrete[collectionSubtype];
 
   describe(CollectionConstructor.name, function() {
     let collection;
@@ -90,6 +91,10 @@ function makeTests(collectionType, collectionSubtype) {
         expect(collection.toSet()).toEqual(new Set(values));
       });
 
+      it('can be converted to a concrete collection', function() {
+        expect(collection.toConcrete()).toEqual(new ConcreteConstructor(array));
+      });
+
       it('can be converted to a key sequence', function() {
         const keySeq = collection.keys();
         expect(keySeq).toBeInstanceOf(SetSequence);
@@ -104,7 +109,7 @@ function makeTests(collectionType, collectionSubtype) {
 
       it('can be converted to an entries sequence', function() {
         const entriesSeq = collection.entries();
-        expect(entriesSeq).toBeInstanceOf(KeyedSequence);
+        expect(entriesSeq).toBeInstanceOf(SetSequence);
         expect(Array.from(entriesSeq)).toEqual(entries);
       });
 

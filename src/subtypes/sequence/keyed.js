@@ -45,7 +45,7 @@ export default class KeyedSequence extends KeyedMixin(Sequence) {
   }
 
   entries() {
-    return this;
+    return new Namespace.Duplicated(map(_ => _, this));
   }
 
   [Symbol.species]() {

@@ -71,10 +71,14 @@ class ConcreteCollection extends Collection {
   __reverse() {
     const reversedSeq = CollectionNamespace.Sequence.from(this)
       .reverse()
-      .cacheResult();
+      .toConcrete();
 
     this.clear();
     return reversedSeq;
+  }
+
+  toConcrete() {
+    return this;
   }
 
   // Iterators
@@ -87,7 +91,7 @@ class ConcreteCollection extends Collection {
   }
 
   entries() {
-    return new CollectionNamespace.Sequence.Keyed(this.__native.entries());
+    return new CollectionNamespace.Sequence.Duplicated(this.__native.entries());
   }
 
   [Symbol.iterator]() {

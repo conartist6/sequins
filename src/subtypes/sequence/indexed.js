@@ -46,7 +46,7 @@ export default class IndexedSequence extends IndexedMixin(Sequence) {
   }
 
   entries() {
-    return new Namespace.Keyed(map((value, i) => [i, value], this));
+    return new Namespace.Duplicated(map((value, i) => [i, value], this));
   }
 
   [Symbol.species]() {

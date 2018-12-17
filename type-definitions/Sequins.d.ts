@@ -1278,28 +1278,6 @@ export interface Concrete<K, V> extends Collection<K, V> {
  * ```
  */
 export interface Sequence<K, V> extends Collection<K, V> {
-  // Force evaluation
-
-  /**
-   * Because Sequences are lazy and designed to be chained together, they do
-   * not cache their results. For example, this map function is called a total
-   * of 6 times, as each `join` iterates the Sequence of three values.
-   *
-   *     var squares = Seq([ 1, 2, 3 ]).map(x => x * x)
-   *     squares.join() + squares.join()
-   *
-   * If you know a `Sequence` will be used multiple times, it may be more
-   * efficient to first cache it in memory. Here, the map function is called
-   * only 3 times.
-   *
-   *     var squares = Seq([ 1, 2, 3 ]).map(x => x * x).cacheResult()
-   *     squares.join() + squares.join()
-   *
-   * Use this method judiciously, as it must fully evaluate a Sequence which
-   * can be  a burden on memory and possibly performance.
-   */
-  cacheResult(): this;
-
   // Sequence algorithms
 
   /**
@@ -1657,6 +1635,13 @@ export interface Collection<K, V> {
   toSet(): Set<V>;
 
   /**
+   * Converts this collection to `Map` if it is `Keyed`, `List` if it is
+   * `Indexed`, or `Set` if it is `Duplicated`.
+   * or
+   */
+  toConcrete(): Concrete<K, V>;
+
+  /**
    * Returns a KeyedSequence from this Collection where indices are treated as keys.
    *
    * This is useful if you want to operate on an
@@ -1778,6 +1763,11 @@ export interface Keyed<K, V> extends Collection<K, V> {
   toArray(): Array<[K, V]>;
 
   /**
+   * Converts this collection to a `Map`
+   */
+  toConcrete(): Map<K, V>;
+
+  /**
    * Returns KeyedSequence.
    * @override
    */
@@ -1897,6 +1887,11 @@ export interface Indexed<T> extends Collection<number, T> {
    * Shallowly converts this collection to an Array.
    */
   toArray(): Array<T>;
+
+  /**
+   * Converts this collection to a `List`
+   */
+  toConcrete(): List<T>;
 
   // Reading values
 
@@ -2053,6 +2048,11 @@ export interface Duplicated<T> extends Collection<T, T> {
    * Shallowly converts this collection to an Array.
    */
   toArray(): Array<T>;
+
+  /**
+   * Converts this collection to a `Set`
+   */
+  toConcrete(): Set<T>;
 
   /**
    * Returns SetSequence.

@@ -42,7 +42,7 @@ export default class SetSequence extends DuplicatedMixin(Sequence) {
   }
 
   entries() {
-    return new Namespace.Keyed(map(value => [value, value], this));
+    return new Namespace.Duplicated(map(value => [value, value], this));
   }
 
   [Symbol.species]() {
