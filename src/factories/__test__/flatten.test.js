@@ -1,4 +1,4 @@
-import { IndexedSequence, KeyedSequence, SetSequence } from '../../index';
+import { IndexedSequence, KeyedSequence, SetSequence, Seq } from '../../index';
 import { Namespace as Collection } from '../../collection';
 
 describe('flatten', function() {
@@ -12,35 +12,59 @@ describe('flatten', function() {
     let seq;
     let iterator;
 
-    beforeEach(function() {
-      const Seq = initial => new IndexedSequence([initial]);
-      aa = Seq(1);
-      bb = Seq(2);
-      cc = Seq(3);
-      a = Seq(aa);
-      b = Seq(bb);
-      c = Seq(cc);
-      seq = new IndexedSequence([a, b, c]);
+    describe('base cases', function() {
+      it('does nothing when flattening and empty sequence', function() {
+        expect(new KeyedSequence().map(x => x).flatten()).toEqual(new KeyedSequence());
+      });
     });
 
-    it('does a shallow flatten when passed true', function() {
-      expect(Array.from(seq.flatten(true))).toEqual([aa, bb, cc]);
+    describe('primitives', function() {
+      it("doesn't flatten into native objects", function() {
+        const native = {
+          foo: [
+            {
+              someKey: 'foo',
+            },
+          ],
+        };
+        expect(
+          Seq([native])
+            .flatten()
+            .toArray(),
+        ).toEqual([native]);
+      });
     });
 
-    it('does a deep flatten when passed 0', function() {
-      expect(Array.from(seq.flatten(0))).toEqual([1, 2, 3]);
-    });
+    describe('depth', function() {
+      beforeEach(function() {
+        aa = Seq([1]);
+        bb = Seq([2]);
+        cc = Seq([3]);
+        a = Seq([aa]);
+        b = Seq([bb]);
+        c = Seq([cc]);
+        seq = new IndexedSequence([a, b, c]);
+      });
 
-    it('does a deep flatten when passed no params', function() {
-      expect(Array.from(seq.flatten())).toEqual([1, 2, 3]);
-    });
+      it('does a shallow flatten when passed true', function() {
+        expect(Array.from(seq.flatten(true))).toEqual([aa, bb, cc]);
+      });
 
-    it('does a deep flatten when when passed false', function() {
-      expect(Array.from(seq.flatten(false))).toEqual([1, 2, 3]);
-    });
+      it('does a deep flatten when passed 0', function() {
+        expect(Array.from(seq.flatten(0))).toEqual([1, 2, 3]);
+      });
 
-    it('flattens n levels when passed depth n', function() {
-      expect(Array.from(seq.flatten(1))).toEqual([aa, bb, cc]);
+      it('does a deep flatten when passed no params', function() {
+        expect(Array.from(seq.flatten())).toEqual([1, 2, 3]);
+      });
+
+      it('does a deep flatten when when passed false', function() {
+        expect(Array.from(seq.flatten(false))).toEqual([1, 2, 3]);
+      });
+
+      it('flattens n levels when passed depth n', function() {
+        expect(Array.from(seq.flatten(1))).toEqual([aa, bb, cc]);
+      });
     });
   });
 });
