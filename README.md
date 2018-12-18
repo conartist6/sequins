@@ -53,6 +53,7 @@ Enter: Sequins. Sequins, by way of the Immutable.js API, offers the benefits of 
 -   **Type coercion**: Sequins makes it super easy to convert between its data types!
 -   **Work with objects, if you need!**: `Seq({foo: 1}).map(x => ++x).toObject() // {foo: 2}`
 -   **group, flatten**: When you need them, do you really want to dig out lodash? Bonus: `reverse`!
+-   **Derive classes**: Extending Map and Set is part of es6, yet the pattern cannot be transpiled to es5. Sequins classes can always be safely extended.
 
 ## Differences from Immutable
 
