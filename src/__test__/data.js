@@ -15,6 +15,9 @@ const testData = {
     calls: [[1, 9], [2, 8], [3, 7]],
     array: [[9, 1], [8, 2], [7, 3]],
     object: { 9: 1, 8: 2, 7: 3 },
+    objectKeys: ['7', '8', '9'],
+    objectValues: [3, 2, 1],
+    objectEntries: [['7', 3], ['8', 2], ['9', 1]],
     js: { 9: 1, 8: 2, 7: 3 },
   },
   Duplicated: {

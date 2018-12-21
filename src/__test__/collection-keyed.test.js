@@ -7,7 +7,7 @@ function makeTests(collectionType) {
   const KeyedConstructor = Collection[collectionType].Keyed;
 
   describe(KeyedConstructor.name, function() {
-    const { object, keys, values, entries, array } = testData.Keyed;
+    const { object, objectEntries, keys, values, entries, array } = testData.Keyed;
     const staticKeyed = new KeyedConstructor(array);
     let calls = makeCalls(testData.Keyed.calls);
     let keyed;
@@ -20,7 +20,7 @@ function makeTests(collectionType) {
 
     it('can be constructed from an object', function() {
       keyed = new KeyedConstructor(object);
-      expect(Array.from(keyed)).toEqual(array.map(([key, val]) => [key.toString(), val]).reverse());
+      expect(Array.from(keyed)).toEqual(objectEntries);
     });
 
     describe('instance methods', function() {

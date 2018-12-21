@@ -18,6 +18,7 @@ import {
 import get from './statics/get';
 import set from './statics/set';
 import has from './statics/has';
+import { keys, values, entries } from './statics/keys-values-entries';
 import Range from './statics/range';
 import Repeat from './statics/repeat';
 
@@ -69,6 +70,9 @@ export default {
   get,
   set,
   has,
+  keys,
+  values,
+  entries,
 };
 
 export {
@@ -92,4 +96,7 @@ export {
   get,
   set,
   has,
+  keys,
+  values,
+  entries,
 };

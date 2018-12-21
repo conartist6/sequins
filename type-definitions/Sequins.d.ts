@@ -6,6 +6,8 @@
  * @grouped
  */
 
+// import { NativeMap, NativeSet } from "./native";
+
 // Concrete
 
 interface ListConstructor {
@@ -2468,3 +2470,30 @@ export function set<V, C extends { [key: string]: V }>(
   key: string,
   value: V
 ): C;
+
+/**
+ * Gets the keys of a Collection, Object, or Array.
+ */
+export function keys(shape: { [key: string]: any }): SetSequence<string>;
+export function keys(shape: Array<any>): SetSequence<number>;
+// export function keys<K>(shape: NativeMap<K, any>): SetSequence<K>;
+// export function keys<V>(shape: NativeSet<V>): SetSequence<V>;
+export function keys<K>(shape: Collection<K, any>): SetSequence<K>;
+
+/**
+ * Gets the value of a Collection, Object, or Array.
+ */
+export function values<V>(shape: { [key: string]: V }): SetSequence<V>;
+export function values<V>(shape: Array<V>): SetSequence<V>;
+// export function values<V>(shape: NativeMap<any, V>): SetSequence<V>;
+// export function values<V>(shape: NativeSet<V>): SetSequence<V>;
+export function values<V>(shape: Collection<any, V>): SetSequence<V>;
+
+/**
+ * Gets the entries of a Collection, Object, or Array.
+ */
+export function entries<V>(shape: { [key: string]: V }): SetSequence<[string, V]>; // prettier-ignore
+export function entries<V>(shape: Array<V>): SetSequence<[number, V]>;
+// export function entries<K, V>(shape: NativeMap<K, V>): SetSequence<[K, V]>;
+// export function entries<V>(shape: NativeSet<V>): SetSequence<[V, V]>;
+export function entries<K, V>(shape: Collection<K, V>): SetSequence<[K, V]>;
