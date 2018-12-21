@@ -661,6 +661,40 @@ interface SetConstructor {
    */
   fromKeys<T>(iter: Collection<T, any>): Set<T>;
   fromKeys(obj: { [key: string]: any }): Set<string>;
+
+  /**
+   * `Set.union()` creates a new Set that includes all members present in any
+   * input Set.
+   *
+   * If an input is an associative iterable, its values are considered the Set.
+   *
+   * ```js
+   * const { Set } = require('immutable')
+   * const unioned = Set.union([
+   *   Set([ 'a', 'b', 'c' ])
+   *   Set([ 'c', 'a', 't' ])
+   * ])
+   * // Set [ "a", "b", "c", "t"" ]
+   * ```
+   */
+  union<T>(sets: Iterable<Iterable<T>>): Set<T>;
+
+  /**
+   * `Set.intersect()` creates a new Set that includes only members that are
+   * present in all input Sets.
+   *
+   * If an input is an associative iterable, its values are considered the Set.
+   *
+   * ```js
+   * const { Set } = require('immutable')
+   * const intersected = Set.intersect([
+   *   Set([ 'a', 'b', 'c' ])
+   *   Set([ 'c', 'a', 't' ])
+   * ])
+   * // Set [ "a", "c"" ]
+   * ```
+   */
+  intersect<T>(sets: Iterable<Iterable<T>>): Set<T>;
 }
 
 /**
@@ -1797,7 +1831,7 @@ export interface Collection<K, V> {
   entries(): KeyedSequence<K, V>;
 }
 
-// Interface
+// Subtypes
 
 /**
  * Keyed is used to describe Collections which have explicit keys and values.
