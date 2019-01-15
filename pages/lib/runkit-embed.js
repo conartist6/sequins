@@ -93,8 +93,8 @@ function makeAssert(Sequins) {
         ? "strict equal to"
         : "does equal"
       : identical
-        ? "not strict equal to"
-        : "does not equal";
+      ? "not strict equal to"
+      : "does not equal";
     var className = result === same ? "success" : "failure";
     var lhsString = isCollection(lhs) ? lhs + "" : JSON.stringify(lhs);
     var rhsString = isCollection(rhs) ? rhs + "" : JSON.stringify(rhs);

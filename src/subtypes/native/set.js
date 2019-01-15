@@ -5,13 +5,13 @@ import { isKeyed } from '../../utils/shape';
 export class TranspiledSet extends Set {}
 
 export default class SequinsSet extends DuplicatedMixin(NativeCollectionMixin(TranspiledSet)) {
-    constructor(iterable) {
-        super(iterable && isKeyed(iterable) ? iterable.values() : iterable);
-    }
+  constructor(iterable) {
+    super(iterable && isKeyed(iterable) ? iterable.values() : iterable);
+  }
 
-    toSet() {
-        return this;
-    }
+  toSet() {
+    return this;
+  }
 }
 
 Namespace.__register('Set', SequinsSet);

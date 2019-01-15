@@ -33,9 +33,8 @@ var DocHeader = React.createClass({
           <div className="miniHeaderBody">
             <div className="miniHeaderContents">
               <div className="miniLogo inverted">
-                <span className="hidden">se</span>q<span className="hidden">
-                  uins
-                </span>
+                <span className="hidden">se</span>q
+                <span className="hidden">uins</span>
               </div>
             </div>
           </div>
