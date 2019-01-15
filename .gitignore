@@ -6,6 +6,7 @@ node_modules
 
 /dist
 /tmp
+/coverage
 
 **/__test__/**/*.type-test.ts
 
