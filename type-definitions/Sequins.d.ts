@@ -6,13 +6,16 @@
  * @grouped
  */
 
-// import { NativeMap, NativeSet } from "./native";
+import { NativeMap, NativeSet } from "./native";
+
+type CollectionLike<K, V> = Collection<K, V> | Array<V> | Map<K, V>;
 
 // Concrete
 
 interface ListConstructor {
-  new (): List<any>;
   new <T>(collection: Iterable<T>): List<T>;
+  new (collection?: null): List<any>;
+  new <T>(): List<T>;
 
   /**
    * True if the provided value is a List
@@ -28,7 +31,7 @@ interface ListConstructor {
   isList(maybeList: any): maybeList is List<any>;
 
   /**
-   * Creates a new List containing `values`.
+   * Creates a new Sequins List containing `values`.
    *
    * <!-- runkit:activate
    *   { "preamble": "const { List } = require('sequins');" }
@@ -49,6 +52,11 @@ interface ListConstructor {
    * ```
    */
   of<T>(...values: Array<T>): List<T>;
+
+  /**
+   * @ignore
+   */
+  readonly prototype: List<any>;
 }
 
 /**
@@ -61,40 +69,6 @@ interface ListConstructor {
  * indices from 0 to size, regardless of whether they were explicitly defined.
  */
 interface List<T> extends Concrete<number, T>, Indexed<T> {
-  /**
-   * Create a new Sequins List containing the values of the provided
-   * collection-like.
-   *
-   * Note: `List` is a factory function and not a class, and does not use the
-   * `new` keyword during construction.
-   *
-   * <!-- runkit:activate
-   *   { "preamble": "const { List, Set } = require('sequins');" }
-   * -->
-   * ```js
-   * const emptyList = new List()
-   * // List []
-   *
-   * const plainArray = [ 1, 2, 3, 4 ]
-   * const listFromPlainArray = new List(plainArray)
-   * // List [ 1, 2, 3, 4 ]
-   *
-   * const plainSet = new Set([ 1, 2, 3, 4 ])
-   * const listFromPlainSet = new List(plainSet)
-   * // List [ 1, 2, 3, 4 ]
-   *
-   * const arrayIterator = plainArray[Symbol.iterator]()
-   * const listFromCollectionArray = new List(arrayIterator)
-   * // List [ 1, 2, 3, 4 ]
-   *
-   * listFromPlainArray.equals(listFromCollectionArray) // true
-   * listFromPlainSet.equals(listFromCollectionArray) // true
-   * listFromPlainSet.equals(listFromPlainArray) // true
-   * ```
-   */
-  constructor();
-  constructor(collection: Iterable<T>);
-
   /**
    * The number of items in this List.
    */
@@ -267,6 +241,12 @@ interface List<T> extends Concrete<number, T>, Indexed<T> {
   map<M>(mapper: (value: T, key: number, iter: this) => M): List<M>;
 
   /**
+   * @see Collection.flatten
+   */
+  flatten(depth?: number): List<any>;
+  flatten(shallow?: boolean): List<any>;
+
+  /**
    * Flat-maps the List, returning a new List.
    *
    * Similar to `list.map(...).flatten(true)`.
@@ -298,12 +278,12 @@ interface List<T> extends Concrete<number, T>, Indexed<T> {
    * const c = a.zip(b); // List [ [ 1, 4 ], [ 2, 5 ], [ 3, 6 ] ]
    * ```
    */
-  zip<U>(other: Collection<any, U>): List<[T, U]>;
+  zip<U>(other: CollectionLike<any, U>): List<[T, U]>;
   zip<U, V>(
-    other: Collection<any, U>,
-    other2: Collection<any, V>
+    other: CollectionLike<any, U>,
+    other2: CollectionLike<any, V>
   ): List<[T, U, V]>;
-  zip(...collections: Array<Collection<any, any>>): List<any>;
+  zip(...collections: Array<CollectionLike<any, any>>): List<any>;
 
   /**
    * Returns a List "zipped" with the provided collections.
@@ -324,12 +304,12 @@ interface List<T> extends Concrete<number, T>, Indexed<T> {
    * input, some results may contain undefined values. TypeScript cannot
    * account for these without cases (as of v2.5).
    */
-  zipAll<U>(other: Collection<any, U>): List<[T, U]>;
+  zipAll<U>(other: CollectionLike<any, U>): List<[T, U]>;
   zipAll<U, V>(
-    other: Collection<any, U>,
-    other2: Collection<any, V>
+    other: CollectionLike<any, U>,
+    other2: CollectionLike<any, V>
   ): List<[T, U, V]>;
-  zipAll(...collections: Array<Collection<any, any>>): List<any>;
+  zipAll(...collections: Array<CollectionLike<any, any>>): List<any>;
 
   /**
    * Returns a List "zipped" with the provided collections by using a
@@ -347,16 +327,16 @@ interface List<T> extends Concrete<number, T>, Indexed<T> {
    */
   zipWith<U, Z>(
     zipper: (value: T, otherValue: U) => Z,
-    otherCollection: Collection<any, U>
+    otherCollection: CollectionLike<any, U>
   ): List<Z>;
   zipWith<U, V, Z>(
     zipper: (value: T, otherValue: U, thirdValue: V) => Z,
-    otherCollection: Collection<any, U>,
-    thirdCollection: Collection<any, V>
+    otherCollection: CollectionLike<any, U>,
+    thirdCollection: CollectionLike<any, V>
   ): List<Z>;
   zipWith<Z>(
     zipper: (...any: Array<any>) => Z,
-    ...collections: Array<Collection<any, any>>
+    ...collections: Array<CollectionLike<any, any>>
   ): List<Z>;
 
   // Combination
@@ -403,45 +383,18 @@ export var List: ListConstructor;
 
 interface MapConstructor {
   /**
-   * Creates a new Map.
-   *
-   * Created with the same key value pairs as the provided keyed Collection or
-   * JavaScript Object or expects a Collection of [K, V] tuple entries.
-   *
-   * Note: `Map` is a factory function and not a class, and does not use the
-   * `new` keyword during construction.
-   *
-   * <!-- runkit:activate
-   *   { "preamble": "const { Map } = require('sequins');" }
-   * -->
-   * ```js
-   * new Map({ key: "value" })
-   * new Map([ [ "key", "value" ] ])
-   * ```
-   *
-   * Keep in mind, when using JS objects to construct Maps, that
-   * JavaScript Object properties are always strings, even if written in a
-   * quote-less shorthand, while Maps accept keys of any type.
-   *
-   * <!-- runkit:activate
-   *      { "preamble": "const { Map } = require('sequins');" }
-   * -->
-   * ```js
-   * let obj = { 1: "one" }
-   * Object.keys(obj) // [ "1" ]
-   * assert.equal(obj["1"], obj[1]) // "one" === "one"
-   *
-   * let map = new Map(obj)
-   * assert.notEqual(map.get("1"), map.get(1)) // "one" !== undefined
-   * ```
-   *
-   * Property access for JavaScript Objects first converts the key to a string,
-   * but since Map keys can be of any type the argument to `get()` is
-   * not altered.
+   * This signature is just to make typescript happy about type inference with
+   * literal arrays of arrays. Technically the Iterable signature already
+   * covers the Array case, so no need to complicate the docs with an
+   * implementation detail.
+   * @ignore
    */
-  new <K, V>(collection: Iterable<[K, V]>): Map<K, V>;
+  new <K, V>(entries: ReadonlyArray<[K, V]>): Map<K, V>;
+  new <K, V>(entries: Iterable<[K, V]>): Map<K, V>;
+  new <K, V>(collection: Collection<K, V>): Map<K, V>;
   new <V>(obj: { [key: string]: V }): Map<string, V>;
-  new (): Map<any, any>;
+  new (entries?: null): Map<any, any>;
+  new <K, V>(): Map<K, V>;
 
   /**
    * True if the provided value is a Map
@@ -455,6 +408,11 @@ interface MapConstructor {
    * ```
    */
   isMap(maybeMap: any): maybeMap is Map<any, any>;
+
+  /**
+   * @ignore
+   */
+  readonly prototype: Map<any, any>;
 }
 
 /**
@@ -589,6 +547,12 @@ interface Map<K, V> extends Concrete<K, V>, Keyed<K, V> {
   ): Map<KM, VM>;
 
   /**
+   * @see Collection.flatten
+   */
+  flatten(depth?: number): Map<any, any>;
+  flatten(shallow?: boolean): Map<any, any>;
+
+  /**
    * Flat-maps the Map, returning a new Map.
    *
    * Similar to `data.map(...).flatten(true)`.
@@ -639,13 +603,9 @@ interface Map<K, V> extends Concrete<K, V>, Keyed<K, V> {
 export var Map: MapConstructor;
 
 interface SetConstructor {
-  /**
-   * Create a new immutable Set containing the values of the provided
-   * collection-like.
-   */
-  new (): Set<any>;
-  new <T>(): Set<T>;
   new <T>(collection: Iterable<T>): Set<T>;
+  new (collection?: null): Set<any>;
+  new <T>(): Set<T>;
 
   /**
    * True if the provided value is a Set
@@ -663,6 +623,7 @@ interface SetConstructor {
    */
   fromKeys<T>(iter: Collection<T, any>): Set<T>;
   fromKeys(obj: { [key: string]: any }): Set<string>;
+  fromKeys(): Set<any>;
 
   /**
    * `Set.union()` creates a new Set that includes all members present in any
@@ -679,7 +640,7 @@ interface SetConstructor {
    * // Set [ "a", "b", "c", "t"" ]
    * ```
    */
-  union<T>(sets: Iterable<Iterable<T>>): Set<T>;
+  union<T>(...sets: Array<Iterable<T>>): Set<T>;
 
   /**
    * `Set.intersect()` creates a new Set that includes only members that are
@@ -696,7 +657,12 @@ interface SetConstructor {
    * // Set [ "a", "c"" ]
    * ```
    */
-  intersect<T>(sets: Iterable<Iterable<T>>): Set<T>;
+  intersect<T>(...sets: Array<Iterable<T>>): Set<T>;
+
+  /**
+   * @ignore
+   */
+  readonly prototype: Set<any>;
 }
 
 /**
@@ -781,6 +747,12 @@ interface Set<T> extends Concrete<T, T>, Duplicated<T> {
   map<M>(mapper: (value: T, key: T, iter: this) => M): Set<M>;
 
   /**
+   * @see Collection.flatten
+   */
+  flatten(depth?: number): Set<any>;
+  flatten(shallow?: boolean): Set<any>;
+
+  /**
    * Flat-maps the Set, returning a new Set.
    *
    * Similar to `set.map(...).flatten(true)`.
@@ -826,9 +798,19 @@ export var Set: SetConstructor;
 // Sequence
 
 interface IndexedSequenceConstructor {
-  new (): IndexedSequence<any>;
-  new <T>(): IndexedSequence<T>;
   new <T>(collection: Iterable<T>): IndexedSequence<T>;
+  new (collection?: null): IndexedSequence<any>;
+  new <T>(): IndexedSequence<T>;
+
+  /**
+   * Creates a new IndexedSequence containing `values`.
+   */
+  of<T>(...values: Array<T>): IndexedSequence<T>;
+
+  /**
+   * @ignore
+   */
+  readonly prototype: IndexedSequence<any>;
 }
 
 /**
@@ -878,7 +860,25 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
    * // Seq [ 10, 20 ]
    * ```
    */
-  map<M>(mapper: (value: T, key: number, iter: this) => M): IndexedSequence<M>;
+  map<M>(mapper: (value: T, key: number) => M): IndexedSequence<M>;
+
+  /**
+   * Does not alter the sequence, but allows you to inspect values as they are
+   * comptued. Returns the sequence for chaining. Unlike `forEach`, tap does not
+   * evaluate the sequence.
+   *
+   * ```js
+   * const seq = IndexedSequence([ 1, 2 ]).tap(x => console.log(x))
+   * Array.from(seq); // logs 1, 2
+   * ```
+   */
+  tap(fn: (value: T, key: number) => any): this;
+
+  /**
+   * @see Collection.flatten
+   */
+  flatten(depth?: number): IndexedSequence<any>;
+  flatten(shallow?: boolean): IndexedSequence<any>;
 
   /**
    * Flat-maps the IndexedSequence, returning an IndexedSequence.
@@ -886,7 +886,7 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
    * Similar to `seq.map(...).flatten(true)`.
    */
   flatMap<M>(
-    mapper: (value: T, key: number, iter: this) => Iterable<M>
+    mapper: (value: T, key: number) => Iterable<M>
   ): IndexedSequence<M>;
 
   /**
@@ -894,9 +894,9 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
    * `predicate` function returns true.
    */
   filter<F extends T>(
-    predicate: (value: T, index: number, iter: this) => value is F
+    predicate: (value: T, index: number) => value is F
   ): IndexedSequence<F>;
-  filter(predicate: (value: T, index: number, iter: this) => any): this;
+  filter(predicate: (value: T, index: number) => any): this;
 
   /**
    * Returns a new IndexedSequence "zipped" with the provided collections.
@@ -909,12 +909,12 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
    * const c = a.zip(b); // Seq [ [ 1, 4 ], [ 2, 5 ], [ 3, 6 ] ]
    * ```
    */
-  zip<U>(other: Collection<any, U>): IndexedSequence<[T, U]>;
+  zip<U>(other: CollectionLike<any, U>): IndexedSequence<[T, U]>;
   zip<U, V>(
-    other: Collection<any, U>,
-    other2: Collection<any, V>
+    other: CollectionLike<any, U>,
+    other2: CollectionLike<any, V>
   ): IndexedSequence<[T, U, V]>;
-  zip(...collections: Array<Collection<any, any>>): IndexedSequence<any>;
+  zip(...collections: Array<CollectionLike<any, any>>): IndexedSequence<any>;
 
   /**
    * Returns a new IndexedSequence "zipped" with the provided collections.
@@ -928,12 +928,12 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
    * const c = a.zipAll(b); // Seq [ [ 1, 3 ], [ 2, 4 ], [ undefined, 5 ] ]
    * ```
    */
-  zipAll<U>(other: Collection<any, U>): IndexedSequence<[T, U]>;
+  zipAll<U>(other: CollectionLike<any, U>): IndexedSequence<[T, U]>;
   zipAll<U, V>(
-    other: Collection<any, U>,
-    other2: Collection<any, V>
+    other: CollectionLike<any, U>,
+    other2: CollectionLike<any, V>
   ): IndexedSequence<[T, U, V]>;
-  zipAll(...collections: Array<Collection<any, any>>): IndexedSequence<any>;
+  zipAll(...collections: Array<CollectionLike<any, any>>): IndexedSequence<any>;
 
   /**
    * Returns a new IndexedSequence "zipped" with the provided collections by
@@ -948,16 +948,16 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
    */
   zipWith<U, Z>(
     zipper: (value: T, otherValue: U) => Z,
-    otherCollection: Collection<any, U>
+    otherCollection: CollectionLike<any, U>
   ): IndexedSequence<Z>;
   zipWith<U, V, Z>(
     zipper: (value: T, otherValue: U, thirdValue: V) => Z,
-    otherCollection: Collection<any, U>,
-    thirdCollection: Collection<any, V>
+    otherCollection: CollectionLike<any, U>,
+    thirdCollection: CollectionLike<any, V>
   ): IndexedSequence<Z>;
   zipWith<Z>(
     zipper: (...any: Array<any>) => Z,
-    ...collections: Array<Collection<any, any>>
+    ...collections: Array<CollectionLike<any, any>>
   ): IndexedSequence<Z>;
 
   // Conversions
@@ -993,10 +993,24 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
 export var IndexedSequence: IndexedSequenceConstructor;
 
 interface KeyedSequenceConstructor {
-  new <K, V>(collection: Iterable<[K, V]>): KeyedSequence<K, V>;
+  /**
+   * This signature is just to make typescript happy about type inference with
+   * literal arrays of arrays. Technically the Iterable signature already
+   * covers the Array case, so no need to complicate the docs with an
+   * implementation detail.
+   * @ignore
+   */
+  new <K, V>(entries: ReadonlyArray<[K, V]>): KeyedSequence<K, V>;
+  new <K, V>(entries: Iterable<[K, V]>): KeyedSequence<K, V>;
+  new <K, V>(collection: Collection<K, V>): KeyedSequence<K, V>;
   new <V>(obj: { [key: string]: V }): KeyedSequence<string, V>;
+  new (entries?: null): KeyedSequence<any, any>;
   new <K, V>(): KeyedSequence<K, V>;
-  new (): KeyedSequence<any, any>;
+
+  /**
+   * @ignore
+   */
+  readonly prototype: KeyedSequence<any, any>;
 }
 
 /**
@@ -1035,19 +1049,37 @@ interface KeyedSequence<K, V> extends Sequence<K, V>, Keyed<K, V> {
    * // Seq { "a": 10, "b": 20 }
    * ```
    */
-  map<M>(mapper: (value: V, key: K, iter: this) => M): KeyedSequence<K, M>;
+  map<M>(mapper: (value: V, key: K) => M): KeyedSequence<K, M>;
 
   /**
    * @see Keyed.mapKeys
    */
-  mapKeys<M>(mapper: (key: K, value: V, iter: this) => M): KeyedSequence<M, V>;
+  mapKeys<M>(mapper: (key: K, value: V) => M): KeyedSequence<M, V>;
 
   /**
    * @see Keyed.mapEntries
    */
   mapEntries<KM, VM>(
-    mapper: (entry: [K, V], index: number, iter: this) => [KM, VM]
+    mapper: (entry: [K, V], index: number) => [KM, VM]
   ): KeyedSequence<KM, VM>;
+
+  /**
+   * Does not alter the sequence, but allows you to inspect keys and values as
+   * they are comptued. Returns the sequence for chaining. Unlike `forEach`, tap
+   * does not evaluate the sequence.
+   *
+   * ```js
+   * const seq = KeyedSequence([[1, 1], [2, 2]]).tap(x => console.log(x))
+   * Array.from(seq); // logs 1, 2
+   * ```
+   */
+  tap(fn: (value: V, key: K) => any): KeyedSequence<K, V>;
+
+  /**
+   * @see Collection.flatten
+   */
+  flatten(depth?: number): KeyedSequence<any, any>;
+  flatten(shallow?: boolean): KeyedSequence<any, any>;
 
   /**
    * Flat-maps the KeyedSequence, returning a new KeyedSequence.
@@ -1055,7 +1087,7 @@ interface KeyedSequence<K, V> extends Sequence<K, V>, Keyed<K, V> {
    * Similar to `seq.map(...).flatten(true)`.
    */
   flatMap<KM, VM>(
-    mapper: (value: V, key: K, iter: this) => Iterable<[KM, VM]>
+    mapper: (value: V, key: K) => Iterable<[KM, VM]>
   ): KeyedSequence<KM, VM>;
 
   /**
@@ -1063,9 +1095,9 @@ interface KeyedSequence<K, V> extends Sequence<K, V>, Keyed<K, V> {
    * function returns true.
    */
   filter<F extends V>(
-    predicate: (value: V, key: K, iter: this) => value is F
+    predicate: (value: V, key: K) => value is F
   ): KeyedSequence<K, F>;
-  filter(predicate: (value: V, key: K, iter: this) => any): this;
+  filter(predicate: (value: V, key: K) => any): this;
 
   /**
    * @see Keyed.flip
@@ -1107,9 +1139,19 @@ interface KeyedSequence<K, V> extends Sequence<K, V>, Keyed<K, V> {
 export var KeyedSequence: KeyedSequenceConstructor;
 
 interface SetSequenceConstructor {
-  new (): SetSequence<any>;
-  new <T>(): SetSequence<T>;
   new <T>(collection: Iterable<T>): SetSequence<T>;
+  new (collection?: null): SetSequence<any>;
+  new <T>(): SetSequence<T>;
+
+  /**
+   * Creates a new SetSequence containing `values`.
+   */
+  of<T>(...values: Array<T>): SetSequence<T>;
+
+  /**
+   * @ignore
+   */
+  readonly prototype: SetSequence<any>;
 }
 
 /**
@@ -1141,25 +1183,41 @@ interface SetSequence<T> extends Sequence<T, T>, Duplicated<T> {
    * // Seq { 10, 20 }
    * ```
    */
-  map<M>(mapper: (value: T, key: T, iter: this) => M): SetSequence<M>;
+  map<M>(mapper: (value: T, key: T) => M): SetSequence<M>;
+
+  /**
+   * Does not alter the sequence, but allows you to inspect values as they are
+   * comptued. Returns the sequence for chaining. Unlike `forEach`, tap does not
+   * evaluate the sequence.
+   *
+   * ```js
+   * const seq = SetSequence([ 1, 2 ]).tap(x => console.log(x))
+   * Array.from(seq); // logs 1, 2
+   * ```
+   */
+  tap(fn: (value: T, key: T) => any): this;
+
+  /**
+   * @see Collection.flatten
+   */
+  flatten(depth?: number): SetSequence<any>;
+  flatten(shallow?: boolean): SetSequence<any>;
 
   /**
    * Flat-maps the SetSequence, returning a SetSequence.
    *
    * Similar to `seq.map(...).flatten(true)`.
    */
-  flatMap<M>(
-    mapper: (value: T, key: T, iter: this) => Iterable<M>
-  ): SetSequence<M>;
+  flatMap<M>(mapper: (value: T, key: T) => Iterable<M>): SetSequence<M>;
 
   /**
    * Returns a new SetSequence with only the values for which the `predicate`
    * function returns true.
    */
   filter<F extends T>(
-    predicate: (value: T, key: T, iter: this) => value is F
+    predicate: (value: T, key: T) => value is F
   ): SetSequence<F>;
-  filter(predicate: (value: T, key: T, iter: this) => any): this;
+  filter(predicate: (value: T, key: T) => any): this;
 
   // Conversion
   /**
@@ -1196,7 +1254,7 @@ export function Seq<T>(collection: Indexed<T>): IndexedSequence<T>;
 export function Seq<T>(collection: Duplicated<T>): SetSequence<T>;
 export function Seq<T>(collection: Iterable<T>): IndexedSequence<T>;
 export function Seq<V>(obj: { [key: string]: V }): KeyedSequence<string, V>;
-export function Seq(): Sequence<any, any>;
+export function Seq(collection?: null): IndexedSequence<any>;
 
 /**
  * Seq is a helper function for creating instances of `Sequence`. Given any argument,
@@ -1324,9 +1382,12 @@ export interface Concrete<K, V> extends Collection<K, V> {
 
 /**
  * Sequence is the abstract base class for describing efficient, lazy
- * transformations. Sequences don't (usually) store their own data, instead
- * they describe how to compute values (or keys) using some other stored data
- * as a starting point. Sequence subtypes are `IndexedSequence`, `KeyedSequence`,
+ * transformations. Sequences never store their own data, instead they
+ * describe how to compute values (or keys) using a series of transforms against
+ * some source data. Sequences are immutable with regards to which transforms
+ * they apply, but as their source data is mutable applying the sequence
+ * transformations more than once may yield different results if the source data
+ * has changed. Sequence subtypes are `IndexedSequence`, `KeyedSequence`,
  * and `SetSequence`.
  *
  * Why are Sequences efficient? Both a sequence and a concrete
@@ -1384,7 +1445,7 @@ export interface Sequence<K, V> extends Collection<K, V> {
    * // Seq [ 10, 20 ]
    * ```
    */
-  map<M>(mapper: (value: V, key: K, iter: this) => M): Sequence<K, M>;
+  map<M>(mapper: (value: V, key: K) => M): Sequence<K, M>;
 
   /**
    * Returns a new Sequence with values passed through a
@@ -1400,28 +1461,24 @@ export interface Sequence<K, V> extends Collection<K, V> {
    *
    * Note: used only for sets.
    */
-  map<M>(mapper: (value: V, key: K, iter: this) => M): Sequence<M, M>;
+  map<M>(mapper: (value: V, key: K) => M): Sequence<M, M>;
 
   /**
    * Flat-maps the Sequence, returning a Sequence of the same type.
    *
    * Similar to `seq.map(...).flatten(true)`.
    */
-  flatMap<M>(
-    mapper: (value: V, key: K, iter: this) => Iterable<M>
-  ): Sequence<K, M>;
-  flatMap<M>(
-    mapper: (value: V, key: K, iter: this) => Iterable<M>
-  ): Sequence<M, M>;
+  flatMap<M>(mapper: (value: V, key: K) => Iterable<M>): Sequence<K, M>;
+  flatMap<M>(mapper: (value: V, key: K) => Iterable<M>): Sequence<M, M>;
 
   /**
    * Returns a new Sequence with only the values for which the `predicate`
    * function returns true.
    */
   filter<F extends V>(
-    predicate: (value: V, key: K, iter: this) => value is F
+    predicate: (value: V, key: K) => value is F
   ): Sequence<K, F>;
-  filter(predicate: (value: V, key: K, iter: this) => any): this;
+  filter(predicate: (value: V, key: K) => any): this;
 }
 
 /**
@@ -1449,7 +1506,7 @@ export interface Collection<K, V> {
    * // Sequence { "a": 10, "b": 20 }
    * ```
    */
-  map<M>(mapper: (value: V, key: K, iter: this) => M): Collection<K, M>;
+  map<M>(mapper: (value: V, key: K, iter?: this) => M): Collection<K, M>;
 
   /**
    * Note: used only for sets, which return Collection<M, M> but are otherwise
@@ -1472,9 +1529,9 @@ export interface Collection<K, V> {
    * ```
    */
   filter<F extends V>(
-    predicate: (value: V, key: K, iter: this) => value is F
+    predicate: (value: V, key: K, iter?: this) => value is F
   ): Collection<K, F>;
-  filter(predicate: (value: V, key: K, iter: this) => any): this;
+  filter(predicate: (value: V, key: K, iter?: this) => any): this;
 
   /**
    * Returns a new Collection of the same type with only the entries for which
@@ -1488,7 +1545,7 @@ export interface Collection<K, V> {
    * // Map { "a": 1, "c": 3 }
    * ```
    */
-  filterNot(predicate: (value: V, key: K, iter: this) => boolean): this;
+  filterNot(predicate: (value: V, key: K, iter?: this) => boolean): this;
 
   /**
    * Reverses the order of elements in the collection.
@@ -1532,7 +1589,7 @@ export interface Collection<K, V> {
    *     hitters.sortBy(hitter => hitter.avgHits)
    */
   sortBy<C>(
-    comparatorValueMapper: (value: V, key: K, iter: this) => C,
+    comparatorValueMapper: (value: V, key: K, iter?: this) => C,
     comparator?: (valueA: C, valueB: C) => number
   ): this;
 
@@ -1560,15 +1617,16 @@ export interface Collection<K, V> {
    * ```
    */
   groupBy<G>(
-    grouper: (value: V, key: K, iter: this) => G
+    grouper: (value: V, key: K, iter?: this) => G
   ): /*Map*/ KeyedSequence<G, /*this*/ Collection<K, V>>;
 
   // Side effects
 
   /**
    * The `sideEffect` is executed for every entry in the Collection.
+   * `forEach` has no return value!
    */
-  forEach(sideEffect: (value: V, key: K, iter: this) => any): this;
+  forEach(sideEffect: (value: V, key: K, iter?: this) => any): void;
 
   /**
    * The `sideEffect` is executed for entries in the Collection.
@@ -1577,7 +1635,7 @@ export interface Collection<K, V> {
    * `false`, the iteration will stop. Returns the number of entries iterated
    * (including the last iteration which returned false).
    */
-  forSome(sideEffect: (value: V, key: K, iter: this) => any): number;
+  forSome(sideEffect: (value: V, key: K, iter?: this) => any): number;
 
   // Creating subsets
 
@@ -1632,7 +1690,7 @@ export interface Collection<K, V> {
    * Similar to `collection.map(...).flatten(true)`.
    */
   flatMap<M>(
-    mapper: (value: V, key: K, iter: this) => Iterable<M>
+    mapper: (value: V, key: K, iter?: this) => Iterable<M>
   ): Collection<K, M>;
 
   /**
@@ -1642,7 +1700,7 @@ export interface Collection<K, V> {
    * Used for Dictionaries only.
    */
   flatMap<KM, VM>(
-    mapper: (value: V, key: K, iter: this) => Iterable<[KM, VM]>
+    mapper: (value: V, key: K, iter?: this) => Iterable<[KM, VM]>
   ): Collection<KM, VM>;
 
   // Reducing a value
@@ -1657,20 +1715,20 @@ export interface Collection<K, V> {
    * @see `Array#reduce`.
    */
   reduce<R>(
-    reducer: (reduction: R, value: V, key: K, iter: this) => R,
+    reducer: (reduction: R, value: V, key: K, iter?: this) => R,
     initialReduction: R
   ): R;
-  reduce<R>(reducer: (reduction: V | R, value: V, key: K, iter: this) => R): R;
+  reduce<R>(reducer: (reduction: V | R, value: V, key: K, iter?: this) => R): R;
 
   /**
    * True if `predicate` returns true for all entries in the Collection.
    */
-  every(predicate: (value: V, key: K, iter: this) => boolean): boolean;
+  every(predicate: (value: V, key: K, iter?: this) => boolean): boolean;
 
   /**
    * True if `predicate` returns true for any entry in the Collection.
    */
-  some(predicate: (value: V, key: K, iter: this) => boolean): boolean;
+  some(predicate: (value: V, key: K, iter?: this) => boolean): boolean;
 
   /**
    * Returns the size of this Collection by iterating through it.
@@ -1683,7 +1741,7 @@ export interface Collection<K, V> {
    * collection.
    */
   count(): number;
-  count(predicate: (value: V, key: K, iter: this) => boolean): number;
+  count(predicate: (value: V, key: K, iter?: this) => boolean): number;
 
   // Search for value
 
@@ -1691,7 +1749,7 @@ export interface Collection<K, V> {
    * Returns the first value for which the `predicate` returns true.
    */
   find(
-    predicate: (value: V, key: K, iter: this) => boolean,
+    predicate: (value: V, key: K, iter?: this) => boolean,
     notSetValue?: V
   ): V | undefined;
 
@@ -1911,7 +1969,7 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * // KeyedSequence { "a": 10, "b": 20 }
    * ```
    */
-  map<M>(mapper: (value: V, key: K, iter: this) => M): Keyed<K, M>;
+  map<M>(mapper: (value: V, key: K, iter?: this) => M): Keyed<K, M>;
 
   /**
    * Returns a new Keyed of the same type with keys passed through
@@ -1926,7 +1984,7 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * // KeyedSequence { "A": 1, "B": 2 }
    * ```
    */
-  mapKeys<M>(mapper: (key: K, value: V, iter: this) => M): Keyed<M, V>;
+  mapKeys<M>(mapper: (key: K, value: V, iter?: this) => M): Keyed<M, V>;
 
   /**
    * Returns a new Keyed of the same type with entries
@@ -1942,7 +2000,7 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * ```
    */
   mapEntries<KM, VM>(
-    mapper: (entry: [K, V], index: number, iter: this) => [KM, VM]
+    mapper: (entry: [K, V], index: number, iter?: this) => [KM, VM]
   ): Keyed<KM, VM>;
 
   /**
@@ -1951,7 +2009,7 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * Similar to `collection.map(...).flatten(true)`.
    */
   flatMap<KM, VM>(
-    mapper: (value: V, key: K, iter: this) => Iterable<[KM, VM]>
+    mapper: (value: V, key: K, iter?: this) => Iterable<[KM, VM]>
   ): Keyed<KM, VM>;
 
   /**
@@ -1959,9 +2017,9 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * function returns true.
    */
   filter<F extends V>(
-    predicate: (value: V, key: K, iter: this) => value is F
+    predicate: (value: V, key: K, iter?: this) => value is F
   ): Keyed<K, F>;
-  filter(predicate: (value: V, key: K, iter: this) => any): this;
+  filter(predicate: (value: V, key: K, iter?: this) => any): this;
 
   [Symbol.iterator](): IterableIterator<[K, V]>;
 }
@@ -2037,12 +2095,12 @@ export interface Indexed<T> extends Collection<number, T> {
    * const c = a.zip(b); // IndexedSequence [ [ 1, 4 ], [ 2, 5 ], [ 3, 6 ] ]
    * ```
    */
-  zip<U>(other: Collection<any, U>): Indexed<[T, U]>;
+  zip<U>(other: CollectionLike<any, U>): Indexed<[T, U]>;
   zip<U, V>(
-    other: Collection<any, U>,
-    other2: Collection<any, V>
+    other: CollectionLike<any, U>,
+    other2: CollectionLike<any, V>
   ): Indexed<[T, U, V]>;
-  zip(...collections: Array<Collection<any, any>>): Indexed<any>;
+  zip(...collections: Array<CollectionLike<any, any>>): Indexed<any>;
 
   /**
    * Returns a Collection "zipped" with the provided collections.
@@ -2060,12 +2118,12 @@ export interface Indexed<T> extends Collection<number, T> {
    * // IndexedSequence [ [ 1, 3 ], [ 2, 4 ], [ undefined, 5 ] ]
    * ```
    */
-  zipAll<U>(other: Collection<any, U>): Indexed<[T, U]>;
+  zipAll<U>(other: CollectionLike<any, U>): Indexed<[T, U]>;
   zipAll<U, V>(
-    other: Collection<any, U>,
-    other2: Collection<any, V>
+    other: CollectionLike<any, U>,
+    other2: CollectionLike<any, V>
   ): Indexed<[T, U, V]>;
-  zipAll(...collections: Array<Collection<any, any>>): Indexed<any>;
+  zipAll(...collections: Array<CollectionLike<any, any>>): Indexed<any>;
 
   /**
    * Returns a Collection of the same type "zipped" with the provided
@@ -2083,16 +2141,16 @@ export interface Indexed<T> extends Collection<number, T> {
    */
   zipWith<U, Z>(
     zipper: (value: T, otherValue: U) => Z,
-    otherCollection: Collection<any, U>
+    otherCollection: CollectionLike<any, U>
   ): Indexed<Z>;
   zipWith<U, V, Z>(
     zipper: (value: T, otherValue: U, thirdValue: V) => Z,
-    otherCollection: Collection<any, U>,
-    thirdCollection: Collection<any, V>
+    otherCollection: CollectionLike<any, U>,
+    thirdCollection: CollectionLike<any, V>
   ): Indexed<Z>;
   zipWith<Z>(
     zipper: (...any: Array<any>) => Z,
-    ...collections: Array<Collection<any, any>>
+    ...collections: Array<CollectionLike<any, any>>
   ): Indexed<Z>;
 
   // Sequence algorithms
@@ -2114,25 +2172,23 @@ export interface Indexed<T> extends Collection<number, T> {
    * // IndexedSequence [ 1, 2 ]
    * ```
    */
-  map<M>(mapper: (value: T, key: number, iter: this) => M): Indexed<M>;
+  map<M>(mapper: (value: T, key: number) => M): Indexed<M>;
 
   /**
    * Flat-maps the Collection, returning a Collection of the same type.
    *
    * Similar to `collection.map(...).flatten(true)`.
    */
-  flatMap<M>(
-    mapper: (value: T, key: number, iter: this) => Iterable<M>
-  ): Indexed<M>;
+  flatMap<M>(mapper: (value: T, key: number) => Iterable<M>): Indexed<M>;
 
   /**
    * Returns a new Collection with only the values for which the `predicate`
    * function returns true.
    */
   filter<F extends T>(
-    predicate: (value: T, index: number, iter: this) => value is F
+    predicate: (value: T, index: number) => value is F
   ): Indexed<F>;
-  filter(predicate: (value: T, index: number, iter: this) => any): this;
+  filter(predicate: (value: T, index: number) => any): this;
 
   [Symbol.iterator](): IterableIterator<T>;
 }
@@ -2188,25 +2244,23 @@ export interface Duplicated<T> extends Collection<T, T> {
    * // Sequence { 1, 2 }
    * ```
    */
-  map<M>(mapper: (value: T, key: T, iter: this) => M): Duplicated<M>;
+  map<M>(mapper: (value: T, key: T) => M): Duplicated<M>;
 
   /**
    * Flat-maps the Collection, returning a Collection of the same type.
    *
    * Similar to `collection.map(...).flatten(true)`.
    */
-  flatMap<M>(
-    mapper: (value: T, key: T, iter: this) => Iterable<M>
-  ): Duplicated<M>;
+  flatMap<M>(mapper: (value: T, key: T) => Iterable<M>): Duplicated<M>;
 
   /**
    * Returns a new Collection with only the values for which the `predicate`
    * function returns true.
    */
   filter<F extends T>(
-    predicate: (value: T, key: T, iter: this) => value is F
+    predicate: (value: T, key: T) => value is F
   ): Duplicated<F>;
-  filter(predicate: (value: T, key: T, iter: this) => any): this;
+  filter(predicate: (value: T, key: T) => any): this;
 
   [Symbol.iterator](): IterableIterator<T>;
 }
@@ -2476,8 +2530,8 @@ export function set<V, C extends { [key: string]: V }>(
  */
 export function keys(shape: { [key: string]: any }): SetSequence<string>;
 export function keys(shape: Array<any>): SetSequence<number>;
-// export function keys<K>(shape: NativeMap<K, any>): SetSequence<K>;
-// export function keys<V>(shape: NativeSet<V>): SetSequence<V>;
+export function keys<K>(shape: NativeMap<K, any>): SetSequence<K>;
+export function keys<V>(shape: NativeSet<V>): SetSequence<V>;
 export function keys<K>(shape: Collection<K, any>): SetSequence<K>;
 
 /**
@@ -2485,8 +2539,8 @@ export function keys<K>(shape: Collection<K, any>): SetSequence<K>;
  */
 export function values<V>(shape: { [key: string]: V }): SetSequence<V>;
 export function values<V>(shape: Array<V>): SetSequence<V>;
-// export function values<V>(shape: NativeMap<any, V>): SetSequence<V>;
-// export function values<V>(shape: NativeSet<V>): SetSequence<V>;
+export function values<V>(shape: NativeMap<any, V>): SetSequence<V>;
+export function values<V>(shape: NativeSet<V>): SetSequence<V>;
 export function values<V>(shape: Collection<any, V>): SetSequence<V>;
 
 /**
@@ -2494,6 +2548,6 @@ export function values<V>(shape: Collection<any, V>): SetSequence<V>;
  */
 export function entries<V>(shape: { [key: string]: V }): SetSequence<[string, V]>; // prettier-ignore
 export function entries<V>(shape: Array<V>): SetSequence<[number, V]>;
-// export function entries<K, V>(shape: NativeMap<K, V>): SetSequence<[K, V]>;
-// export function entries<V>(shape: NativeSet<V>): SetSequence<[V, V]>;
+export function entries<K, V>(shape: NativeMap<K, V>): SetSequence<[K, V]>;
+export function entries<V>(shape: NativeSet<V>): SetSequence<[V, V]>;
 export function entries<K, V>(shape: Collection<K, V>): SetSequence<[K, V]>;

@@ -1,5 +1,4 @@
-import { Seq } from '..';
-import { KeyedSequence, IndexedSequence, SetSequence } from '../index';
+import { Seq, KeyedSequence, IndexedSequence, SetSequence } from '..';
 
 describe('Seq', function() {
   describe('construction', function() {
@@ -12,7 +11,7 @@ describe('Seq', function() {
     });
 
     it('can be constructed from an Sequence', function() {
-      const entries = [[1, 1], [2, 2], [3, 3]];
+      const entries: Array<[number, number]> = [[1, 1], [2, 2], [3, 3]];
       const indexed = new IndexedSequence(entries);
       const keyed = new KeyedSequence(entries);
       const set = new SetSequence(entries);
@@ -26,11 +25,11 @@ describe('Seq', function() {
     it('chains functions in sequential order', function() {
       expect(
         Array.from(
-          Seq([1, null, 3])
-            .filter(Boolean)
-            .map(x => ++x),
+          Seq([1, 2, 3])
+            .filter((x: number) => x > 1)
+            .map((x: number) => ++x),
         ),
-      ).toEqual([2, 4]);
+      ).toEqual([3, 4]);
     });
   });
 });

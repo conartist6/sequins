@@ -1,9 +1,10 @@
-import { List, Set, Map, SetSequence } from '../../../index';
+import { List, Set, Map, SetSequence } from '../../..';
+import testData from '../../../__test__/data';
 
-const array = Object.freeze([1, 2, 3]);
+const { array } = testData.Duplicated;
 
 describe('Set', function() {
-  let set;
+  let set: Set<number>;
 
   beforeEach(function() {
     set = new Set(array);

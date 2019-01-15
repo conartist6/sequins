@@ -1,5 +1,4 @@
 import map from 'iter-tools/es5/map';
-import tap from 'iter-tools/es5/tap';
 import { isKeyed } from '../../utils/shape';
 import Sequence, { Namespace } from '../../collection-sequence';
 import { Namespace as ConcreteCollection } from '../../collection-concrete';
@@ -15,11 +14,6 @@ export default class SetSequence extends DuplicatedMixin(Sequence) {
     if (isKeyed(this.__iterable)) {
       this.__constructorTransform = iterable => iterable.values();
     }
-  }
-
-  // Collection functions
-  tap(tapFn) {
-    return this.__doCollectionTransform(tap(item => tapFn(item, item, ...this.__selfParam)));
   }
 
   // Conversions

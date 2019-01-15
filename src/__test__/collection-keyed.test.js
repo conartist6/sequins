@@ -1,25 +1,24 @@
-import { Namespace as Collection } from '../collection';
-import { KeyedSequence, Map } from '../index';
 import makeTestMethod from './helpers/make-test-method';
+import { KeyedSequence, Map } from '..';
 import testData from './data';
 
-function makeTests(collectionType) {
-  const KeyedConstructor = Collection[collectionType].Keyed;
-
+function makeTests(KeyedConstructor, collectionType, collectionSubtype) {
   describe(KeyedConstructor.name, function() {
     const { object, objectEntries, keys, values, entries, array } = testData.Keyed;
     const staticKeyed = new KeyedConstructor(array);
     let calls = makeCalls(testData.Keyed.calls);
-    let keyed;
+    let keyed: KeyedConstructor<number, number>;
 
-    function makeCalls(calls) {
-      return collectionType === 'Concrete' ? calls.map(call => [...call, staticKeyed]) : calls;
+    function makeCalls(calls: any) {
+      return collectionType === 'Concrete'
+        ? calls.map((call: any) => [...call, staticKeyed])
+        : calls;
     }
 
     const testMethod = makeTestMethod(KeyedConstructor);
 
     it('can be constructed from an object', function() {
-      keyed = new KeyedConstructor(object);
+      const keyed = new KeyedConstructor(object);
       expect(Array.from(keyed)).toEqual(objectEntries);
     });
 
@@ -28,54 +27,54 @@ function makeTests(collectionType) {
         keyed = new KeyedConstructor(entries);
       });
 
-      testMethod('map', t => {
-        t.callback(val => val + 1, calls);
-        t.run(mapFn => keyed.map(mapFn));
-        t.expectCollectionYields([[9, 2], [8, 3], [7, 4]]);
+      testMethod('map', mt => {
+        mt.callback((val: number) => val + 1, calls)
+          .expectCollectionYields([[9, 2], [8, 3], [7, 4]])
+          .run(mapFn => keyed.map(mapFn));
       });
 
-      testMethod('mapKeys', t => {
-        t.callback(key => key - 1);
-        t.expectCalls(makeCalls(entries));
-        t.run(mapFn => keyed.mapKeys(mapFn));
-        t.expectCollectionYields([[8, 1], [7, 2], [6, 3]]);
+      testMethod('mapKeys', mt => {
+        mt.callback((key: number) => key - 1)
+          .expectCalls(makeCalls(entries))
+          .expectCollectionYields([[8, 1], [7, 2], [6, 3]])
+          .run(mapFn => keyed.mapKeys(mapFn));
       });
 
-      testMethod('mapEntries', t => {
-        t.callback(([key, val]) => [--val, ++key]);
-        t.expectCalls(makeCalls([[[9, 1], 0], [[8, 2], 1], [[7, 3], 2]]));
-        t.run(mapFn => keyed.mapEntries(mapFn));
-        t.expectCollectionYields([[0, 10], [1, 9], [2, 8]]);
+      testMethod('mapEntries', mt => {
+        mt.callback(([key, val]: [number, number]): [number, number] => [--val, ++key])
+          .expectCalls(makeCalls([[[9, 1], 0], [[8, 2], 1], [[7, 3], 2]]))
+          .expectCollectionYields([[0, 10], [1, 9], [2, 8]])
+          .run(mapFn => keyed.mapEntries(mapFn));
       });
 
-      testMethod('flip', t => {
-        t.run(() => keyed.flip());
-        t.expectCollectionYields([[1, 9], [2, 8], [3, 7]]);
+      testMethod('flip', mt => {
+        mt.expectCollectionYields([[1, 9], [2, 8], [3, 7]]) //
+          .run(() => keyed.flip());
       });
 
-      testMethod('flatMap (KeyedSeqs)', t => {
-        t.callback(val => new KeyedSequence([[val + 1, val + 2]]));
-        t.expectCalls(calls);
-        t.run(mapFn => keyed.flatMap(mapFn));
-        t.expectCollectionYields([[2, 3], [3, 4], [4, 5]]);
+      testMethod('flatMap (KeyedSeqs)', mt => {
+        mt.callback((val: number) => new KeyedSequence([[val + 1, val + 2]]))
+          .expectCalls(calls)
+          .expectCollectionYields([[2, 3], [3, 4], [4, 5]])
+          .run(mapFn => keyed.flatMap(mapFn));
       });
 
-      testMethod('flatMap (Maps)', t => {
-        t.callback(val => new Map([[val + 1, val + 2]]));
-        t.expectCalls(calls);
-        t.run(mapFn => keyed.flatMap(mapFn));
-        t.expectCollectionYields([[2, 3], [3, 4], [4, 5]]);
+      testMethod('flatMap (Maps)', mt => {
+        mt.callback((val: number) => new Map([[val + 1, val + 2]]))
+          .expectCalls(calls)
+          .expectCollectionYields([[2, 3], [3, 4], [4, 5]])
+          .run(mapFn => keyed.flatMap(mapFn));
       });
 
-      testMethod('reduce', t => {
-        t.callback((acc, val, key) => acc + val);
-        t.expectCalls(makeCalls([[1, 2, 8], [3, 3, 7]]));
-        t.run(reducerFn => keyed.reduce(reducerFn));
-        t.expectReturns(6);
+      testMethod('reduce', mt => {
+        mt.callback((acc: number, val: number, key: number) => acc + val)
+          .expectCalls(makeCalls([[1, 2, 8], [3, 3, 7]]))
+          .expectReturns(6)
+          .run(reducerFn => keyed.reduce(reducerFn));
       });
     });
   });
 }
 
-makeTests('Sequence');
-makeTests('Concrete');
+makeTests(KeyedSequence, 'Sequence', 'Keyed');
+makeTests(Map, 'Concrete', 'Keyed');

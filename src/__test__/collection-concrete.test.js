@@ -1,23 +1,19 @@
 import makeTestMethod from './helpers/make-test-method';
-import '../index';
-import { Namespace as Collection } from '../collection';
-import makeFlatten from '../factories/flatten';
+import { List, Map, Set } from '..';
 import testData from './data';
 
-function makeTests(collectionSubtype) {
-  const CollectionConstructor = Collection.Concrete[collectionSubtype];
-
-  describe(CollectionConstructor.name, function() {
-    let collection;
+function makeTests(ConcreteConstructor, collectionType, collectionSubtype) {
+  describe(ConcreteConstructor.name, function() {
+    let collection: ConcreteConstructor<number, number>;
 
     const { keys, values, entries, calls, array, object, js } = testData[collectionSubtype];
 
-    const testMethod = makeTestMethod(CollectionConstructor);
+    const testMethod = makeTestMethod(ConcreteConstructor);
 
     describe('empty', function() {
       describe('instance methods', function() {
         beforeEach(() => {
-          collection = new CollectionConstructor();
+          collection = new ConcreteConstructor();
         });
 
         it('has 0 size', function() {
@@ -32,7 +28,7 @@ function makeTests(collectionSubtype) {
 
     describe('instance methods', function() {
       beforeEach(() => {
-        collection = new CollectionConstructor(array);
+        collection = new ConcreteConstructor(array);
       });
 
       it('has size', function() {
@@ -51,6 +47,6 @@ function makeTests(collectionSubtype) {
   });
 }
 
-makeTests('Duplicated');
-makeTests('Indexed');
-makeTests('Keyed');
+makeTests(Set, 'Concrete', 'Duplicated');
+makeTests(List, 'Concrete', 'Indexed');
+makeTests(Map, 'Concrete', 'Keyed');

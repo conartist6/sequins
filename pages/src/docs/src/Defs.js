@@ -110,6 +110,10 @@ var TypeDef = React.createClass({
     switch (type.k) {
       case TypeKind.Never:
         return this.wrap("primitive", "never");
+      case TypeKind.Null:
+        return this.wrap("primitive", "null");
+      case TypeKind.Void:
+        return this.wrap("primitive", "void");
       case TypeKind.Any:
         return this.wrap("primitive", "any");
       case TypeKind.This:
@@ -331,6 +335,10 @@ function typeLength(info, type) {
   switch (type.k) {
     case TypeKind.Never:
       return 5;
+    case TypeKind.Null:
+      return 4;
+    case TypeKind.Void:
+      return 4;
     case TypeKind.Any:
       return 3;
     case TypeKind.This:

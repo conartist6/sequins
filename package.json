@@ -4,9 +4,7 @@
   "description": "Mutable sequences and native data structures (Map, Set, List) following the Immutable.js API",
   "author": "conrad@burningpotato.com",
   "license": "MIT",
-  "files": [
-    "dist/**"
-  ],
+  "files": ["dist/**"],
   "main": "dist/_sequins.js",
   "module": "dist/sequins.mjs",
   "typings": "dist/sequins.d.ts",
@@ -16,16 +14,23 @@
     "build:pages": "gulp --gulpfile ./resources/gulpfile.js default",
     "start:pages": "gulp --gulpfile ./resources/gulpfile.js dev",
     "format": "prettier --write \"{src,pages/src,pages/lib,resources}/**/*.js\"",
-    "test": "jest",
+    "test": "run-p test:js test:types",
+    "test:js": "jest",
+    "test:types": "run-s test:types:ts",
+    "test:types:ts": "tsc",
     "verify": "run-s format verify:formatting build test",
     "verify:formatting": "./resources/check-changes.sh"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.0.0",
-    "@babel/preset-env": "7.0.0",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-syntax-typescript": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "7.2.3",
+    "@babel/preset-typescript": "^7.1.0",
+    "@types/jest": "^23.3.11",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "babel-plugin-minify-dead-code-elimination": "^0.5.0",
     "broccoli": "^2.0.0-beta.4",
     "broccoli-babel-transpiler": "^7.0.0",
     "broccoli-cli": "^1.0.0",
@@ -51,11 +56,12 @@
     "react": "^0.12.0",
     "react-router": "^0.11.2",
     "react-tools": "0.13.3",
+    "recursive-readdir": "^2.2.2",
     "rollup-plugin-babel": "^4.0.2",
     "rollup-plugin-commonjs": "^9.1.6",
     "rollup-plugin-node-resolve": "^3.3.0",
     "run-sequence": "2.2.1",
-    "typescript": "3.0.3",
+    "typescript": "3.2.2",
     "vinyl-buffer": "1.0.1",
     "vinyl-source-stream": "2.0.0"
   },
@@ -69,9 +75,7 @@
     "babel-core": "7.0.0-bridge.0"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "js"
-    ],
+    "moduleFileExtensions": ["js"],
     "setupTestFrameworkScriptFile": "<rootDir>/jest_setup.js"
   },
   "repository": {

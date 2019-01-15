@@ -1,4 +1,4 @@
-import { SetSequence } from '../../../index';
+import { SetSequence } from '../../..';
 
 const array = Object.freeze([1, 2, 3]);
 

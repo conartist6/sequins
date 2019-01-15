@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "lib": ["es2017", "es2018"],
+    "noEmit": true,
+    "declaration": false,
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "pretty": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  },
+  "include": ["src", "type-definitions/*.d.ts"],
+  "exclude": ["src/subtypes/native"]
+}

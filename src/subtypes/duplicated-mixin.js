@@ -1,4 +1,5 @@
 import map from 'iter-tools/es5/map';
+import tap from 'iter-tools/es5/tap';
 import filter from 'iter-tools/es5/filter';
 import forEach from '../functions/for-each';
 import forSome from '../functions/for-some';
@@ -12,6 +13,10 @@ export default Base =>
     // Collection functions
     map(mapFn) {
       return this.__doCollectionTransform(map(item => mapFn(item, item, ...this.__selfParam)));
+    }
+
+    tap(tapFn) {
+      return this.__doCollectionTransform(tap(item => tapFn(item, item, ...this.__selfParam)));
     }
 
     filter(filterFn) {
@@ -28,7 +33,7 @@ export default Base =>
 
     // Reductive functions
     forEach(eachFn) {
-      return forEach(item => eachFn(item, item, ...this.__selfParam), this);
+      forEach(item => eachFn(item, item, ...this.__selfParam), this);
     }
 
     forSome(eachFn) {

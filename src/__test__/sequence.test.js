@@ -1,44 +1,41 @@
-import '../index';
-import { Namespace as Collection } from '../collection';
+import { SetSequence, IndexedSequence, KeyedSequence } from '..';
 import makeTestMethod from './helpers/make-test-method';
 import testDataBySubtype from './data';
 
-function makeTests(collectionSubtype) {
-  const Sequence = Collection.Sequence[collectionSubtype];
-
+function makeTests(SequenceConstructor, collectionType, collectionSubtype) {
   const { array, calls } = testDataBySubtype[collectionSubtype];
 
-  describe(Sequence.name, function() {
-    let sequence;
+  describe(SequenceConstructor.name, function() {
+    let sequence: SequenceConstructor<number, number>;
 
-    const testMethod = makeTestMethod(Sequence);
+    const testMethod = makeTestMethod(SequenceConstructor);
 
     it('can be consumed multiple times', function() {
-      sequence = new Sequence(array).map(_ => _);
+      sequence = new SequenceConstructor(array).map(_ => _);
       expect(Array.from(sequence)).toEqual(array);
       expect(Array.from(sequence)).toEqual(array);
     });
 
     describe('instance methods', function() {
       beforeEach(() => {
-        sequence = new Sequence(array);
+        sequence = new SequenceConstructor(array);
       });
 
       // This creates duplicate keys/values, which is expected even for Keyed and Set Seqs
-      testMethod('concat', t => {
-        t.run(() => sequence.concat(array));
-        t.expectCollectionYields([...array, ...array]);
+      testMethod('concat', mt => {
+        mt.expectCollectionYields([...array, ...array]) //
+          .run(() => sequence.concat(array));
       });
 
-      testMethod('tap', t => {
-        t.callback(() => null, calls);
-        t.run(tapFn => sequence.tap(tapFn));
-        t.expectCollectionYields(array);
+      testMethod('tap', mt => {
+        mt.callback(() => null, calls)
+          .expectCollectionYields(array)
+          .run(tapFn => sequence.tap(tapFn));
       });
     });
   });
 }
 
-makeTests('Duplicated');
-makeTests('Indexed');
-makeTests('Keyed');
+makeTests(SetSequence, 'Sequence', 'Duplicated');
+makeTests(IndexedSequence, 'Sequence', 'Indexed');
+makeTests(KeyedSequence, 'Sequence', 'Keyed');

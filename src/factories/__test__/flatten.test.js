@@ -1,16 +1,15 @@
-import { IndexedSequence, KeyedSequence, SetSequence, Seq } from '../../index';
-import { Namespace as Collection } from '../../collection';
+import { IndexedSequence, KeyedSequence, SetSequence, Seq } from '../..';
+import makeTestMethod from '../../__test__/helpers/make-test-method';
 
 describe('flatten', function() {
   describe('Indexed', function() {
-    let a;
-    let aa;
-    let b;
-    let bb;
-    let c;
-    let cc;
-    let seq;
-    let iterator;
+    let a: IndexedSequence<IndexedSequence<number>>;
+    let aa: IndexedSequence<number>;
+    let b: IndexedSequence<IndexedSequence<number>>;
+    let bb: IndexedSequence<number>;
+    let c: IndexedSequence<IndexedSequence<number>>;
+    let cc: IndexedSequence<number>;
+    let seq: IndexedSequence<IndexedSequence<IndexedSequence<number>>>;
 
     describe('base cases', function() {
       it('does nothing when flattening and empty sequence', function() {
@@ -36,6 +35,8 @@ describe('flatten', function() {
     });
 
     describe('depth', function() {
+      const testMethod = makeTestMethod(IndexedSequence);
+
       beforeEach(function() {
         aa = Seq([1]);
         bb = Seq([2]);
@@ -46,24 +47,29 @@ describe('flatten', function() {
         seq = new IndexedSequence([a, b, c]);
       });
 
-      it('does a shallow flatten when passed true', function() {
-        expect(Array.from(seq.flatten(true))).toEqual([aa, bb, cc]);
+      testMethod('flatten: does a shallow flatten when passed true', mt => {
+        mt.expectCollectionYields([aa, bb, cc]) //
+          .run(() => seq.flatten(true));
       });
 
-      it('does a deep flatten when passed 0', function() {
-        expect(Array.from(seq.flatten(0))).toEqual([1, 2, 3]);
+      testMethod('flatten: does a deep flatten when passed 0', mt => {
+        mt.expectCollectionYields([1, 2, 3]) //
+          .run(() => seq.flatten(0));
       });
 
-      it('does a deep flatten when passed no params', function() {
-        expect(Array.from(seq.flatten())).toEqual([1, 2, 3]);
+      testMethod('flatten: does a deep flatten when passed no params', mt => {
+        mt.expectCollectionYields([1, 2, 3]) //
+          .run(() => seq.flatten());
       });
 
-      it('does a deep flatten when when passed false', function() {
-        expect(Array.from(seq.flatten(false))).toEqual([1, 2, 3]);
+      testMethod('flatten: does a deep flatten when when passed false', mt => {
+        mt.expectCollectionYields([1, 2, 3]) //
+          .run(() => seq.flatten(false));
       });
 
-      it('flattens n levels when passed depth n', function() {
-        expect(Array.from(seq.flatten(1))).toEqual([aa, bb, cc]);
+      testMethod('flatten: flattens n levels when passed depth n', mt => {
+        mt.expectCollectionYields([aa, bb, cc]) //
+          .run(() => seq.flatten(1));
       });
     });
   });

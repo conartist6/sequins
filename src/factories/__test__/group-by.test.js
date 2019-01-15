@@ -1,14 +1,14 @@
-import { SetSequence } from '../../index';
+import { IndexedSequence, KeyedSequence, SetSequence, List, Map, Set } from '../..';
 import { Namespace as Collection } from '../../collection';
-import makeGroupBy from '../group-by';
 
-function makeTests(type, collectionSubtype) {
-  const CollectionConstructor = Collection[collectionSubtype][type];
-  const KeyedCollectionConstructor = Collection[collectionSubtype].Keyed;
+function makeTests(CollectionConstructor, collectionType, collectionSubtype) {
+  const KeyedCollectionConstructor = Collection[collectionType].Keyed;
 
-  describe(CollectionConstructor.name, function() {
+  describe(`${CollectionConstructor.name}.groupBy`, function() {
     it('works', function() {
-      const grouped = new CollectionConstructor(new SetSequence([1, 2, 3, 4])).groupBy(v => v % 2);
+      const grouped = new CollectionConstructor(new SetSequence([1, 2, 3, 4])).groupBy(
+        (v: number) => v % 2,
+      );
       expect(grouped).toEqual(
         new KeyedCollectionConstructor([
           [1, new CollectionConstructor(new SetSequence([1, 3]))],
@@ -19,11 +19,9 @@ function makeTests(type, collectionSubtype) {
   });
 }
 
-describe('groupBy', function() {
-  makeTests('Duplicated', 'Sequence');
-  makeTests('Indexed', 'Sequence');
-  makeTests('Keyed', 'Sequence');
-  makeTests('Duplicated', 'Concrete');
-  makeTests('Indexed', 'Concrete');
-  makeTests('Keyed', 'Concrete');
-});
+makeTests(SetSequence, 'Sequence', 'Duplicated');
+makeTests(IndexedSequence, 'Sequence', 'Indexed');
+makeTests(KeyedSequence, 'Sequence', 'Keyed');
+makeTests(Set, 'Concrete', 'Duplicated');
+makeTests(List, 'Concrete', 'Indexed');
+makeTests(Map, 'Concrete', 'Keyed');

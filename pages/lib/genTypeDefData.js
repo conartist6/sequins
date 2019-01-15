@@ -99,8 +99,8 @@ function DocVisitor(source) {
       var name = node.name
         ? node.name.text
         : node.stringLiteral
-          ? node.stringLiteral.text
-          : "";
+        ? node.stringLiteral.text
+        : "";
 
       if (comment) {
         setMemberIn(data, [name, "doc"], comment);
@@ -366,6 +366,14 @@ function DocVisitor(source) {
         return {
           k: TypeKind.Any
         };
+      case ts.SyntaxKind.NullKeyword:
+        return {
+          k: TypeKind.Null
+        };
+      case ts.SyntaxKind.VoidKeyword:
+        return {
+          k: TypeKind.Void
+        };
       case ts.SyntaxKind.ThisType:
         return {
           k: TypeKind.This
@@ -412,8 +420,8 @@ function DocVisitor(source) {
           node.operator === ts.SyntaxKind.KeyOfKeyword
             ? "keyof"
             : node.operator === ts.SyntaxKind.ReadonlyKeyword
-              ? "readonly"
-              : undefined;
+            ? "readonly"
+            : undefined;
         if (!operator) {
           throw new Error(
             "Unknown operator kind: " + ts.SyntaxKind[node.operator]

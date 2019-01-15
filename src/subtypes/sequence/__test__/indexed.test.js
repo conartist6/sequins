@@ -1,4 +1,4 @@
-import { IndexedSequence } from '../../../index';
+import { IndexedSequence } from '../../..';
 
 const array = Object.freeze([1, 2, 3]);
 

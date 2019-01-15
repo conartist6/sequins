@@ -8,24 +8,26 @@
 var TypeKind = {
   Any: 0,
 
-  Boolean: 1,
-  Number: 2,
-  String: 3,
-  Object: 4,
-  Array: 5,
-  Never: 6,
-  Function: 7,
+  Null: 1,
+  Void: 2,
+  Boolean: 3,
+  Number: 4,
+  String: 5,
+  Object: 6,
+  Array: 7,
+  Never: 8,
+  Function: 9,
 
-  Param: 8,
-  Type: 9,
+  Param: 10,
+  Type: 11,
 
-  This: 10,
-  Undefined: 11,
-  Union: 12,
-  Intersection: 13,
-  Tuple: 14,
-  Indexed: 15,
-  Operator: 16
+  This: 12,
+  Undefined: 13,
+  Union: 14,
+  Intersection: 15,
+  Tuple: 16,
+  Indexed: 17,
+  Operator: 18
 };
 
 module.exports = TypeKind;

@@ -7,6 +7,8 @@ node_modules
 /dist
 /tmp
 
+**/__test__/**/*.type-test.ts
+
 *.sublime-workspace
 lerna-debug.log*
 npm-debug.log*

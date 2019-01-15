@@ -1,9 +1,10 @@
-import { List, Map, IndexedSequence } from '../../../index';
+import { List, Map, IndexedSequence } from '../../..';
+import testData from '../../../__test__/data';
 
-const array = Object.freeze([1, 2, 3]);
+const { array } = testData.Indexed;
 
 describe('List', function() {
-  let list;
+  let list: List<number>;
 
   beforeEach(function() {
     list = new List(array);

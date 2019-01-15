@@ -1,16 +1,13 @@
-import { Namespace as Collection } from '../collection';
-import { SetSequence, Set } from '../index';
 import makeTestMethod from './helpers/make-test-method';
+import { SetSequence, Set } from '..';
 import testData, { makeCalls } from './data';
 
-function makeTests(collectionType) {
-  const SetConstructor = Collection[collectionType].Duplicated;
-
+function makeTests(SetConstructor, collectionType, collectionSubtype) {
   describe(SetConstructor.name, function() {
     const { keys, values, entries, calls: rawCalls, array } = testData.Duplicated;
     const callbackSet = collectionType == 'Concrete' ? new SetConstructor(array) : null;
     const calls = makeCalls(rawCalls, callbackSet);
-    let set;
+    let set: SetConstructor<number>;
 
     const testMethod = makeTestMethod(SetConstructor);
 
@@ -19,35 +16,35 @@ function makeTests(collectionType) {
         set = new SetConstructor(array);
       });
 
-      testMethod('map', t => {
-        t.callback(val => val + 1, calls);
-        t.run(mapFn => set.map(mapFn));
-        t.expectCollectionYields([2, 3, 4]);
+      testMethod('map', mt => {
+        mt.callback((val: number) => val + 1, calls)
+          .expectCollectionYields([2, 3, 4])
+          .run(mapFn => set.map(mapFn));
       });
 
-      testMethod('flatMap (SetSeqs)', t => {
-        t.callback(val => new SetSequence([val + 1, val + 1.5]));
-        t.expectCalls(calls);
-        t.run(mapFn => set.flatMap(mapFn));
-        t.expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
+      testMethod('flatMap (SetSeqs)', mt => {
+        mt.callback((val: number) => new SetSequence([val + 1, val + 1.5]))
+          .expectCalls(calls)
+          .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5])
+          .run(mapFn => set.flatMap(mapFn));
       });
 
-      testMethod('flatMap (Sets)', t => {
-        t.callback(val => new Set([val + 1, val + 1.5]));
-        t.expectCalls(calls);
-        t.run(mapFn => set.flatMap(mapFn));
-        t.expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5]);
+      testMethod('flatMap (Sets)', mt => {
+        mt.callback((val: number) => new Set([val + 1, val + 1.5]))
+          .expectCalls(calls)
+          .expectCollectionYields([2, 2.5, 3, 3.5, 4, 4.5])
+          .run(mapFn => set.flatMap(mapFn));
       });
 
-      testMethod('reduce', t => {
-        t.callback((acc, val, key) => acc + val);
-        t.expectCalls(makeCalls([[1, 2, 2], [3, 3, 3]], callbackSet));
-        t.run(reducerFn => set.reduce(reducerFn));
-        t.expectReturns(6);
+      testMethod('reduce', mt => {
+        mt.callback((acc: number, val: number, key: number) => acc + val)
+          .expectCalls(makeCalls([[1, 2, 2], [3, 3, 3]], callbackSet))
+          .expectReturns(6)
+          .run(reducerFn => set.reduce(reducerFn));
       });
     });
   });
 }
 
-makeTests('Sequence');
-makeTests('Concrete');
+makeTests(SetSequence, 'Sequence', 'Duplicated');
+makeTests(Set, 'Concrete', 'Duplicated');

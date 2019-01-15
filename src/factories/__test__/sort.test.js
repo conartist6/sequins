@@ -1,10 +1,24 @@
 import makeTestMethod from '../../__test__/helpers/make-test-method';
-import { SetSequence } from '../../index';
-import { Namespace as Collection } from '../../collection';
-import makeGroupBy from '../group-by';
+import { IndexedSequence, KeyedSequence, SetSequence, List, Map, Set } from '../..';
 import { freezeTestData } from '../../__test__/data';
 
-const dataByType = {
+const dataByType: {
+  Indexed: {
+    array: Array<number>,
+    sortedArray: Array<number>,
+    objectValue: (value: number) => { value: number },
+  },
+  Keyed: {
+    array: Array<[number, number]>,
+    sortedArray: Array<[number, number]>,
+    objectValue: (entry: [number, number]) => [number, { value: number }],
+  },
+  Duplicated: {
+    array: Array<number>,
+    sortedArray: Array<number>,
+    objectValue: (value: number) => { value: number },
+  },
+} = {
   Indexed: {
     array: [3, 2, 4, 1],
     sortedArray: [1, 2, 3, 4],
@@ -24,44 +38,48 @@ const dataByType = {
 
 freezeTestData(dataByType);
 
-function makeTests(type, collectionSubtype) {
-  const CollectionConstructor = Collection[collectionSubtype][type];
-  const KeyedCollectionConstructor = Collection[collectionSubtype].Keyed;
-
-  const { array, sortedArray, objectValue } = dataByType[type];
+function makeTests(CollectionConstructor, collectionType, collectionSubtype) {
+  const { array, sortedArray, objectValue } = dataByType[collectionSubtype];
 
   const testMethod = makeTestMethod(CollectionConstructor);
 
-  describe(CollectionConstructor.name, function() {
+  describe(`${CollectionConstructor.name} sort function`, function() {
     testMethod('sort', t => {
       t.run(() => new CollectionConstructor(array).sort());
       t.expectCollectionYields(sortedArray);
     });
 
     testMethod('sort with comparator', t => {
-      t.run(() => new CollectionConstructor(array).sort((a, b) => a < b));
+      t.run(() =>
+        new CollectionConstructor(array).sort((a: number, b: number) =>
+          a < b ? 1 : b > a ? -1 : 0,
+        ),
+      );
       t.expectCollectionYields([...sortedArray].reverse());
     });
 
     testMethod('sortBy', t => {
-      t.run(() => new CollectionConstructor(array.map(objectValue)).sortBy(x => x.value));
+      t.run(() =>
+        new CollectionConstructor(array.map(objectValue)).sortBy((x: { value: number }) => x.value),
+      );
       t.expectCollectionYields(sortedArray.map(objectValue));
     });
 
     testMethod('sortBy with comparator', t => {
       t.run(() =>
-        new CollectionConstructor(array.map(objectValue)).sortBy(x => x.value, (a, b) => a < b),
+        new CollectionConstructor(array.map(objectValue)).sortBy(
+          (x: { value: number }) => x.value,
+          (a: number, b: number) => (a < b ? 1 : b > a ? -1 : 0),
+        ),
       );
       t.expectCollectionYields(sortedArray.map(objectValue).reverse());
     });
   });
 }
 
-describe('sort', function() {
-  makeTests('Duplicated', 'Sequence');
-  makeTests('Indexed', 'Sequence');
-  makeTests('Keyed', 'Sequence');
-  makeTests('Duplicated', 'Concrete');
-  makeTests('Indexed', 'Concrete');
-  makeTests('Keyed', 'Concrete');
-});
+makeTests(SetSequence, 'Sequence', 'Duplicated');
+makeTests(IndexedSequence, 'Sequence', 'Indexed');
+makeTests(KeyedSequence, 'Sequence', 'Keyed');
+makeTests(Set, 'Concrete', 'Duplicated');
+makeTests(List, 'Concrete', 'Indexed');
+makeTests(Map, 'Concrete', 'Keyed');

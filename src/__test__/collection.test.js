@@ -1,16 +1,14 @@
 import makeTestMethod from './helpers/make-test-method';
-import { IndexedSequence, KeyedSequence, SetSequence, List, Map, Set } from '../index';
+import { IndexedSequence, KeyedSequence, SetSequence, List, Map, Set } from '..';
 import { Namespace as Collection } from '../collection';
-import makeFlatten from '../factories/flatten';
 import testData, { makeCalls } from './data';
 import { map } from 'iter-tools';
 
-function makeTests(collectionType, collectionSubtype) {
-  const CollectionConstructor = Collection[collectionType][collectionSubtype];
+function makeTests(CollectionConstructor, collectionType, collectionSubtype) {
   const ConcreteConstructor = Collection.Concrete[collectionSubtype];
 
   describe(CollectionConstructor.name, function() {
-    let collection;
+    let collection: CollectionConstructor<number, number>;
 
     const { keys, values, entries, calls: rawCalls, array, object, js } = testData[
       collectionSubtype
@@ -113,53 +111,55 @@ function makeTests(collectionType, collectionSubtype) {
         expect(Array.from(entriesSeq)).toEqual(entries);
       });
 
-      testMethod('forEach', t => {
-        t.callback(() => true, calls);
-        t.run(eachFn => collection.forEach(eachFn));
-        t.expectReturns(collection);
+      testMethod('forEach', mt => {
+        const voidValue: void = undefined;
+
+        mt.callback(() => true, calls)
+          .expectReturns(voidValue)
+          .run(eachFn => collection.forEach(eachFn));
       });
 
-      testMethod('forSome', t => {
-        t.callback(value => value < 2);
-        t.expectCalls(calls.slice(0, 2));
-        t.run(eachFn => collection.forSome(eachFn));
-        t.expectReturns(2);
+      testMethod('forSome', mt => {
+        mt.callback((val: number) => val < 2)
+          .expectCalls(calls.slice(0, 2))
+          .expectReturns(2)
+          .run(eachFn => collection.forSome(eachFn));
       });
 
-      testMethod('filter', t => {
-        t.callback(val => val > 1, calls);
-        t.run(filterFn => collection.filter(filterFn));
-        t.expectCollectionYields(array.slice(1));
+      testMethod('filter', mt => {
+        mt.callback((val: number) => val > 1, calls)
+          .expectCollectionYields(array.slice(1))
+          .run(filterFn => collection.filter(filterFn));
       });
 
-      testMethod('filterNot', t => {
-        t.callback(val => val > 1, calls);
-        t.run(filterFn => collection.filterNot(filterFn));
-        t.expectCollectionYields(array.slice(0, 1));
+      testMethod('filterNot', mt => {
+        mt.callback((val: number) => val > 1, calls)
+          .expectCollectionYields(array.slice(0, 1))
+          .run(filterFn => collection.filterNot(filterFn));
       });
 
-      testMethod('reverse', t => {
-        t.run(() => collection.reverse());
-        t.expectCollectionYields([...array].reverse());
+      testMethod('reverse', mt => {
+        mt.expectCollectionYields([...array].reverse()) //
+          .run(() => collection.reverse());
       });
 
-      testMethod('count', t => {
-        t.run(() => collection.count());
-        t.expectReturns(3);
+      testMethod('count', mt => {
+        mt.expectReturns(3) //
+          .run(() => collection.count());
       });
 
-      testMethod('count with predicate', t => {
-        t.callback(val => val > 1, calls);
-        t.run(filterFn => collection.count(filterFn));
-        t.expectReturns(2);
+      testMethod('count with predicate', mt => {
+        mt.callback((val: number) => val > 1, calls)
+          .expectReturns(2)
+          .run(filterFn => collection.count(filterFn));
       });
     });
   });
 }
 
-makeTests('Sequence', 'Duplicated');
-makeTests('Sequence', 'Indexed');
-makeTests('Sequence', 'Keyed');
-makeTests('Concrete', 'Duplicated');
-makeTests('Concrete', 'Indexed');
-makeTests('Concrete', 'Keyed');
+makeTests(SetSequence, 'Sequence', 'Duplicated');
+makeTests(IndexedSequence, 'Sequence', 'Indexed');
+makeTests(KeyedSequence, 'Sequence', 'Keyed');
+makeTests(Set, 'Concrete', 'Duplicated');
+makeTests(List, 'Concrete', 'Indexed');
+makeTests(Map, 'Concrete', 'Keyed');

@@ -1,24 +1,25 @@
-import { List, Map, KeyedSequence } from '../../../index';
+import { List, Map, KeyedSequence } from '../../..';
+import testData from '../../../__test__/data';
 
-const array = Object.freeze([[1, 1], [2, 2], [3, 3]]);
+const { array } = testData.Keyed;
 
 describe('Map', function() {
-  let map;
+  let map: Map<number, number>;
 
   beforeEach(function() {
     map = new Map(array);
   });
 
   it('can get', function() {
-    expect(map.get(1)).toBe(1);
-    expect(map.get(3)).toBe(3);
+    expect(map.get(9)).toBe(1);
+    expect(map.get(7)).toBe(3);
     expect(map.get(0)).toBeUndefined();
   });
 
   it('can set', function() {
-    expect(map.set(2, 22)).toBe(map);
-    expect(map.get(2)).toBe(22);
-    expect(Array.from(map)).toEqual([[1, 1], [2, 22], [3, 3]]);
+    expect(map.set(8, 22)).toBe(map);
+    expect(map.get(8)).toBe(22);
+    expect(Array.from(map)).toEqual([[9, 1], [8, 22], [7, 3]]);
   });
 });
 
