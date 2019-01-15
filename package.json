@@ -25,6 +25,9 @@
     "test:no-changes": "./resources/check-changes.sh",
     "verify": "run-s format test:no-changes build test:__i"
   },
+  "engines": {
+    "yarn": "^1.12.3"
+  },
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/plugin-syntax-typescript": "^7.2.0",
