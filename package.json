@@ -12,14 +12,18 @@
     "build": "run-s build:*",
     "build:dist": "broccoli build dist --overwrite",
     "build:pages": "gulp --gulpfile ./resources/gulpfile.js default",
+    "build:type-tests": "node ./resources/build-type-tests.js",
     "start:pages": "gulp --gulpfile ./resources/gulpfile.js dev",
     "format": "prettier --write \"{src,pages/src,pages/lib,resources}/**/*.js\"",
-    "test": "run-p test:js test:types",
+    "test": "run-p --aggregate-output test:js test:types",
+    "test:__i": "run-p test:js test:types:__i",
     "test:js": "jest",
-    "test:types": "run-s test:types:ts",
-    "test:types:ts": "tsc",
-    "verify": "run-s format verify:formatting build test",
-    "verify:formatting": "./resources/check-changes.sh"
+    "test:types": "run-s build:dist test:types:__i",
+    "test:types:__i": "run-s build:type-tests test:types:*:__i",
+    "test:types:ts": "run-s build:type-tests test:types:ts:__i",
+    "test:types:ts:__i": "tsc",
+    "test:no-changes": "./resources/check-changes.sh",
+    "verify": "run-s format test:no-changes build test:__i"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

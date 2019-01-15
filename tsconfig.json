@@ -10,6 +10,6 @@
     "noImplicitAny": true,
     "strictNullChecks": true
   },
-  "include": ["src", "type-definitions/*.d.ts"],
+  "include": ["src", "dist/*.d.ts", "type-definitions/*.d.ts"],
   "exclude": ["src/subtypes/native"]
 }

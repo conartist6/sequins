@@ -20,13 +20,13 @@ var getDefByPath = require("../../../lib/getDefByPath");
 var { flattenDef } = require("./utils");
 
 var typeDefURL =
-  "https://github.com/conartist6/sequins/blob/master/type-definitions/Sequins.d.ts";
+  "https://github.com/conartist6/sequins/blob/master/type-definitions/sequins.d.ts";
 var issuesURL = "https://github.com/conartist6/sequins/issues";
 
 var Disclaimer = function() {
   return (
     <section className="disclaimer">
-      This documentation is generated from <a href={typeDefURL}>Sequins.d.ts</a>
+      This documentation is generated from <a href={typeDefURL}>sequins.d.ts</a>
       . Pull requests and <a href={issuesURL}>Issues</a> welcome.
     </section>
   );

@@ -59,7 +59,7 @@ gulp.task('readme', function() {
 gulp.task('typedefs', function() {
   var genTypeDefData = requireFresh('../pages/lib/genTypeDefData');
 
-  var typeDefPath = path.join(__dirname, '../type-definitions/Sequins.d.ts');
+  var typeDefPath = path.join(__dirname, '../type-definitions/sequins.d.ts');
 
   var fileContents = fs.readFileSync(typeDefPath, 'utf8');
 
