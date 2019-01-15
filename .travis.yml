@@ -3,9 +3,7 @@ language: node_js
 node_js: 8
 
 cache: yarn
-script: yarn test
-
-before_deploy: yarn build
+script: yarn verify
 
 deploy:
   - provider: npm
