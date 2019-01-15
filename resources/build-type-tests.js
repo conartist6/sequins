@@ -2,6 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const recursive = require('recursive-readdir');
 const babel = require('@babel/core');
+const prettier = require('prettier');
+
+const prettierOptions = {
+  ...prettier.resolveConfig.sync('../.prettierrc'),
+  parser: 'babylon',
+};
 
 const { dirname, relative, join } = path;
 
@@ -163,7 +169,9 @@ function processPath(basename) {
     ],
   }).code;
 
-  fs.writeFileSync(basename + '.type-test.ts', typeTest, 'utf8');
+  const prettyTypeTest = prettier.format(typeTest, prettierOptions);
+
+  fs.writeFileSync(basename + '.type-test.ts', prettyTypeTest, 'utf8');
 }
 
 // processPath('./src/__test__/collection');
