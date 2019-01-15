@@ -1,7 +1,6 @@
 import compose from 'iter-tools/es5/compose';
 import { isConcreteish } from './utils/shape';
 import invariant from 'invariant';
-import { reverseArrayIterator } from './utils/array';
 import { SubtypeNamespace } from './utils/namespace';
 import Collection, { Namespace as CollectionNamespace } from './collection';
 import makeFrom from './factories/from';
