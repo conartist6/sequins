@@ -26,7 +26,7 @@
     "verify": "run-s format test:no-changes build test:__i"
   },
   "engines": {
-    "yarn": "^1.12.3"
+    "yarn": "^1.10.1"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -83,7 +83,8 @@
   },
   "jest": {
     "moduleFileExtensions": ["js"],
-    "setupTestFrameworkScriptFile": "<rootDir>/jest_setup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/src/__test__/helpers/framework-setup.js",
+    "coveragePathIgnorePatterns": ["/node_modules/", "/__test__/"]
   },
   "repository": {
     "type": "git",
