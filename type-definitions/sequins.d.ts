@@ -6,9 +6,18 @@
  * @grouped
  */
 
-import { NativeMap, NativeSet } from "./native";
+import {
+  NativeMapConstructor,
+  NativeSetConstructor,
+  NativeMap,
+  NativeSet
+} from "./native";
 
-type CollectionLike<K, V> = Collection<K, V> | Array<V> | Map<K, V>;
+type CollectionLike<K, V> =
+  | Collection<K, V>
+  | Array<V>
+  | NativeSet<V>
+  | NativeMap<K, V>;
 
 // Concrete
 
@@ -366,11 +375,6 @@ interface List<T> extends Concrete<number, T>, Indexed<T> {
    */
   toJSON(): Array<T>;
 
-  /**
-   * Returns an Array containing the values from the List.
-   */
-  toArray(): Array<T>;
-
   toConcrete(): this;
 
   /**
@@ -379,7 +383,7 @@ interface List<T> extends Concrete<number, T>, Indexed<T> {
   toSeq(): IndexedSequence<T>;
 }
 
-export var List: ListConstructor;
+export const List: ListConstructor;
 
 interface MapConstructor {
   /**
@@ -587,11 +591,6 @@ interface Map<K, V> extends Concrete<K, V>, Keyed<K, V> {
    */
   toJSON(): { [key: string]: V };
 
-  /**
-   * Returns an Array containing the entry tuples from the Map.
-   */
-  toArray(): Array<[K, V]>;
-
   toConcrete(): this;
 
   /**
@@ -600,7 +599,7 @@ interface Map<K, V> extends Concrete<K, V>, Keyed<K, V> {
   toSeq(): KeyedSequence<K, V>;
 }
 
-export var Map: MapConstructor;
+export const Map: MapConstructor;
 
 interface SetConstructor {
   new <T>(collection: Iterable<T>): Set<T>;
@@ -780,11 +779,6 @@ interface Set<T> extends Concrete<T, T>, Duplicated<T> {
    */
   toJSON(): Array<T>;
 
-  /**
-   * Returns an Array with the values from the Set.
-   */
-  toArray(): Array<T>;
-
   toConcrete(): this;
 
   /**
@@ -793,7 +787,7 @@ interface Set<T> extends Concrete<T, T>, Duplicated<T> {
   toSeq(): SetSequence<T>;
 }
 
-export var Set: SetConstructor;
+export const Set: SetConstructor;
 
 // Sequence
 
@@ -973,11 +967,6 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
   toSeq(): this;
 
   /**
-   * Shallowly converts this collection to an Array.
-   */
-  toArray(): Array<T>;
-
-  /**
    * Deeply converts this IndexedSequence to equivalent native JavaScript
    * Array.
    */
@@ -990,7 +979,7 @@ interface IndexedSequence<T> extends Sequence<number, T>, Indexed<T> {
   toJSON(): Array<T>;
 }
 
-export var IndexedSequence: IndexedSequenceConstructor;
+export const IndexedSequence: IndexedSequenceConstructor;
 
 interface KeyedSequenceConstructor {
   /**
@@ -1017,7 +1006,7 @@ interface KeyedSequenceConstructor {
  * A KeyedSequence is, as expected, a `Keyed` `Sequence`. It represents
  * sequential transformations on Object or Map-like data as a series of
  * chained function calls. Note that a KeyedSequence lacks the key-coalescing
- * property of a `Map`. Duplicate keys will be eliminated when calling `toMap`
+ * property of a `Map`. Duplicate keys will be eliminated when calling `as(Map)`
  * which will usually be the last call in the chain.
  *
  * When constructing a KeyedSequence pass either keyed data or an iterable of
@@ -1121,11 +1110,6 @@ interface KeyedSequence<K, V> extends Sequence<K, V>, Keyed<K, V> {
   toJSON(): { [key: string]: V };
 
   /**
-   * Shallowly converts this collection to an Array.
-   */
-  toArray(): Array<[K, V]>;
-
-  /**
    * Returns a `Map` of the entries from this sequence.
    */
   toConcrete(): Map<K, V>;
@@ -1136,7 +1120,7 @@ interface KeyedSequence<K, V> extends Sequence<K, V>, Keyed<K, V> {
   toSeq(): this;
 }
 
-export var KeyedSequence: KeyedSequenceConstructor;
+export const KeyedSequence: KeyedSequenceConstructor;
 
 interface SetSequenceConstructor {
   new <T>(collection: Iterable<T>): SetSequence<T>;
@@ -1158,7 +1142,7 @@ interface SetSequenceConstructor {
  * A SetSequence is a `Duplicated` `Sequence`. It represents sequntial
  * transformations on Set-like data as a series of chained function calls.
  * Note that a SetSequence is allowed to contain duplicate values. Such
- * duplicates will be eliminated when using `toSet` or a similar method to
+ * duplicates will be eliminated when using `as(Set)` or a similar method to
  * convert back to a concrete type after the desired transformations are
  * made.
  *
@@ -1231,11 +1215,6 @@ interface SetSequence<T> extends Sequence<T, T>, Duplicated<T> {
   toJSON(): Array<T>;
 
   /**
-   * Shallowly converts this collection to an Array.
-   */
-  toArray(): Array<T>;
-
-  /**
    * Returns a `Set` of the values from this sequence.
    */
   toConcrete(): Set<T>;
@@ -1246,7 +1225,7 @@ interface SetSequence<T> extends Sequence<T, T>, Duplicated<T> {
   toSeq(): this;
 }
 
-export var SetSequence: SetSequenceConstructor;
+export const SetSequence: SetSequenceConstructor;
 
 export function Seq<S extends Sequence<any, any>>(seq: S): S;
 export function Seq<K, V>(collection: Keyed<K, V>): KeyedSequence<K, V>;
@@ -1326,6 +1305,11 @@ export namespace Seq {
   export function Set<T>(): SetSequence<T>;
   export function Set<T>(collection: Iterable<T>): SetSequence<T>;
 }
+
+// Native
+
+export const NativeMap: typeof NativeMapConstructor;
+export const NativeSet: typeof NativeSetConstructor;
 
 // Abstract
 
@@ -1410,7 +1394,7 @@ export interface Concrete<K, V> extends Collection<K, V> {
  * -->
  * ```js
  * function naturals(n) {
- *   return Range(1, Infinity).slice(0, n).toArray()
+ *   return Range(1, Infinity).slice(0, n).as(Array)
  * }
  * naturals(3); // [1, 2, 3]
  * ```
@@ -1426,7 +1410,7 @@ export interface Concrete<K, V> extends Collection<K, V> {
  * Object.
  *
  * ```js
- * Seq({ x: 0, y: 1, z: 2 }).map(v => v * 2).toObject();
+ * Seq({ x: 0, y: 1, z: 2 }).map(v => v * 2).as(Object);
  * // { x: 0, y: 2, z: 4 }
  * ```
  */
@@ -1756,40 +1740,48 @@ export interface Collection<K, V> {
   // Conversions
 
   /**
-   * Converts this Collection to a List, discarding keys.
+   * Converts this collection into the type of collection specified as the
+   * `CollectionConstructor` parameter. If no conversion is neccessary, returns
+   *  the original instance. The easiest way to describe the function is to show
+   * some example usages:
    *
-   * This is similar to `List(collection)`, but provided to allow for chained
-   * expressions. However, when called on `Map` or other keyed collections,
-   * `collection.toList()` discards the keys and creates a list of only the
-   * values, whereas `List(collection)` creates a list of entry tuples.
-   *
-   * <!-- runkit:activate
-   *   { "preamble": "const { Map, List } = require('sequins');" }
-   * -->
    * ```js
-   * var myMap = new Map({ a: 'Apple', b: 'Banana' })
-   * new List(myMap) // List [ [ "a", "Apple" ], [ "b", "Banana" ] ]
-   * myMap.toList() // List [ "Apple", "Banana" ]
+   * import {List, Map, Set, IndexedSequence, KeyedSequence, SetSequence, NativeMap, NativeSet} from 'sequins';
+   * const list = new List([1, 2, 3]);
+   * list.to(Map) // Map{0 => 1, 1 => 2, 2 => 3}
+   * list.to(Set) // Set{1, 2, 3}
+   * list.to(List) // list
+   * list.to(IndexedSequence) // new IndexedSequence(list)
+   * list.to(KeyedSequence) // new KeyedSequence(list)
+   * list.to(SetSequence) // new SetSequence(list)
+   * list.to(NativeMap) // NativeMap{0 => 1, 1 => 2, 2 => 3}
+   * list.to(NativeMap) instanceof global.Map // true
+   * list.to(NativeSet) // NativeSet{1, 2, 3}
+   * list.to(NativeSet) instanceof global.Set // true
+   * list.to(Array) // [1, 2, 3]
+   * list.to(Object) // {'0': 1, '1': 2, '2': 3}
    * ```
-   */
-  toList(): List<V>;
-
-  /**
-   * Converts this Collection to a Map, Throws if keys are not hashable.
    *
-   * Note: This is equivalent to `Map(this.toKeyedSeq())`, but provided
-   * for convenience and to allow for chained expressions.
-   */
-  toMap(): Map<K, V>;
-
-  /**
-   * Converts this Collection to a Set, discarding keys. Throws if values
-   * are not hashable.
    *
-   * Note: This is equivalent to `new Set(this)`, but provided to allow for
-   * chained expressions.
+   * While you can find definitive information in the constructor references,
+   * the basics are that keys will be discarded when converting from a `Keyed`
+   * to anything other than a `Keyed`. When converting an `Indexed` to a
+   * `Keyed`, the indexes will become the keys. When converting a `Duplicated`
+   * to a keyed, the keys will be the same as the values.
+   *
+   * @pragma showExampleAboveType
    */
-  toSet(): Set<V>;
+
+  to(Type: { new (): IndexedSequence<any> }): IndexedSequence<V>;
+  to(Type: { new (): KeyedSequence<any, any> }): KeyedSequence<K, V>;
+  to(Type: { new (): SetSequence<any> }): SetSequence<V>;
+  to(Type: { new (): List<any> }): List<V>;
+  to(Type: { new (): Map<any, any> }): Map<K, V>;
+  to(Type: { new (): Set<any> }): Set<V>;
+  to(Type: { new (): NativeMap<any, any> }): NativeMap<K, V>;
+  to(Type: { new (): NativeSet<any> }): NativeSet<V>;
+  to(Type: { new (): Array<any> }): Array<V>;
+  to(Type: { prototype: Object }): { [key: string]: V };
 
   /**
    * Converts this collection to `Map` if it is `Keyed`, `List` if it is
@@ -1799,60 +1791,10 @@ export interface Collection<K, V> {
   toConcrete(): Concrete<K, V>;
 
   /**
-   * Returns a KeyedSequence from this Collection where indices are treated as keys.
-   *
-   * This is useful if you want to operate on an
-   * Indexed and preserve the [index, value] pairs.
-   *
-   * The returned Sequence will have identical iteration order as
-   * this Collection.
-   *
-   * <!-- runkit:activate
-   *   { "preamble": "const { Seq } = require('sequins');" }
-   * -->
-   * ```js
-   * const indexedSeq = Seq([ 'A', 'B', 'C' ])
-   * // Sequence [ "A", "B", "C" ]
-   * indexedSeq.filter(v => v === 'B')
-   * // Sequence [ "B" ]
-   * const keyedSeq = indexedSeq.toKeyedSeq()
-   * // Sequence { 0: "A", 1: "B", 2: "C" }
-   * keyedSeq.filter(v => v === 'B')
-   * // Sequence { 1: "B" }
-   * ```
-   */
-  toKeyedSeq(): KeyedSequence<K, V>;
-
-  /**
-   * Returns an IndexedSequence of the values of this Collection, discarding keys.
-   */
-  toIndexedSeq(): IndexedSequence<V>;
-
-  /**
-   * Returns a SetSequence of the values of this Collection, discarding keys.
-   */
-  toSetSeq(): SetSequence<V>;
-
-  /**
-   * Converts this Collection to a Sequence of the same kind (indexed,
-   * keyed, or set).
+   * Converts this Collection to a Sequence of the same kind (`Indexed`,
+   * `Keyed`, or `Duplicated`).
    */
   toSeq(): Sequence<K, V>;
-
-  /**
-   * Shallowly converts this collection to an Array.
-   *
-   * `Indexed`, and `Duplicated` produce an Array of values.
-   * `Keyed` produces an Array of [key, value] tuples.
-   */
-  toArray(): Array<V> | Array<[K, V]>;
-
-  /**
-   * Shallowly converts this Collection to an Object.
-   *
-   * Converts keys to Strings.
-   */
-  toObject(): { [key: string]: V };
 
   /**
    * Deeply converts this Collection to equivalent native JavaScript Array or Object.
@@ -1914,11 +1856,6 @@ export interface Keyed<K, V> extends Collection<K, V> {
    * Converts keys to Strings.
    */
   toJSON(): { [key: string]: V };
-
-  /**
-   * Shallowly converts this collection to an Array.
-   */
-  toArray(): Array<[K, V]>;
 
   /**
    * Converts this collection to a `Map`
@@ -2046,11 +1983,6 @@ export interface Indexed<T> extends Collection<number, T> {
    * Shallowly converts this Indexed collection to equivalent native JavaScript Array.
    */
   toJSON(): Array<T>;
-
-  /**
-   * Shallowly converts this collection to an Array.
-   */
-  toArray(): Array<T>;
 
   /**
    * Converts this collection to a `List`
@@ -2211,11 +2143,6 @@ export interface Duplicated<T> extends Collection<T, T> {
    * Shallowly converts this Set collection to equivalent native JavaScript Array.
    */
   toJSON(): Array<T>;
-
-  /**
-   * Shallowly converts this collection to an Array.
-   */
-  toArray(): Array<T>;
 
   /**
    * Converts this collection to a `Set`

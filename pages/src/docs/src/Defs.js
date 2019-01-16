@@ -29,7 +29,7 @@ var InterfaceDef = React.createClass({
               </span>
             ))
             .interpose(", ")
-            .toArray(),
+            .to(Array),
           ">"
         ]}
         {def.extends && def.extends.length
@@ -38,7 +38,7 @@ var InterfaceDef = React.createClass({
               Seq(def.extends)
                 .map((e, i) => <TypeDef key={i} type={e} />)
                 .interpose(", ")
-                .toArray()
+                .to(Array)
             ]
           : null}
         {def.implements && def.implements.length
@@ -47,7 +47,7 @@ var InterfaceDef = React.createClass({
               Seq(def.implements)
                 .map((e, i) => <TypeDef key={i} type={e} />)
                 .interpose(", ")
-                .toArray()
+                .to(Array)
             ]
           : null}
         {def.isClass && (
@@ -59,7 +59,7 @@ var InterfaceDef = React.createClass({
               ))
               .concat([null])
               .interpose(<br />)
-              .toArray()}
+              .to(Array)}
             {"}"}
           </span>
         )}
@@ -88,7 +88,7 @@ var CallSigDef = React.createClass({
           Seq(callSig.typeParams)
             .map(t => <span className="t typeParam">{t}</span>)
             .interpose(", ")
-            .toArray(),
+            .to(Array),
           ">"
         ]}
         {"("}
@@ -131,14 +131,14 @@ var TypeDef = React.createClass({
           Seq(type.types)
             .map(t => <TypeDef info={info} type={t} />)
             .interpose(" | ")
-            .toArray()
+            .to(Array)
         ]);
       case TypeKind.Intersection:
         return this.wrap("intersection", [
           Seq(type.types)
             .map(t => <TypeDef info={info} type={t} />)
             .interpose(" & ")
-            .toArray()
+            .to(Array)
         ]);
       case TypeKind.Tuple:
         return this.wrap("tuple", [
@@ -146,7 +146,7 @@ var TypeDef = React.createClass({
           Seq(type.types)
             .map(t => <TypeDef info={info} type={t} />)
             .interpose(", ")
-            .toArray(),
+            .to(Array),
           "]"
         ]);
       case TypeKind.Object:
@@ -155,7 +155,7 @@ var TypeDef = React.createClass({
           Seq(type.members)
             .map(t => <MemberDef member={t} />)
             .interpose(", ")
-            .toArray(),
+            .to(Array),
           "}"
         ]);
       case TypeKind.Indexed:
@@ -188,7 +188,7 @@ var TypeDef = React.createClass({
                 </span>
               ))
               .interpose(", ")
-              .toArray(),
+              .to(Array),
             ">"
           ],
           "(",
@@ -218,7 +218,7 @@ var TypeDef = React.createClass({
             Seq(type.args)
               .map(a => <TypeDef info={info} type={a} />)
               .interpose(", ")
-              .toArray(),
+              .to(Array),
             ">"
           ]
         ]);
@@ -264,6 +264,7 @@ var MemberDef = React.createClass({
         ) : (
           <span className="t memberName">{member.name}</span>
         )}
+        {member.construct ? "()" : ""}
         {member.type && [": ", <TypeDef type={member.type} />]}
       </span>
     );
@@ -285,7 +286,7 @@ function functionParams(info, params, shouldWrap) {
       />
     ])
     .interpose(shouldWrap ? [",", <br />] : ", ")
-    .toArray();
+    .to(Array);
   return shouldWrap ? (
     <div className="t blockParams">{elements}</div>
   ) : (

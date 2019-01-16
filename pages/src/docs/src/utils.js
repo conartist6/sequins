@@ -14,9 +14,7 @@ function flattenDef(def, name, rootName = name) {
   delete flatDef.module;
 
   return mergeWith(
-    (a, b) => {
-      return merge(a, b);
-    },
+    (a, b) => merge(a, b),
     flatDef,
     ...Seq(def.module)
       .map((def, key) => {

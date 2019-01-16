@@ -40,11 +40,11 @@ var SideBar = React.createClass({
                   {Seq(group.members)
                     .map((t, name) => this.renderSideBarType(name, t))
                     .values()
-                    .toArray()}
+                    .to(Array)}
                 </section>
               );
             })
-            .toArray()}
+            .to(Array)}
         </div>
       </div>
     );
@@ -85,7 +85,7 @@ var SideBar = React.createClass({
       )
       .flatten()
       .values()
-      .toArray();
+      .to(Array);
 
     var members =
       !isFocus || isFunction ? null : (
@@ -101,7 +101,7 @@ var SideBar = React.createClass({
                   </div>
                 ))
                 .values()
-                .toArray()}
+                .to(Array)}
             </section>
           )}
 
@@ -117,7 +117,7 @@ var SideBar = React.createClass({
                   </div>
                 ))
                 .values()
-                .toArray()}
+                .to(Array)}
             </section>
           )}
 
@@ -144,7 +144,7 @@ var SideBar = React.createClass({
               )
               .flatten()
               .values()
-              .toArray()}
+              .to(Array)}
           </section>
         </div>
       );

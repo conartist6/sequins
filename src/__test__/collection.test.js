@@ -1,5 +1,14 @@
 import makeTestMethod from './helpers/make-test-method';
-import { IndexedSequence, KeyedSequence, SetSequence, List, Map, Set } from '..';
+import {
+  IndexedSequence,
+  KeyedSequence,
+  SetSequence,
+  List,
+  Map,
+  Set,
+  NativeMap,
+  NativeSet,
+} from '..';
 import { Namespace as Collection } from '../collection';
 import testData, { makeCalls } from './data';
 import { map } from 'iter-tools';
@@ -52,41 +61,49 @@ function makeTests(CollectionConstructor, collectionType, collectionSubtype) {
       });
 
       it('can be converted to IndexedSequence', function() {
-        const indexed = collection.toIndexedSeq();
+        const indexed = collection.to(IndexedSequence);
         expect(Array.from(indexed)).toEqual(values);
         expect(indexed).toBeInstanceOf(IndexedSequence);
       });
 
       it('can be converted to KeyedSequence', function() {
-        const keyed = collection.toKeyedSeq();
+        const keyed = collection.to(KeyedSequence);
         expect(keyed).toBeInstanceOf(KeyedSequence);
         expect(Array.from(keyed)).toEqual(entries);
       });
 
       it('can be converted to SetSequence', function() {
-        const set = collection.toSetSeq();
+        const set = collection.to(SetSequence);
         expect(Array.from(set)).toEqual(values);
         expect(set).toBeInstanceOf(SetSequence);
       });
 
-      it('can be converted to Array', function() {
-        expect(collection.toArray()).toEqual(values);
-      });
-
-      it('can be converted to Object', function() {
-        expect(collection.toObject()).toEqual(object);
-      });
-
       it('can be converted to List', function() {
-        expect(collection.toList()).toEqual(new List(values));
+        expect(collection.to(List)).toEqual(new List(values));
       });
 
       it('can be converted to Map', function() {
-        expect(collection.toMap()).toEqual(new Map(entries));
+        expect(collection.to(Map)).toEqual(new Map(entries));
       });
 
       it('can be converted to Set', function() {
-        expect(collection.toSet()).toEqual(new Set(values));
+        expect(collection.to(Set)).toEqual(new Set(values));
+      });
+
+      //       it('can be converted to native Map', function() {
+      //         expect(collection.to(NativeMap)).toEqual(new NativeMap(entries));
+      //       });
+      //
+      //       it('can be converted to native Set', function() {
+      //         expect(collection.to(NativeSet)).toEqual(new NativeSet(values));
+      //       });
+
+      it('can be converted to Array', function() {
+        expect(collection.to(Array)).toEqual(values);
+      });
+
+      it('can be converted to Object', function() {
+        expect(collection.to(Object)).toEqual(object);
       });
 
       it('can be converted to a concrete collection', function() {

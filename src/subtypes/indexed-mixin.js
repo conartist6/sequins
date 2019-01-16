@@ -66,7 +66,7 @@ export default Base => {
 
     // Conversions
     toJSON() {
-      return this.toArray();
+      return this.to(Array);
     }
   }
 

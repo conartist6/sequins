@@ -15,21 +15,6 @@ export default class IndexedSequence extends IndexedMixin(Sequence) {
       this.__constructorTransform = iterable => iterable.values();
     }
   }
-
-  // Conversions
-  toIndexedSeq() {
-    return this;
-  }
-
-  toList() {
-    const List = ConcreteCollection.Indexed;
-    return new List(this);
-  }
-
-  toArray() {
-    return Array.from(this);
-  }
-
   // Iterators
   keys() {
     return new Namespace.Duplicated(map((_, i) => i, this));

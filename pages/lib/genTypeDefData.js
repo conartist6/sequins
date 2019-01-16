@@ -248,7 +248,11 @@ function DocVisitor(source) {
   function visitPropertySignature(node) {
     var comment = getDoc(node);
     var name = ts.getTextOfNode(node.name);
-    if (!shouldIgnore(comment) && !isAliased(name)) {
+
+    // Why block name prototype: this is a horrible hack because this silly parser
+    // can't tell the difference between a property of a class it should be documenting
+    // and an object type used as a function parameter.
+    if (name !== "prototype" && !shouldIgnore(comment) && !isAliased(name)) {
       addAliases(comment, name);
 
       ensureGroup(node);
@@ -447,6 +451,12 @@ function DocVisitor(source) {
                 return {
                   name: m.name.text,
                   type: m.type && parseType(m.type)
+                };
+              case ts.SyntaxKind.ConstructSignature:
+                return {
+                  construct: true,
+                  name: "new",
+                  type: parseType(m.type)
                 };
             }
             throw new Error("Unknown member kind: " + ts.SyntaxKind[m.kind]);

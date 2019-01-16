@@ -16,16 +16,6 @@ export default class SetSequence extends DuplicatedMixin(Sequence) {
     }
   }
 
-  // Conversions
-  toSetSeq() {
-    return this;
-  }
-
-  toSet() {
-    const Set = ConcreteCollection.Duplicated;
-    return new Set(this);
-  }
-
   // Iterators
   keys() {
     return this;

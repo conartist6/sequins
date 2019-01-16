@@ -59,14 +59,8 @@ export default Base => {
     }
 
     // Conversions
-    toObject(proto = Object.prototype) {
-      const obj = Object.create(proto);
-      for (const [key, value] of this) obj[key] = value;
-      return obj;
-    }
-
     toJSON() {
-      return this.toObject();
+      return this.to(Object);
     }
   }
 

@@ -5,6 +5,7 @@ import Set from './subtypes/concrete/set';
 import IndexedSequence from './subtypes/sequence/indexed';
 import KeyedSequence from './subtypes/sequence/keyed';
 import SetSequence from './subtypes/sequence/set';
+import { NativeMap, NativeSet } from './native';
 import {
   isMutableCollection as isCollection,
   isMutableSeq as isSeq,
@@ -57,6 +58,8 @@ export default {
   List,
   Map,
   Set,
+  NativeMap,
+  NativeSet,
   isCollection,
   isKeyed,
   isIndexed,
@@ -83,6 +86,8 @@ export {
   List,
   Map,
   Set,
+  NativeMap,
+  NativeSet,
   isCollection,
   isKeyed,
   isIndexed,

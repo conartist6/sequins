@@ -18,7 +18,7 @@ class SequinsSet extends DuplicatedMixin(ConcreteCollection) {
   static fromKeys(shape) {
     return makeFrom(Collection, 'Sequence')(shape)
       .keys()
-      .toSet();
+      .to(SequinsSet);
   }
 
   static union(...iterables) {
@@ -37,7 +37,7 @@ class SequinsSet extends DuplicatedMixin(ConcreteCollection) {
     return new Collection.Sequence.Keyed(countMap)
       .filter(count => count === iterables.length)
       .keys()
-      .toSet();
+      .to(SequinsSet);
   }
 
   constructor(iterable) {
@@ -74,9 +74,6 @@ class SequinsSet extends DuplicatedMixin(ConcreteCollection) {
   }
 
   // Conversions
-  toSet() {
-    return this;
-  }
 
   [Symbol.species]() {
     return SequinsSet;

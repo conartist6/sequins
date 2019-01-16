@@ -119,14 +119,6 @@ class List extends IndexedMixin(ConcreteCollection) {
     return hasIdx;
   }
 
-  // Conversions
-  toList() {
-    return this;
-  }
-  toArray() {
-    return Array.from(this.__native);
-  }
-
   // Iterators
   keys() {
     return new Collection.Sequence.Duplicated(range(this.__native.length));

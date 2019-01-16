@@ -57,11 +57,11 @@ var DocOverview = React.createClass({
                     );
                   })
                   .values()
-                  .toArray()}
+                  .to(Array)}
               </section>
             );
           })
-          .toArray()}
+          .to(Array)}
       </div>
     );
   }

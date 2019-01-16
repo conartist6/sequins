@@ -7,7 +7,7 @@
 
 var React = require("react");
 var Router = require("react-router");
-var { Seq } = require("../../../..");
+var { Seq, KeyedSequence } = require("../../../..");
 var { InterfaceDef, CallSigDef } = require("./Defs");
 var MemberDoc = require("./MemberDoc");
 var isMobile = require("./isMobile");
@@ -204,7 +204,7 @@ var TypeDoc = React.createClass({
                 </div>
               ))
               .values()
-              .toArray()}
+              .to(Array)}
           </section>
         )}
 
@@ -224,7 +224,7 @@ var TypeDoc = React.createClass({
                 />
               ))
               .values()
-              .toArray()}
+              .to(Array)}
           </section>
         )}
 
@@ -245,7 +245,7 @@ var TypeDoc = React.createClass({
                 />
               ))
               .values()
-              .toArray()}
+              .to(Array)}
           </section>
         )}
 
@@ -271,7 +271,7 @@ var TypeDoc = React.createClass({
             )
             .flatten()
             .values()
-            .toArray()}
+            .to(Array)}
         </section>
 
         <Disclaimer />
@@ -316,10 +316,10 @@ function getTypePropMap(def) {
         (superModule && superModule.class) || superModule.interface;
       if (superInterface) {
         var interfaceMap = Seq(superInterface.typeParams)
-          .toKeyedSeq()
+          .to(KeyedSequence)
           .flip()
           .map(i => e.args[i])
-          .toObject();
+          .to(Object);
         Seq(interfaceMap).forEach((v, k) => {
           map[e.name + "<" + k] = v;
         });

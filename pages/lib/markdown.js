@@ -24,7 +24,7 @@ function collectAllMembersForAllTypes(defs) {
           def.interface,
           Seq.Keyed(
             groups[""].map(member => [member.memberName, member.memberDef])
-          ).toObject()
+          ).to(Object)
         );
       }
       if (def.module) {

@@ -29,7 +29,7 @@ describe('flatten', function() {
         expect(
           Seq([native])
             .flatten()
-            .toArray(),
+            .to(Array),
         ).toEqual([native]);
       });
     });

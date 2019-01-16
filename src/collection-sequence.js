@@ -82,17 +82,6 @@ class Sequence extends Collection {
       this.__dynamicMethods.sort(false, iterable, ...args),
     );
   }
-
-  // Shallow conversions
-  toIndexedSeq() {
-    return super.toIndexedSeq();
-  }
-  toKeyedSeq() {
-    return super.toKeyedSeq();
-  }
-  toSetSeq() {
-    return super.toSetSeq();
-  }
 }
 
 Object.defineProperty(Sequence.prototype, '@@__MUTABLE_SEQUENCE__@@', { value: true });

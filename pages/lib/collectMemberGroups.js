@@ -24,7 +24,7 @@ function collectMemberGroups(interfaceDef, options = {}) {
   } else {
     groups[""] = Seq(members)
       .sortBy(member => member.memberName)
-      .toArray();
+      .to(Array);
   }
 
   return groups;

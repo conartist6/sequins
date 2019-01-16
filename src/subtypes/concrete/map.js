@@ -10,14 +10,15 @@ class SequinsMap extends KeyedMixin(ConcreteCollection) {
 
   constructor(iterable) {
     super(iterable);
+    // prettier-ignore
     this.__native = new Map(
       iterable == null
         ? []
-        : isNative(iterable) || isCollection(iterable)
-        ? iterable.entries()
-        : isPlainObj(iterable)
-        ? entries(iterable)
-        : iterable,
+        : isCollection(iterable) || isNative(iterable)
+          ? iterable.entries()
+          : isPlainObj(iterable)
+            ? entries(iterable)
+            : iterable,
     );
   }
 
@@ -40,9 +41,6 @@ class SequinsMap extends KeyedMixin(ConcreteCollection) {
   }
 
   // Conversions
-  toMap() {
-    return this;
-  }
 
   [Symbol.species]() {
     return SequinsMap;

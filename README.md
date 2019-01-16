@@ -21,7 +21,9 @@ OR
 
 Sequins does not yet support being included outside of a module system.
 
-**IMPORTANT NOTE**: Sequins depends on a working implementation of Map and Set. If you need to support browsers which lack some or all of the implementation, it is your responsibility to setup `core-js`.
+**IMPORTANT NOTE**: Sequins is an es6 library. It depends on working implementations of several es6 features,
+including `Map`, `Set` `Array.from` and `Symbol.iterator`. The easiest way to set these up is using
+[@babel/polyfill](https://babeljs.io/docs/en/babel-polyfill).
 
 ## Status
 
@@ -32,6 +34,8 @@ This project is in alpha. It is not ready for production usage and should be exp
     Name chosen and registered on npm: 6/14/18
     First npm version that isn't broken: 9/9/18
     Documentation website go-live: 10/15/18
+    Typescript defs tested: 1/15/19
+    Flow defs tested: ---
     First production usage: ---
     Immutable recognizes Sequins data types: ---
     1.0: ---
@@ -58,6 +62,11 @@ Enter: Sequins. Sequins, by way of the Immutable.js API, offers the benefits of 
 ## Differences from Immutable
 
 -   **Classes not Factory functions** The only factory function in Sequins is `Seq`. The rest of Sequins' types are classes, which means they must that you must use the `new` keyword to construct them. It also means that `instanceof` checks are possible, **however** using instanceof is not considered idiomatic, and it is preferred to use the static methods such as `isMap(shape)`.
+
+-   **as**: Sequins structures lack several of the conversion methods provided by Immutable: `toList`, `toMap`, `toSet`, `toIndexedSeq`,
+    `toKeyedSeq`, `toSetSeq`, `toObject`, and `toArray`. Instead there is a single method, `as`, which replaces all of them. Examples of its usage look like: `mySet.as(List)` or `myMap.as(Array)`.
+
+-   **forEach**: Sequins `forEach` instance method matches the es6 spec precisely. It has no return value. It also is eager, which means that calling it on a seqence triggers evaluation of that sequence. If you want a method which is not eager and returns the collection for further chaining, use `tap`.
 
 -   **Unordered types**: All Sequins types are ordered because the native data structures which underly them preserve ordering without additional work.
 

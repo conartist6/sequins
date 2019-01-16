@@ -15,16 +15,6 @@ export default class KeyedSequence extends KeyedMixin(Sequence) {
     }
   }
 
-  // Conversions
-  toKeyedSeq() {
-    return this;
-  }
-
-  toMap() {
-    const Map = ConcreteCollection.Keyed;
-    return new Map(this);
-  }
-
   // Iterators
   keys() {
     return new Namespace.Duplicated(map(([key, _]) => key, this));

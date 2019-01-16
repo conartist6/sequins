@@ -18,6 +18,21 @@ class MethodFactory {
   }
 }
 
+const nativeFactories = new Map([
+  [Map, coll => new Map(new Collection.Sequence.Keyed(coll))],
+  [Set, coll => new Set(new Collection.Sequence.Duplicated(coll))],
+  [Array, coll => Array.from(new Collection.Sequence.Indexed(coll))],
+  [
+    Object,
+    // TODO use Object.fromEntries here when it is ready.
+    coll =>
+      new Collection.Sequence.Keyed(coll).reduce((obj, value, key) => {
+        obj[key] = value;
+        return obj;
+      }, {}),
+  ],
+]);
+
 for (const name of keys(factories)) {
   Object.defineProperty(MethodFactory.prototype, name, {
     get() {
@@ -89,34 +104,15 @@ export const CollectionMixin = Base => {
     toSeq() {
       return new Collection.Sequence.from(this);
     }
-    toIndexedSeq() {
-      return new Collection.Sequence.Indexed(this);
-    }
-    toKeyedSeq() {
-      return new Collection.Sequence.Keyed(this);
-    }
-    toSetSeq() {
-      return new Collection.Sequence.Duplicated(this);
-    }
-
-    toList() {
-      return this.toIndexedSeq().toList();
-    }
-    toMap() {
-      return this.toKeyedSeq().toMap();
-    }
-    toSet() {
-      return this.toSetSeq().toSet();
-    }
     toConcrete() {
       return this.__dynamicMethods.toConcrete(this);
     }
-
-    toArray() {
-      return this.toIndexedSeq().toArray();
-    }
-    toObject() {
-      return this.toKeyedSeq().toObject();
+    to(CollectionConstructor) {
+      if (nativeFactories.has(CollectionConstructor)) {
+        return nativeFactories.get(CollectionConstructor)(this);
+      } else {
+        return this instanceof CollectionConstructor ? this : new CollectionConstructor(this);
+      }
     }
   }
 

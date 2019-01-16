@@ -8,7 +8,7 @@
 var { Seq } = require("../..");
 var markdown = require("./markdown");
 
-var noteTypesToPreserve = ["alias", "memberof"];
+var noteTypesToPreserve = ["alias", "memberof", "pragma"];
 
 function markdownDocs(defs) {
   markdownTypes(defs, []);

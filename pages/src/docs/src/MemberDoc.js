@@ -16,7 +16,7 @@ var { getDisplayTypeName } = require("./utils");
 
 var { TransitionGroup } = React.addons;
 
-var ignoredNotes = ["constructs"];
+var ignoredNotes = ["constructs", "pragma"];
 
 var MemberDoc = React.createClass({
   mixins: [PageDataMixin, Router.Navigation],
@@ -87,6 +87,82 @@ var MemberDoc = React.createClass({
 
     var memberAnchorLink = this.props.parentName + "/" + name;
 
+    var typeDef = isProp ? (
+      <code key="typeDef" className="codeBlock memberSignature">
+        <MemberDef module={module} member={{ name, type: def.type }} />
+      </code>
+    ) : (
+      <code key="typeDef" className="codeBlock memberSignature">
+        {def.signatures.map((callSig, i) => [
+          <CallSigDef
+            key={i}
+            info={typeInfo}
+            module={module}
+            name={name}
+            callSig={callSig}
+          />,
+          "\n"
+        ])}
+      </code>
+    );
+
+    var metadata = [
+      member.inherited && (
+        <section key="inherited">
+          <h4 className="infoHeader">Inherited from</h4>
+          <code>
+            <Router.Link to={"/" + member.inherited.name + "/" + name}>
+              {member.inherited.name + "#" + name}
+            </Router.Link>
+          </code>
+        </section>
+      ),
+      member.overrides && (
+        <section key="overrides">
+          <h4 className="infoHeader">Overrides</h4>
+          <code>
+            <Router.Link to={"/" + member.overrides.name + "/" + name}>
+              {member.overrides.name + "#" + name}
+            </Router.Link>
+          </code>
+        </section>
+      ),
+      ...(doc.notes
+        ? doc.notes
+            .filter(note => !ignoredNotes.includes(note.name))
+            .map((note, i) => (
+              <section key={`note_${i}`}>
+                <h4 className="infoHeader">{note.name}</h4>
+                {note.name === "alias" ? (
+                  <code>
+                    <CallSigDef name={note.body} />
+                  </code>
+                ) : (
+                  <MarkDown className="discussion" contents={note.body} />
+                )}
+              </section>
+            ))
+        : [])
+    ].filter(Boolean);
+
+    var description = doc.description && (
+      <section key="description">
+        <h4 className="infoHeader">
+          {doc.description.substr(0, 5) === "<code" ? "Example" : "Discussion"}
+        </h4>
+        <MarkDown className="discussion" contents={doc.description} />
+      </section>
+    );
+
+    var detail =
+      doc.notes &&
+      doc.notes.find(
+        note =>
+          note.name === "pragma" && note.body.trim() === "showExampleAboveType"
+      )
+        ? [description, typeDef, metadata]
+        : [typeDef, metadata, description];
+
     return (
       <div className="interfaceMember">
         <h3 className="memberLabel">
@@ -103,72 +179,7 @@ var MemberDoc = React.createClass({
               {doc.synopsis && (
                 <MarkDown className="synopsis" contents={doc.synopsis} />
               )}
-              {isProp ? (
-                <code className="codeBlock memberSignature">
-                  <MemberDef
-                    module={module}
-                    member={{ name, type: def.type }}
-                  />
-                </code>
-              ) : (
-                <code className="codeBlock memberSignature">
-                  {def.signatures.map((callSig, i) => [
-                    <CallSigDef
-                      key={i}
-                      info={typeInfo}
-                      module={module}
-                      name={name}
-                      callSig={callSig}
-                    />,
-                    "\n"
-                  ])}
-                </code>
-              )}
-              {member.inherited && (
-                <section>
-                  <h4 className="infoHeader">Inherited from</h4>
-                  <code>
-                    <Router.Link to={"/" + member.inherited.name + "/" + name}>
-                      {member.inherited.name + "#" + name}
-                    </Router.Link>
-                  </code>
-                </section>
-              )}
-              {member.overrides && (
-                <section>
-                  <h4 className="infoHeader">Overrides</h4>
-                  <code>
-                    <Router.Link to={"/" + member.overrides.name + "/" + name}>
-                      {member.overrides.name + "#" + name}
-                    </Router.Link>
-                  </code>
-                </section>
-              )}
-              {doc.notes &&
-                doc.notes
-                  .filter(note => !ignoredNotes.includes(note.name))
-                  .map((note, i) => (
-                    <section key={i}>
-                      <h4 className="infoHeader">{note.name}</h4>
-                      {note.name === "alias" ? (
-                        <code>
-                          <CallSigDef name={note.body} />
-                        </code>
-                      ) : (
-                        <MarkDown className="discussion" contents={note.body} />
-                      )}
-                    </section>
-                  ))}
-              {doc.description && (
-                <section>
-                  <h4 className="infoHeader">
-                    {doc.description.substr(0, 5) === "<code"
-                      ? "Example"
-                      : "Discussion"}
-                  </h4>
-                  <MarkDown className="discussion" contents={doc.description} />
-                </section>
-              )}
+              {detail}
             </div>
           )}
         </TransitionGroup>
