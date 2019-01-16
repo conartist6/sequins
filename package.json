@@ -1,10 +1,12 @@
 {
   "name": "sequins",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Mutable sequences and native data structures (Map, Set, List) following the Immutable.js API",
   "author": "conrad@burningpotato.com",
   "license": "MIT",
-  "files": ["dist/**"],
+  "files": [
+    "dist/**"
+  ],
   "main": "dist/_sequins.js",
   "module": "dist/sequins.mjs",
   "typings": "dist/sequins.d.ts",
@@ -82,9 +84,14 @@
     "babel-core": "7.0.0-bridge.0"
   },
   "jest": {
-    "moduleFileExtensions": ["js"],
+    "moduleFileExtensions": [
+      "js"
+    ],
     "setupTestFrameworkScriptFile": "<rootDir>/src/__test__/helpers/framework-setup.js",
-    "coveragePathIgnorePatterns": ["/node_modules/", "/__test__/"]
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/__test__/"
+    ]
   },
   "repository": {
     "type": "git",
