@@ -37,9 +37,9 @@ function IndexedSequenceFactory(iterable) {
 Object.assign(IndexedSequenceFactory, IndexedSequence);
 
 function KeyedSequenceFactory(iterable) {
-  return new KeyedSequenceFactory(iterable);
+  return new KeyedSequence(iterable);
 }
-Object.assign(KeyedSequenceFactory, KeyedSequenceFactory);
+Object.assign(KeyedSequenceFactory, KeyedSequence);
 
 function SetSequenceFactory(iterable) {
   return new SetSequence(iterable);
